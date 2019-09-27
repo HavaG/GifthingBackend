@@ -1,4 +1,4 @@
-GET http://localhost:8080/persons/Gabor
+GET http://192.168.137.124:8080/persons/Gabor
 Content-Type: application/json
 
 ###

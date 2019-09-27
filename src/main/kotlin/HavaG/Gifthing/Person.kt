@@ -6,7 +6,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-class Person(var name: String, var pwd: String) {
+class Person(var name: String, var password: String) {
     constructor() : this("", "")
 
     @Id
