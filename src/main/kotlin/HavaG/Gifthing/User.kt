@@ -5,13 +5,16 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 
+
 @Entity
-class Person(var name: String, var password: String) {
+class User(var name: String, var password: String) {
     constructor() : this("", "")
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private var id: Long = 0
+
 
 }
     /*

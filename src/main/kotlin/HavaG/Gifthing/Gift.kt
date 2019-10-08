@@ -11,7 +11,7 @@ class Gift( var name: String) {
      var link: String? = null
      var description: String? = null
      var price: Int? = null
-     var isReserved: Person? = null
+     var isReserved: User? = null
 }
 
 //TODO: setName, getName, setLink, getLink, setDescription, getDescription, setPrice, getPrive, setReserved, getReserved

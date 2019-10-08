@@ -4,18 +4,18 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 
 @Component
-class DbSeeder(val personRepository: PersonRepository) : CommandLineRunner {
+class DbSeeder(val userRepository: UserRepository) : CommandLineRunner {
     override fun run(vararg p0: String?) {
-        this.personRepository.deleteAll()
+        this.userRepository.deleteAll()
 
-        val p1 = Person("Gabor", "jelszo")
-        val p2 = Person("Enci", "asd")
+        val p1 = User("Gabor", "jelszo")
+        val p2 = User("Enci", "asd")
 
-        val persons = mutableListOf<Person>()
-        persons.add(p1)
-        persons.add(p2)
+        val users = mutableListOf<User>()
+        users.add(p1)
+        users.add(p2)
 
-        this.personRepository.saveAll(persons)
+        this.userRepository.saveAll(users)
         println(" -- Database has been initialized")
     }
 }
