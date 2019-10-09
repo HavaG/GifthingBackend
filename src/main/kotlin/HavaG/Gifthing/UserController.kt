@@ -22,7 +22,7 @@ class UserController(val userRepository: UserRepository) {
     fun all(): MutableIterable<User> = this.userRepository.findAll()
 
     @GetMapping("/{name}")
-    fun byName(@PathVariable(value = "name") name: String): List<User> {
+    fun findByName(@PathVariable(value = "name") name: String): User {
         return userRepository.findByName(name)
     }
 
