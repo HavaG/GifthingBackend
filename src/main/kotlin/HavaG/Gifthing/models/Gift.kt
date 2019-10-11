@@ -1,4 +1,4 @@
-package HavaG.Gifthing
+package HavaG.Gifthing.models
 
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType

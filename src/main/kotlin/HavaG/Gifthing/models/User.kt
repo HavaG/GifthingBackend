@@ -1,4 +1,4 @@
-package HavaG.Gifthing
+package HavaG.Gifthing.models
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -10,12 +10,9 @@ import javax.persistence.Id
 class User(var name: String, var password: String) {
     constructor() : this("", "")
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long = 0
-
-
+    var id: Long = 0
 }
     /*
     private var groupList = mutableListOf<Group>()
