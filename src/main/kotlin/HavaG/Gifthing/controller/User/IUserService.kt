@@ -1,4 +1,4 @@
-package HavaG.Gifthing.controller
+package HavaG.Gifthing.controller.User
 
 import HavaG.Gifthing.models.User
 import org.springframework.context.annotation.Bean

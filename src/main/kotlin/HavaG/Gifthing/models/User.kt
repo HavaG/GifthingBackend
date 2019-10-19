@@ -1,49 +1,59 @@
 package HavaG.Gifthing.models
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import java.util.ArrayList
+import javax.persistence.*
 
 
-@Entity
-class User(var name: String, var password: String) {
-    constructor() : this("", "")
-
+@Entity(name = "User")
+@Table(name = "user")
+data class User(var email: String) {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long = 0
-}
-    /*
-    private var groupList = mutableListOf<Group>()
-    private var giftList = mutableListOf<Gift>()
+    var name: String? = null
+    var password: String? = null
+
+    @OneToMany(mappedBy = "owner")
+    private var gifts = mutableListOf<Gift>()
+
 
     fun addGift(gift: Gift) {
-        giftList.add(gift)
+        gifts.add(gift)
+        gift.setOwner(this)
     }
 
-    fun deleteGift(gift: Gift) {
-        giftList.remove(gift)
+    fun removeGift(gift: Gift) {
+        gifts.remove(gift)
+        gift.setOwner(null)
     }
 
-    fun joinGroup(group: Group) {
-        groupList.add(group)
+    fun getGifts(): MutableList<Gift> {
+        return gifts
     }
 
-    fun leaveGroup(group: Group) {
-        groupList.remove(group)
+    fun setGifts(gifts: MutableList<Gift>) {
+        this.gifts = gifts
     }
 
-    fun getName(): String {
-        return name
+
+    @OneToMany(mappedBy = "reservedBy")
+    private var reservedGifts = mutableListOf<Gift>()
+
+    fun reserveGift(gift: Gift) {
+        reservedGifts.add(gift)
+        gift.setReserveBy(this)
     }
 
-    fun setName(name: String) {
-        this.name = name
+    fun removeReservedGift(gift: Gift) {
+        reservedGifts.remove(gift)
     }
 
-    fun setPwd(pwd: String) {
-        this.pwd = pwd
-    }
-    */
 
+    fun getReservedGifts(): MutableList<Gift> {
+        return reservedGifts
+    }
+
+    fun setReservedGifts(reservedGifts: MutableList<Gift>) {
+        this.reservedGifts = reservedGifts
+    }
+}

@@ -1,7 +1,6 @@
-package HavaG.Gifthing.controller
+package HavaG.Gifthing.controller.User
 
 import HavaG.Gifthing.models.User
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -30,6 +29,8 @@ class UserService(userRepository: UserRepository) : IUserService {
         return true
     }
 
+
+    //TODO: ez itt nem is jó
     override fun updateUser(user: User): Boolean {
         val updateId = user.id
         //check if exist in db
