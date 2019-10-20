@@ -1,6 +1,6 @@
-package HavaG.Gifthing.controller.Gift
+package HavaG.Gifthing.Controller.Gift
 
-import HavaG.Gifthing.models.Gift
+import HavaG.Gifthing.Models.Gift
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,9 +10,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/gift")
-class GiftController (iGiftService: IGiftService){
-
-    val iGiftService = iGiftService
+class GiftController (val iGiftService: IGiftService){
 
     //probably useless
     @GetMapping("/all")

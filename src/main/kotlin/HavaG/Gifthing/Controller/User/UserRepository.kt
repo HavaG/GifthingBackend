@@ -1,14 +1,13 @@
-package HavaG.Gifthing.controller.User
+package HavaG.Gifthing.Controller.User
 
-import HavaG.Gifthing.models.User
+import HavaG.Gifthing.Models.User
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import java.util.*
 
 @Repository
 interface UserRepository : CrudRepository<User, Long>{
 
-    //TODO: ez itt mind
+    //TODO: UserRepository
     /*
     fun findByTitle(title: String): List<User>
     fun findDistinctByCategory(category: String): List<User>

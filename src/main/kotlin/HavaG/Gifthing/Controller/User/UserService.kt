@@ -1,13 +1,11 @@
-package HavaG.Gifthing.controller.User
+package HavaG.Gifthing.Controller.User
 
-import HavaG.Gifthing.models.User
+import HavaG.Gifthing.Models.User
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class UserService(userRepository: UserRepository) : IUserService {
-
-    val userRepository = userRepository
+class UserService(val userRepository: UserRepository) : IUserService {
 
     override fun getAllUser(): MutableIterable<User> {
         return userRepository.findAll()
@@ -29,8 +27,7 @@ class UserService(userRepository: UserRepository) : IUserService {
         return true
     }
 
-
-    //TODO: ez itt nem is jó
+    //TODO: updateUser nem jól működik
     override fun updateUser(user: User): Boolean {
         val updateId = user.id
         //check if exist in db

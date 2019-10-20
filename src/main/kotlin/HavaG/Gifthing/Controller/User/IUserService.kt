@@ -1,7 +1,6 @@
-package HavaG.Gifthing.controller.User
+package HavaG.Gifthing.Controller.User
 
-import HavaG.Gifthing.models.User
-import org.springframework.context.annotation.Bean
+import HavaG.Gifthing.Models.User
 import java.util.*
 
 interface IUserService {

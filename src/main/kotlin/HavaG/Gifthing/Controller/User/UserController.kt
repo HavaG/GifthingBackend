@@ -1,6 +1,6 @@
-package HavaG.Gifthing.controller.User
+package HavaG.Gifthing.Controller.User
 
-import HavaG.Gifthing.models.User
+import HavaG.Gifthing.Models.User
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,9 +10,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/user")
-class UserController (iUserService: IUserService){
-
-    val iUserService = iUserService
+class UserController (val iUserService: IUserService){
 
     @GetMapping("/all")
     fun all(): MutableIterable<User> {

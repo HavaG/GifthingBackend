@@ -1,4 +1,4 @@
-package HavaG.Gifthing.models
+package HavaG.Gifthing.Models
 
 import javax.persistence.*
 
@@ -24,11 +24,10 @@ class Gift(var name: String) {
     @JoinColumn(name = "reserve_id")
     private var reservedBy: User? = null
 
-
     fun setReserveBy(user: User){
         reservedBy = user
     }
 
 }
 
-//TODO: setName, getName, setLink, getLink, setDescription, getDescription, setPrice, getPrive, setReserved, getReserved
+//TODO: Gift: setName, getName, setLink, getLink, setDescription, getDescription, setPrice, getPrive, setReserved, getReserved

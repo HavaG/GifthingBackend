@@ -1,21 +1,18 @@
-package HavaG.Gifthing.models
+package HavaG.Gifthing.Models
 
-import java.util.ArrayList
 import javax.persistence.*
 
 
 @Entity(name = "User")
 @Table(name = "user")
-data class User(var email: String) {
+class User(var email: String, var password: String) {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long = 0
     var name: String? = null
-    var password: String? = null
 
     @OneToMany(mappedBy = "owner")
     private var gifts = mutableListOf<Gift>()
-
 
     fun addGift(gift: Gift) {
         gifts.add(gift)
@@ -56,4 +53,18 @@ data class User(var email: String) {
     fun setReservedGifts(reservedGifts: MutableList<Gift>) {
         this.reservedGifts = reservedGifts
     }
+
+    @OneToMany(mappedBy = "admin")
+    private var myOwnedGroup = mutableListOf<Group>()
+
+    fun setMyGroup(group: Group) {
+        myOwnedGroup.add(group)
+    }
+
+/*    TODO: User: @ManyToMany myGroups
+    @JoinTable(
+            name = "users_groups",
+            joinColumns = [JoinColumn(name = "user_id")],
+            inverseJoinColumns = [JoinColumn(name = "group_id")])
+    private var myGroups = mutableListOf<Group>()*/
 }

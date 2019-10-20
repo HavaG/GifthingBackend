@@ -1,6 +1,6 @@
-package HavaG.Gifthing.controller.Gift
+package HavaG.Gifthing.Controller.Gift
 
-import HavaG.Gifthing.models.Gift
+import HavaG.Gifthing.Models.Gift
 import java.util.*
 
 interface IGiftService {
