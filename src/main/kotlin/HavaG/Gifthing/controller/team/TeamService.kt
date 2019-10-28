@@ -1,6 +1,6 @@
 package HavaG.Gifthing.Controller.Group
 
-import HavaG.Gifthing.Models.Group
+import HavaG.Gifthing.Models.Team
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -8,21 +8,21 @@ import java.util.*
 class GroupService(val groupRepository: GroupRepository) : IGroupService {
 
     //TODO: itt mindegyiknek avn értelme? így kell őket használni? :D
-    override fun getAllGroup(): MutableIterable<Group> {
+    override fun getAllGroup(): MutableIterable<Team> {
         return groupRepository.findAll()
     }
 
-    override fun getGroupById(groupId: Long): Optional<Group> {
+    override fun getGroupById(groupId: Long): Optional<Team> {
         return groupRepository.findById(groupId)
     }
 
-    override fun addGroup(group: Group): Boolean {
-        groupRepository.save(group)
+    override fun addGroup(team: Team): Boolean {
+        groupRepository.save(team)
         return true
     }
 
     //TODO: updateGroup
-    override fun updateGroup(group: Group): Boolean {
+    override fun updateGroup(team: Team): Boolean {
         return false
     }
 

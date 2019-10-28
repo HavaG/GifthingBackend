@@ -1,6 +1,6 @@
-package HavaG.Gifthing.Controller.User
+package HavaG.Gifthing.controller.user
 
-import HavaG.Gifthing.Models.User
+import HavaG.Gifthing.models.User
 import java.util.*
 
 interface IUserService {
@@ -9,5 +9,5 @@ interface IUserService {
     fun getUserById(userId: Long): Optional<User>
     fun addUser(user: User): Boolean
     fun updateUser(user: User): Boolean
-    fun deleteUser(userId: Long)
+    fun deleteUser(userId: Long): Boolean
 }

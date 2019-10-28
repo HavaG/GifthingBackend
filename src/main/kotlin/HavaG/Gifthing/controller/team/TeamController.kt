@@ -1,6 +1,6 @@
 package HavaG.Gifthing.Controller.Group
 
-import HavaG.Gifthing.Models.Group
+import HavaG.Gifthing.Models.Team
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -9,16 +9,16 @@ import java.util.*
 
 
 @RestController
-@RequestMapping("/Group")
+@RequestMapping("/Team")
 class GroupController (val iGroupService: IGroupService){
 
     @GetMapping("/all")
-    fun all(): MutableIterable<Group> {
+    fun all(): MutableIterable<Team> {
         return iGroupService.getAllGroup()
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable(value = "id") id: Long): Optional<Group> {
+    fun findById(@PathVariable(value = "id") id: Long): Optional<Team> {
         return iGroupService.getGroupById(id)
     }
 
@@ -28,12 +28,12 @@ class GroupController (val iGroupService: IGroupService){
     }
 
     @PutMapping("/modify")
-    fun update(@RequestBody editGroup: Group): Boolean {
-        return iGroupService.updateGroup(editGroup)
+    fun update(@RequestBody editTeam: Team): Boolean {
+        return iGroupService.updateGroup(editTeam)
     }
 
     @PostMapping("/create")
-    fun create(@RequestBody newGroup: Group): Boolean {
-        return iGroupService.addGroup(newGroup)
+    fun create(@RequestBody newTeam: Team): Boolean {
+        return iGroupService.addGroup(newTeam)
     }
 }

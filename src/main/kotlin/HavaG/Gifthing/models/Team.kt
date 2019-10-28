@@ -11,6 +11,8 @@ class Group(var name: String)
     var id: Long = 0
 
     //TODO: group many-to-one to user (get admin in the constructor)
+
+    /*
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private var admin: User? = null
@@ -18,7 +20,7 @@ class Group(var name: String)
     fun setAdmin(user: User) {
         admin = user
     }
-
+*/
 
 /*    TODO: Group many-to-many members
     @ManyToMany(mappedBy = "myGroups")

@@ -1,6 +1,6 @@
-package HavaG.Gifthing.Controller.User
+package HavaG.Gifthing.controller.user
 
-import HavaG.Gifthing.Models.User
+import HavaG.Gifthing.models.User
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,12 +22,12 @@ class UserController (val iUserService: IUserService){
         return iUserService.getUserById(id)
     }
 
-    @DeleteMapping("/{id}")
-    fun deleteById(@PathVariable(value = "id") id: Long){
-        iUserService.deleteUser(id)
+    @DeleteMapping("/delete/{id}")
+    fun deleteById(@PathVariable(value = "id") id: Long): Boolean{
+        return iUserService.deleteUser(id)
     }
 
-    @PutMapping("/modify")
+    @PutMapping("/update")
     fun update(@RequestBody editUser: User): Boolean {
         return iUserService.updateUser(editUser)
     }

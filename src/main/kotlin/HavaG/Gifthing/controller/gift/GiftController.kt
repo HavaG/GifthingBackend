@@ -1,6 +1,6 @@
-package HavaG.Gifthing.Controller.Gift
+package HavaG.Gifthing.controller.gift
 
-import HavaG.Gifthing.Models.Gift
+import HavaG.Gifthing.models.Gift
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -12,7 +12,6 @@ import java.util.*
 @RequestMapping("/gift")
 class GiftController (val iGiftService: IGiftService){
 
-    //probably useless
     @GetMapping("/all")
     fun all(): MutableIterable<Gift> {
         return iGiftService.getAllGift()
@@ -23,12 +22,12 @@ class GiftController (val iGiftService: IGiftService){
         return iGiftService.getGiftById(id)
     }
 
-    @DeleteMapping("/{id}")
-    fun deleteById(@PathVariable(value = "id") id: Long){
-        iGiftService.deleteGift(id)
+    @DeleteMapping("/delete/{id}")
+    fun deleteById(@PathVariable(value = "id") id: Long): Boolean{
+        return iGiftService.deleteGift(id)
     }
 
-    @PutMapping("/modify")
+    @PutMapping("/update")
     fun update(@RequestBody editGift: Gift): Boolean {
         return iGiftService.updateGift(editGift)
     }

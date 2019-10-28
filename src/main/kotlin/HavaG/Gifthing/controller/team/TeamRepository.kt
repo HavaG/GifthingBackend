@@ -1,12 +1,11 @@
 package HavaG.Gifthing.Controller.Group
 
-import HavaG.Gifthing.Models.Group
-import HavaG.Gifthing.Models.User
+import HavaG.Gifthing.Models.Team
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface GroupRepository : CrudRepository<Group, Long>{
+interface GroupRepository : CrudRepository<Team, Long>{
 
     //TODO: ez itt mind
     /*

@@ -1,13 +1,12 @@
-package HavaG.Gifthing.Controller.Gift
+package HavaG.Gifthing.controller.gift
 
-import HavaG.Gifthing.Models.Gift
+import HavaG.Gifthing.models.Gift
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class GiftService(val giftRepository: GiftRepository) : IGiftService {
 
-    //TODO: itt mindegyiknek avn értelme? így kell őket használni? :D
     override fun getAllGift(): MutableIterable<Gift> {
         return giftRepository.findAll()
     }
@@ -21,16 +20,27 @@ class GiftService(val giftRepository: GiftRepository) : IGiftService {
         return true
     }
 
-    //TODO: updateGift
     override fun updateGift(gift: Gift): Boolean {
-            return false
+        //check if exist in db
+        val tmp = giftRepository.findById(gift.id)
+        return if(tmp.isPresent) {
+            //save new
+            giftRepository.save(gift)
+            true
+        }
+        else
+            false
     }
 
-    override fun deleteGift(giftId: Long) {
+    override fun deleteGift(giftId: Long): Boolean {
         val tmp = getGiftById(giftId)
         if (tmp.isPresent) {
-            giftRepository.delete(tmp.get())
+            val temporal = tmp.get()
+            temporal.removeOwner()
+            temporal.removeReserveBy()
+            giftRepository.delete(temporal)
+            return true
         }
+        return false
     }
-
 }

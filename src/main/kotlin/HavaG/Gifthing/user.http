@@ -1,4 +1,4 @@
-DELETE http://192.168.88.73:8080/user/2
+GET http://192.168.0.100:8080/team/all
 Content-Type: application/json
 
 ###

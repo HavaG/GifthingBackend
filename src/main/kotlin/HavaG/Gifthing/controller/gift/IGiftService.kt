@@ -1,6 +1,6 @@
-package HavaG.Gifthing.Controller.Gift
+package HavaG.Gifthing.controller.gift
 
-import HavaG.Gifthing.Models.Gift
+import HavaG.Gifthing.models.Gift
 import java.util.*
 
 interface IGiftService {
@@ -9,5 +9,5 @@ interface IGiftService {
     fun getGiftById(giftId: Long): Optional<Gift>
     fun addGift(gift: Gift): Boolean
     fun updateGift(gift: Gift): Boolean
-    fun deleteGift(giftId: Long)
+    fun deleteGift(giftId: Long): Boolean
 }

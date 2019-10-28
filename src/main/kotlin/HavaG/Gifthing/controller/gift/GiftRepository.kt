@@ -1,6 +1,6 @@
-package HavaG.Gifthing.Controller.Gift
+package HavaG.Gifthing.controller.gift
 
-import HavaG.Gifthing.Models.Gift
+import HavaG.Gifthing.models.Gift
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

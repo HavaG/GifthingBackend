@@ -1,5 +1,6 @@
-package HavaG.Gifthing.Models
+package HavaG.Gifthing.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
 @Entity(name = "Gift")
@@ -12,7 +13,8 @@ class Gift(var name: String) {
     var description: String? = null
     var price: Int? = null
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(cascade= [CascadeType.ALL])
     @JoinColumn(name = "user_id")
     private var owner: User? = null
 
@@ -20,14 +22,31 @@ class Gift(var name: String) {
         owner = user
     }
 
-    @ManyToOne
+    @JsonIgnore
+    fun getOwner(): User? {
+        return owner
+    }
+
+    fun removeOwner() {
+        setOwner(null)
+        setReserveBy(null)
+    }
+
+    @ManyToOne(cascade= [CascadeType.ALL])
     @JoinColumn(name = "reserve_id")
     private var reservedBy: User? = null
 
-    fun setReserveBy(user: User){
+    fun setReserveBy(user: User?){
         reservedBy = user
     }
 
-}
+    @JsonIgnore
+    fun getReserveBy(): User? {
+        return reservedBy
+    }
 
-//TODO: Gift: setName, getName, setLink, getLink, setDescription, getDescription, setPrice, getPrive, setReserved, getReserved
+    fun removeReserveBy() {
+        setReserveBy(null)
+    }
+
+}
