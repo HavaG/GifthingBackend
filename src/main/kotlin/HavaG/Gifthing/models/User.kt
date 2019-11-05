@@ -6,9 +6,6 @@ import javax.persistence.JoinColumn
 import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
 
-
-
-
 @Entity(name = "User")
 @Table(name = "user")
 class User(var email: String, var password: String) {

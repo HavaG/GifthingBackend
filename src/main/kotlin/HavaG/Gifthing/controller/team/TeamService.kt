@@ -1,35 +1,59 @@
-package HavaG.Gifthing.Controller.Group
+package HavaG.Gifthing.controller.team
 
-import HavaG.Gifthing.Models.Team
+import HavaG.Gifthing.models.Team
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class GroupService(val groupRepository: GroupRepository) : IGroupService {
+class TeamService(val teamRepository: TeamRepository) : ITeamService {
 
-    //TODO: itt mindegyiknek avn értelme? így kell őket használni? :D
-    override fun getAllGroup(): MutableIterable<Team> {
-        return groupRepository.findAll()
+    override fun getAllTeam(): MutableIterable<Team> {
+        return teamRepository.findAll()
     }
 
-    override fun getGroupById(groupId: Long): Optional<Team> {
-        return groupRepository.findById(groupId)
+    override fun getTeamById(teamId: Long): Optional<Team> {
+        return teamRepository.findById(teamId)
     }
 
-    override fun addGroup(team: Team): Boolean {
-        groupRepository.save(team)
+    override fun addTeam(team: Team): Boolean {
+        teamRepository.save(team)
         return true
     }
 
-    //TODO: updateGroup
-    override fun updateGroup(team: Team): Boolean {
-        return false
+    override fun updateTeam(team: Team): Boolean {
+        //check if exist in db
+        val tmp = teamRepository.findById(team.id)
+        return if(tmp.isPresent) {
+            //save new
+            teamRepository.save(team)
+            true
+        }
+        else
+            false
     }
 
-    override fun deleteGroup(groupId: Long) {
-        val tmp = getGroupById(groupId)
+    override fun deleteTeam(teamId: Long): Boolean {
+        val tmp = getTeamById(teamId)
         if (tmp.isPresent) {
-            groupRepository.delete(tmp.get())
+            val temporal = tmp.get()
+            if(temporal.members.size == 1) {
+                val temporalMemberId = temporal.members[0].id
+                val adminId = temporal.getAdmin()?.id
+                if(adminId == null) {
+                    //TODO: ha az admin null, akkor már régen meg kellett volna szűnnie a csoportnak (vagy nem létrejönni)
+                    teamRepository.delete(temporal)
+                    return true
+                } else if(adminId == temporalMemberId) {
+                    temporal.removeAdmin()
+                    temporal.removeAllMember()
+                    teamRepository.delete(temporal)
+                    return true
+                } else {
+                    //TODO: ez itt kutyafasz (az admin nincs benne a csoportban, ha ez itt megtörténik)
+                    return false
+                }
+            }
         }
+        return false
     }
 }

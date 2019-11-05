@@ -1,13 +1,13 @@
-package HavaG.Gifthing.Controller.Group
+package HavaG.Gifthing.controller.team
 
-import HavaG.Gifthing.Models.Team
+import HavaG.Gifthing.models.Team
 import java.util.*
 
-interface IGroupService {
+interface ITeamService {
 
-    fun getAllGroup(): MutableIterable<Team>
-    fun getGroupById(groupId: Long): Optional<Team>
-    fun addGroup(team: Team): Boolean
-    fun updateGroup(team: Team): Boolean
-    fun deleteGroup(groupId: Long)
+    fun getAllTeam(): MutableIterable<Team>
+    fun getTeamById(teamId: Long): Optional<Team>
+    fun addTeam(team: Team): Boolean
+    fun updateTeam(team: Team): Boolean
+    fun deleteTeam(teamId: Long): Boolean
 }

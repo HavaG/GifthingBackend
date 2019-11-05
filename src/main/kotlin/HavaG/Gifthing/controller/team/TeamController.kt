@@ -1,6 +1,6 @@
-package HavaG.Gifthing.Controller.Group
+package HavaG.Gifthing.controller.team
 
-import HavaG.Gifthing.Models.Team
+import HavaG.Gifthing.models.Team
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -9,31 +9,31 @@ import java.util.*
 
 
 @RestController
-@RequestMapping("/Team")
-class GroupController (val iGroupService: IGroupService){
+@RequestMapping("/team")
+class TeamController (val iTeamService: ITeamService){
 
     @GetMapping("/all")
     fun all(): MutableIterable<Team> {
-        return iGroupService.getAllGroup()
+        return iTeamService.getAllTeam()
     }
 
     @GetMapping("/{id}")
     fun findById(@PathVariable(value = "id") id: Long): Optional<Team> {
-        return iGroupService.getGroupById(id)
+        return iTeamService.getTeamById(id)
     }
 
-    @DeleteMapping("/{id}")
-    fun deleteById(@PathVariable(value = "id") id: Long){
-        iGroupService.deleteGroup(id)
+    @DeleteMapping("/delete/{id}")
+    fun deleteById(@PathVariable(value = "id") id: Long): Boolean{
+        return iTeamService.deleteTeam(id)
     }
 
-    @PutMapping("/modify")
+    @PutMapping("/update")
     fun update(@RequestBody editTeam: Team): Boolean {
-        return iGroupService.updateGroup(editTeam)
+        return iTeamService.updateTeam(editTeam)
     }
 
     @PostMapping("/create")
     fun create(@RequestBody newTeam: Team): Boolean {
-        return iGroupService.addGroup(newTeam)
+        return iTeamService.addTeam(newTeam)
     }
 }
