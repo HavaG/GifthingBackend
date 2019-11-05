@@ -7,6 +7,10 @@ import java.util.*
 @Service
 class UserService(val userRepository: UserRepository) : IUserService {
 
+    override fun getUserByEmail(userEmail: String): Optional<User> {
+        return userRepository.findByEmail(userEmail)
+    }
+
     override fun getAllUser(): MutableIterable<User> {
         return userRepository.findAll()
     }
@@ -44,7 +48,7 @@ class UserService(val userRepository: UserRepository) : IUserService {
         if (tmp.isPresent) {
             val temporal = tmp.get()
             if(temporal.getMyOwnedTeams().isNotEmpty()) {
-                 return false
+                return false
             } else {
                 //remove all the reserved gifts
                 temporal.removeAllReservedGift()

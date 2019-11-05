@@ -10,4 +10,5 @@ interface IUserService {
     fun addUser(user: User): Boolean
     fun updateUser(user: User): Boolean
     fun deleteUser(userId: Long): Boolean
+    fun getUserByEmail(userEmail: String): Optional<User>
 }

@@ -22,6 +22,11 @@ class UserController (val iUserService: IUserService){
         return iUserService.getUserById(id)
     }
 
+    @GetMapping("/email/{email}")
+    fun findByEmail(@PathVariable(value = "email") email: String): Optional<User> {
+        return iUserService.getUserByEmail(email)
+    }
+
     @DeleteMapping("/delete/{id}")
     fun deleteById(@PathVariable(value = "id") id: Long): Boolean{
         return iUserService.deleteUser(id)
