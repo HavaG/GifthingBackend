@@ -20,15 +20,22 @@ class DbSeeder(val userRepository: UserRepository,
         this.giftRepository.deleteAll()
         this.teamRepository.deleteAll()
 
-        val p1 = User("havag@gmail.com", "pwd")
+        val p1 = User("a@aa.a", "a")
         p1.name = "Gaborka"
         val p2 = User("nemisemail@nincsilyen.hu", "rnd")
 
-        val g1 = Gift("megkapnam")
-        val g2 = Gift("megkapnam")
-        val g3 = Gift("megkapnam")
-        val g4 = Gift("megkapnam")
-        val g5 = Gift("megkapnam")
+        val p3 = User("admin@admin.com", "admin")
+
+        val g1 = Gift("kes")
+        val g2 = Gift("villa")
+        val g3 = Gift("ollo")
+        val g4 = Gift("gyerek")
+        val g5 = Gift("keze")
+
+        g1.price = 100
+        g2.price = 110
+        g3.price = 111
+        g4.price = 30000
 
         val team1 = Team("elsoCsoport")
         val team2 = Team("masodikCsoport")
@@ -38,6 +45,8 @@ class DbSeeder(val userRepository: UserRepository,
 
         p2.reserveGift(g1)
         p1.addGift(g1)
+        p1.addGift(g2)
+        p1.addGift(g3)
 
         team1.setAdmin(p1)
         team2.setAdmin(p1)
@@ -50,6 +59,7 @@ class DbSeeder(val userRepository: UserRepository,
         val users = mutableListOf<User>()
         users.add(p1)
         users.add(p2)
+        users.add(p3)
 
 
         val gifts = mutableListOf<Gift>()
