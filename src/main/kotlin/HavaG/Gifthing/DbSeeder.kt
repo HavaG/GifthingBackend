@@ -3,9 +3,9 @@ package HavaG.Gifthing
 import HavaG.Gifthing.controller.gift.GiftRepository
 import HavaG.Gifthing.controller.team.TeamRepository
 import HavaG.Gifthing.controller.user.UserRepository
-import HavaG.Gifthing.models.Gift
-import HavaG.Gifthing.models.Team
-import HavaG.Gifthing.models.User
+import HavaG.Gifthing.models.gift.Gift
+import HavaG.Gifthing.models.team.Team
+import HavaG.Gifthing.models.user.User
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 

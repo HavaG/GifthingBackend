@@ -1,5 +1,12 @@
-package HavaG.Gifthing.models
+package HavaG.Gifthing.models.user
 
+import HavaG.Gifthing.models.team.Team
+import HavaG.Gifthing.models.gift.Gift
+import HavaG.Gifthing.models.gift.dto.GiftResponse
+import HavaG.Gifthing.models.gift.dto.UserGiftResponse
+import HavaG.Gifthing.models.user.dto.GiftUserResponse
+import HavaG.Gifthing.models.user.dto.TeamUserResponse
+import HavaG.Gifthing.models.user.dto.UserResponse
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 import javax.persistence.JoinColumn
@@ -47,7 +54,6 @@ class User(var email: String, var password: String) {
     fun setGifts(gifts: MutableList<Gift>) {
         this.gifts = gifts
     }
-
 
     @OneToMany(mappedBy = "reservedBy",
             cascade= [CascadeType.ALL])
@@ -111,22 +117,6 @@ class User(var email: String, var password: String) {
             inverseJoinColumns = [JoinColumn(name = "team_id")])
     private var myTeams = mutableListOf<Team>()
 
-    //the team, where the user is admin
-    fun addMyTeam(team: Team) {
-        myTeams.add(team)
-    }
-
-    fun removeMyTeam(team: Team) {
-        myTeams.remove(team)
-    }
-
-    fun removeFromAllTeam() {
-        for(i in myTeams) {
-            i.removeMember(this)
-        }
-        myTeams = mutableListOf<Team>()
-    }
-
     @JsonIgnore
     fun getMyTeams(): MutableList<Team> {
         return myTeams
@@ -136,4 +126,61 @@ class User(var email: String, var password: String) {
         this.myTeams = myTeams
     }
 
+    fun addMyTeam(team: Team) {
+        myTeams.add(team)
+    }
+
+    fun removeMyTeam(team: Team) {
+        myTeams.remove(team)
+    }
+
+    fun removeFromAllTeam() {
+        myTeams = mutableListOf()
+    }
+
+
+
+
+    fun userToUserResponse(): UserResponse {
+        val tmpOneUser = UserResponse(
+                this.email,
+                this.password,
+                this.id,
+                this.name)
+
+        val tmpGiftList = mutableListOf<GiftUserResponse>()
+        val tmpReservedGiftList = mutableListOf<GiftUserResponse>()
+        val tmpTeamList = mutableListOf<TeamUserResponse>()
+        val tmpOwnedTeamList = mutableListOf<TeamUserResponse>()
+
+        for(j in this.getGifts()) {
+            tmpGiftList.add(j.toGiftUserResponse())
+        }
+        tmpOneUser.setGifts(tmpGiftList)
+
+        for(j in this.getReservedGifts()) {
+            tmpReservedGiftList.add(j.toGiftUserResponse())
+        }
+        tmpOneUser.setReservedGifts(tmpReservedGiftList)
+
+        for(j in this.getMyTeams()) {
+            tmpTeamList.add(j.toTeamUserResponse())
+        }
+        tmpOneUser.setMyTeams(tmpTeamList)
+
+        for(j in this.getMyOwnedTeams()) {
+            tmpOwnedTeamList.add(j.toTeamUserResponse())
+        }
+        tmpOneUser.setMyOwnedTeams(tmpOwnedTeamList)
+
+        return tmpOneUser
+    }
+
+    fun userToUserGiftResponse(): UserGiftResponse {
+        return UserGiftResponse(
+                this.email,
+                this.password,
+                this.id,
+                this.name)
+    }
 }

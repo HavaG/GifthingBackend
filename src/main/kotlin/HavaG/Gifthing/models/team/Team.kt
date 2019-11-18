@@ -1,5 +1,7 @@
-package HavaG.Gifthing.models
+package HavaG.Gifthing.models.team
 
+import HavaG.Gifthing.models.user.dto.TeamUserResponse
+import HavaG.Gifthing.models.user.User
 import javax.persistence.*
 
 @Entity(name = "Team")
@@ -49,5 +51,9 @@ class Team(var name: String)
             i.removeMyTeam(this)
         }
         members = mutableListOf<User>()
+    }
+
+    fun toTeamUserResponse(): TeamUserResponse {
+        return TeamUserResponse(this.name, this.id)
     }
 }

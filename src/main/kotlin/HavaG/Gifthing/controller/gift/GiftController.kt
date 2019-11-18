@@ -1,6 +1,7 @@
 package HavaG.Gifthing.controller.gift
 
-import HavaG.Gifthing.models.Gift
+import HavaG.Gifthing.models.gift.Gift
+import HavaG.Gifthing.models.gift.dto.GiftResponse
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,7 +14,7 @@ import java.util.*
 class GiftController (val iGiftService: IGiftService){
 
     @GetMapping("/all")
-    fun all(): MutableIterable<Gift> {
+    fun all(): MutableIterable<GiftResponse> {
         return iGiftService.getAllGift()
     }
 
@@ -33,7 +34,7 @@ class GiftController (val iGiftService: IGiftService){
     }
 
     @PostMapping("/create")
-    fun create(@RequestBody newGift: Gift): Boolean {
-        return iGiftService.addGift(newGift)
+    fun create(@RequestBody newGift: Gift): Gift {
+        return iGiftService.saveGift(newGift)
     }
 }

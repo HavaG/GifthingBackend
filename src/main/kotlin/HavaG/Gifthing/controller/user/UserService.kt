@@ -1,6 +1,9 @@
 package HavaG.Gifthing.controller.user
 
-import HavaG.Gifthing.models.User
+import HavaG.Gifthing.models.user.dto.GiftUserResponse
+import HavaG.Gifthing.models.user.dto.TeamUserResponse
+import HavaG.Gifthing.models.user.User
+import HavaG.Gifthing.models.user.dto.UserResponse
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -11,8 +14,13 @@ class UserService(val userRepository: UserRepository) : IUserService {
         return userRepository.findByEmail(userEmail)
     }
 
-    override fun getAllUser(): MutableIterable<User> {
-        return userRepository.findAll()
+    override fun getAllUser(): MutableIterable<UserResponse> {
+        val tmpUsers = userRepository.findAll()
+        val response = mutableListOf<UserResponse>()
+        for(i in tmpUsers) {
+            response.add(i.userToUserResponse())
+        }
+        return response
     }
 
     override fun getUserById(userId: Long): Optional<User> {

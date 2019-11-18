@@ -1,6 +1,6 @@
 package HavaG.Gifthing.controller.team
 
-import HavaG.Gifthing.models.Team
+import HavaG.Gifthing.models.team.Team
 import java.util.*
 
 interface ITeamService {

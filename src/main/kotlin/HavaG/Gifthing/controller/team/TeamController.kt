@@ -1,6 +1,6 @@
 package HavaG.Gifthing.controller.team
 
-import HavaG.Gifthing.models.Team
+import HavaG.Gifthing.models.team.Team
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping

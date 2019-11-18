@@ -1,23 +1,29 @@
 package HavaG.Gifthing.controller.gift
 
-import HavaG.Gifthing.models.Gift
+import HavaG.Gifthing.models.gift.Gift
+import HavaG.Gifthing.models.gift.dto.GiftResponse
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class GiftService(val giftRepository: GiftRepository) : IGiftService {
 
-    override fun getAllGift(): MutableIterable<Gift> {
-        return giftRepository.findAll()
+    override fun getAllGift(): MutableIterable<GiftResponse> {
+        val gifts = giftRepository.findAll()
+        val result = mutableListOf<GiftResponse>()
+        for(i in gifts) {
+            result.add(i.toGiftResponse())
+        }
+
+        return result
     }
 
     override fun getGiftById(giftId: Long): Optional<Gift> {
         return giftRepository.findById(giftId)
     }
 
-    override fun addGift(gift: Gift): Boolean {
-        giftRepository.save(gift)
-        return true
+    override fun saveGift(gift: Gift): Gift {
+        return giftRepository.save(gift)
     }
 
     override fun updateGift(gift: Gift): Boolean {
