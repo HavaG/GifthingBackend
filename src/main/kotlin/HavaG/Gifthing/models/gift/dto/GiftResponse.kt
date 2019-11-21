@@ -1,6 +1,5 @@
 package HavaG.Gifthing.models.gift.dto
 
-
 class GiftResponse (
         var id: Long,
         var name: String,
