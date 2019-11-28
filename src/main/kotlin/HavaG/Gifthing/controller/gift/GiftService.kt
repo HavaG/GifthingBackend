@@ -2,6 +2,7 @@ package HavaG.Gifthing.controller.gift
 
 import HavaG.Gifthing.models.gift.Gift
 import HavaG.Gifthing.models.gift.dto.GiftResponse
+import HavaG.Gifthing.models.gift.dto.UserGiftResponse
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -18,8 +19,12 @@ class GiftService(val giftRepository: GiftRepository) : IGiftService {
         return result
     }
 
-    override fun getGiftById(giftId: Long): Optional<Gift> {
-        return giftRepository.findById(giftId)
+    override fun getGiftById(giftId: Long): GiftResponse? {
+        val tmpGift = giftRepository.findById(giftId)
+        if(!tmpGift.isPresent){
+            return null
+        }
+        return tmpGift.get().toGiftResponse()
     }
 
     override fun saveGift(gift: Gift): Gift {
@@ -39,7 +44,7 @@ class GiftService(val giftRepository: GiftRepository) : IGiftService {
     }
 
     override fun deleteGift(giftId: Long): Boolean {
-        val tmp = getGiftById(giftId)
+        val tmp = giftRepository.findById(giftId)
         if (tmp.isPresent) {
             val temporal = tmp.get()
             temporal.removeOwner()

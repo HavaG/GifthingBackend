@@ -19,7 +19,7 @@ class GiftController (val iGiftService: IGiftService){
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable(value = "id") id: Long): Optional<Gift> {
+    fun findById(@PathVariable(value = "id") id: Long): GiftResponse? {
         return iGiftService.getGiftById(id)
     }
 
@@ -34,7 +34,7 @@ class GiftController (val iGiftService: IGiftService){
     }
 
     @PostMapping("/create")
-    fun create(@RequestBody newGift: Gift): Gift {
+    fun create(@RequestBody newGift: Gift): Gift     {
         return iGiftService.saveGift(newGift)
     }
 }
