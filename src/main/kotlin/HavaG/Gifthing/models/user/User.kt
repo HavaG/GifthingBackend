@@ -141,7 +141,7 @@ class User(var email: String, var password: String) {
 
 
 
-    fun userToUserResponse(): UserResponse {
+    fun toUserResponse(): UserResponse {
         val tmpOneUser = UserResponse(
                 this.email,
                 this.password,
@@ -176,7 +176,7 @@ class User(var email: String, var password: String) {
         return tmpOneUser
     }
 
-    fun userToUserGiftResponse(): UserGiftResponse {
+    fun toUserGiftResponse(): UserGiftResponse {
         return UserGiftResponse(
                 this.email,
                 this.password,

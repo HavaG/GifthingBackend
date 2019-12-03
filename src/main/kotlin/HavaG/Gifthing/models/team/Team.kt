@@ -1,5 +1,6 @@
 package HavaG.Gifthing.models.team
 
+import HavaG.Gifthing.models.team.dto.TeamResponse
 import HavaG.Gifthing.models.user.dto.TeamUserResponse
 import HavaG.Gifthing.models.user.User
 import javax.persistence.*
@@ -55,5 +56,11 @@ class Team(var name: String)
 
     fun toTeamUserResponse(): TeamUserResponse {
         return TeamUserResponse(this.name, this.id)
+    }
+
+    fun toTeamResponse(): TeamResponse {
+        val result =  TeamResponse(this.name, this.id, this.admin!!.toUserResponse())
+        result.setTeamMembers(this.members)
+        return result
     }
 }

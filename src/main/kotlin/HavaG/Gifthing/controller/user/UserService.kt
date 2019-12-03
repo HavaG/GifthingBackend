@@ -1,7 +1,5 @@
 package HavaG.Gifthing.controller.user
 
-import HavaG.Gifthing.models.user.dto.GiftUserResponse
-import HavaG.Gifthing.models.user.dto.TeamUserResponse
 import HavaG.Gifthing.models.user.User
 import HavaG.Gifthing.models.user.dto.UserResponse
 import org.springframework.stereotype.Service
@@ -18,7 +16,7 @@ class UserService(val userRepository: UserRepository) : IUserService {
         val tmpUsers = userRepository.findAll()
         val response = mutableListOf<UserResponse>()
         for(i in tmpUsers) {
-            response.add(i.userToUserResponse())
+            response.add(i.toUserResponse())
         }
         return response
     }

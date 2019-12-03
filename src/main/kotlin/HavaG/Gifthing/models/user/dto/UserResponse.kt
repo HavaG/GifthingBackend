@@ -1,8 +1,5 @@
 package HavaG.Gifthing.models.user.dto
 
-import HavaG.Gifthing.models.user.dto.GiftUserResponse
-import HavaG.Gifthing.models.user.dto.TeamUserResponse
-
 class UserResponse(
         var email: String,
         var password: String,
@@ -11,6 +8,9 @@ class UserResponse(
 ) {
 
     private var gifts = mutableListOf<GiftUserResponse>()
+    private var reservedGifts = mutableListOf<GiftUserResponse>()
+    private var myOwnedTeams = mutableListOf<TeamUserResponse>()
+    private var myTeams = mutableListOf<TeamUserResponse>()
 
     fun getGifts(): MutableList<GiftUserResponse> {
         return gifts
@@ -20,8 +20,6 @@ class UserResponse(
         this.gifts = gifts
     }
 
-    private var reservedGifts = mutableListOf<GiftUserResponse>()
-
     fun getReservedGifts(): MutableList<GiftUserResponse> {
         return reservedGifts
     }
@@ -30,8 +28,6 @@ class UserResponse(
         this.reservedGifts = reservedGifts
     }
 
-    private var myOwnedTeams = mutableListOf<TeamUserResponse>()
-
     fun getMyOwnedTeams(): MutableList<TeamUserResponse> {
         return myOwnedTeams
     }
@@ -39,8 +35,6 @@ class UserResponse(
     fun setMyOwnedTeams(ownedTeams: MutableList<TeamUserResponse>) {
         this.myOwnedTeams = ownedTeams
     }
-
-    private var myTeams = mutableListOf<TeamUserResponse>()
 
     fun getMyTeams(): MutableList<TeamUserResponse> {
         return myTeams

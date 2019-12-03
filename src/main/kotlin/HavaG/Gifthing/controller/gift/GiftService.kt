@@ -1,13 +1,14 @@
 package HavaG.Gifthing.controller.gift
 
-import HavaG.Gifthing.models.gift.Gift
+import HavaG.Gifthing.controller.user.UserRepository
+import HavaG.Gifthing.models.gift.dto.GiftRequest
 import HavaG.Gifthing.models.gift.dto.GiftResponse
-import HavaG.Gifthing.models.gift.dto.UserGiftResponse
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
-class GiftService(val giftRepository: GiftRepository) : IGiftService {
+class GiftService(
+        val giftRepository: GiftRepository,
+        val userRepository: UserRepository) : IGiftService {
 
     override fun getAllGift(): MutableIterable<GiftResponse> {
         val gifts = giftRepository.findAll()
@@ -15,7 +16,6 @@ class GiftService(val giftRepository: GiftRepository) : IGiftService {
         for(i in gifts) {
             result.add(i.toGiftResponse())
         }
-
         return result
     }
 
@@ -27,16 +27,17 @@ class GiftService(val giftRepository: GiftRepository) : IGiftService {
         return tmpGift.get().toGiftResponse()
     }
 
-    override fun saveGift(gift: Gift): Gift {
-        return giftRepository.save(gift)
+    override fun saveGift(gift: GiftRequest): GiftResponse {
+        val saveGift = gift.toGift(userRepository)
+        val result = giftRepository.save(saveGift)
+        return result.toGiftResponse()
     }
 
-    override fun updateGift(gift: Gift): Boolean {
-        //check if exist in db
+    override fun updateGift(gift: GiftRequest): Boolean {
         val tmp = giftRepository.findById(gift.id)
         return if(tmp.isPresent) {
-            //save new
-            giftRepository.save(gift)
+            val saveGift = gift.toGift(userRepository)
+            giftRepository.save(saveGift)
             true
         }
         else
@@ -52,6 +53,6 @@ class GiftService(val giftRepository: GiftRepository) : IGiftService {
             giftRepository.delete(temporal)
             return true
         }
-        return false
+        return true
     }
 }

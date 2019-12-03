@@ -1,7 +1,6 @@
 package HavaG.Gifthing.models.gift
 
 import HavaG.Gifthing.models.gift.dto.GiftResponse
-import HavaG.Gifthing.models.gift.dto.UserGiftResponse
 import HavaG.Gifthing.models.user.dto.GiftUserResponse
 import HavaG.Gifthing.models.user.User
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -72,10 +71,10 @@ class Gift(var name: String,
                 this.price
                 )
         if(this.owner != null) {
-            tmp.owner = this.getOwner()!!.userToUserGiftResponse()
+            tmp.owner = this.getOwner()!!.toUserGiftResponse()
         }
         if(this.reservedBy != null) {
-            tmp.reservedBy = this.getReserveBy()!!.userToUserGiftResponse()
+            tmp.reservedBy = this.getReserveBy()!!.toUserGiftResponse()
         }
 
         return tmp
