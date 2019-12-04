@@ -58,7 +58,7 @@ class Team(var name: String)
     }
 
     fun toTeamResponse(): TeamResponse {
-        val result =  TeamResponse(this.name, this.id, this.admin!!.toUserResponse())
+        val result =  TeamResponse(this.name, this.id, this.admin!!.id)
         result.setTeamMembers(this.members)
         return result
     }

@@ -6,7 +6,7 @@ import HavaG.Gifthing.models.user.dto.UserResponse
 class TeamResponse(
     var name: String,
     var id: Long,
-    var admin: UserResponse){
+    var admin: Long){
     var members = mutableListOf<UserResponse>()
 
     fun getTeamMembers(): MutableList<UserResponse> {
