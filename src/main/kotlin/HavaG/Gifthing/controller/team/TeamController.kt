@@ -34,7 +34,7 @@ class TeamController (val iTeamService: ITeamService){
         return iTeamService.updateTeam(editTeam)
     }
 
-    @PostMapping("/createUser")
+    @PostMapping("/create")
     fun create(@RequestBody newTeam: TeamRequest): TeamResponse {
         return iTeamService.createTeam(newTeam)
     }

@@ -31,7 +31,7 @@ class GiftController (val iGiftService: IGiftService){
         return iGiftService.updateGift(editGift)
     }
 
-    @PostMapping("/createUser")
+    @PostMapping("/create")
     fun create(@RequestBody newGift: GiftRequest): GiftResponse     {
         return iGiftService.createGift(newGift)
     }

@@ -139,9 +139,6 @@ class User(var email: String, var password: String) {
         myTeams = mutableListOf()
     }
 
-
-
-
     fun toUserResponse(): UserResponse {
         val tmpOneUser = UserResponse(
                 this.email,
