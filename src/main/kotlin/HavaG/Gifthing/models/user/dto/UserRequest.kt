@@ -9,7 +9,8 @@ import HavaG.Gifthing.models.user.User
 class UserRequest(
         var email: String,
         var password: String,
-        var id: Long
+        var id: Long,
+        var nickName: String?
 ) {
     private var giftsId = mutableListOf<Long>()
 

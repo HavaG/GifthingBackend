@@ -20,6 +20,7 @@ class User(var email: String, var password: String) {
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long = 0
     var name: String? = null
+    var nickName: String? = null
 
     @OneToMany(mappedBy = "owner",
             cascade= [CascadeType.ALL])
@@ -146,7 +147,8 @@ class User(var email: String, var password: String) {
                 this.email,
                 this.password,
                 this.id,
-                this.name)
+                this.name,
+                this.nickName)
 
         val tmpGiftList = mutableListOf<GiftUserResponse>()
         val tmpReservedGiftList = mutableListOf<GiftUserResponse>()
@@ -181,6 +183,7 @@ class User(var email: String, var password: String) {
                 this.email,
                 this.password,
                 this.id,
-                this.name)
+                this.name,
+                this.nickName)
     }
 }

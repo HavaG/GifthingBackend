@@ -4,7 +4,8 @@ class UserResponse(
         var email: String,
         var password: String,
         var id: Long,
-        var name: String? = null
+        var name: String? = null,
+        var nickName: String? = null
 ) {
 
     private var gifts = mutableListOf<GiftUserResponse>()

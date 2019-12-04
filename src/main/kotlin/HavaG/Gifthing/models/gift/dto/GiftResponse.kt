@@ -6,6 +6,6 @@ class GiftResponse (
         var link: String? = null,
         var description: String? = null,
         var price: Int? = null,
-        var owner: UserGiftResponse? = null,
+        var owner: Long? = null,
         var reservedBy: UserGiftResponse? = null
 )

@@ -13,7 +13,6 @@ class Team(var name: String)
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long = 0
 
-    //TODO: get admin in constructor
     @ManyToOne(cascade= [CascadeType.ALL])
     @JoinColumn(name = "admin_id")
     private var admin: User? = null

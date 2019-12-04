@@ -71,7 +71,7 @@ class Gift(var name: String,
                 this.price
                 )
         if(this.owner != null) {
-            tmp.owner = this.getOwner()!!.toUserGiftResponse()
+            tmp.owner = this.getOwner()!!.id
         }
         if(this.reservedBy != null) {
             tmp.reservedBy = this.getReserveBy()!!.toUserGiftResponse()
