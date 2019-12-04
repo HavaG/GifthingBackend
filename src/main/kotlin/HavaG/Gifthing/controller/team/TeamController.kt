@@ -1,6 +1,8 @@
 package HavaG.Gifthing.controller.team
 
 import HavaG.Gifthing.models.team.Team
+import HavaG.Gifthing.models.team.dto.TeamRequest
+import HavaG.Gifthing.models.team.dto.TeamResponse
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,12 +15,12 @@ import java.util.*
 class TeamController (val iTeamService: ITeamService){
 
     @GetMapping("/all")
-    fun all(): MutableIterable<Team> {
+    fun all(): MutableIterable<TeamResponse> {
         return iTeamService.getAllTeam()
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable(value = "id") id: Long): Optional<Team> {
+    fun findById(@PathVariable(value = "id") id: Long): TeamResponse? {
         return iTeamService.getTeamById(id)
     }
 
@@ -28,12 +30,12 @@ class TeamController (val iTeamService: ITeamService){
     }
 
     @PutMapping("/update")
-    fun update(@RequestBody editTeam: Team): Boolean {
+    fun update(@RequestBody editTeam: TeamRequest): TeamResponse? {
         return iTeamService.updateTeam(editTeam)
     }
 
-    @PostMapping("/create")
-    fun create(@RequestBody newTeam: Team): Boolean {
-        return iTeamService.addTeam(newTeam)
+    @PostMapping("/createUser")
+    fun create(@RequestBody newTeam: TeamRequest): TeamResponse {
+        return iTeamService.createTeam(newTeam)
     }
 }

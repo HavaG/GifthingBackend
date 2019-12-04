@@ -27,12 +27,12 @@ class GiftController (val iGiftService: IGiftService){
     }
 
     @PutMapping("/update")
-    fun update(@RequestBody editGift: GiftRequest): Boolean {
+    fun update(@RequestBody editGift: GiftRequest): GiftResponse? {
         return iGiftService.updateGift(editGift)
     }
 
-    @PostMapping("/create")
+    @PostMapping("/createUser")
     fun create(@RequestBody newGift: GiftRequest): GiftResponse     {
-        return iGiftService.saveGift(newGift)
+        return iGiftService.createGift(newGift)
     }
 }

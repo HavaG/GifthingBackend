@@ -1,46 +1,59 @@
 package HavaG.Gifthing.controller.team
 
+import HavaG.Gifthing.controller.user.UserRepository
 import HavaG.Gifthing.models.team.Team
+import HavaG.Gifthing.models.team.dto.TeamRequest
+import HavaG.Gifthing.models.team.dto.TeamResponse
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class TeamService(val teamRepository: TeamRepository) : ITeamService {
+class TeamService(val teamRepository: TeamRepository,
+                  val userRepository: UserRepository) : ITeamService {
 
-    override fun getAllTeam(): MutableIterable<Team> {
-        return teamRepository.findAll()
-    }
-
-    override fun getTeamById(teamId: Long): Optional<Team> {
-        return teamRepository.findById(teamId)
-    }
-
-    override fun addTeam(team: Team): Boolean {
-        teamRepository.save(team)
-        return true
-    }
-
-    override fun updateTeam(team: Team): Boolean {
-        //check if exist in db
-        val tmp = teamRepository.findById(team.id)
-        return if(tmp.isPresent) {
-            //save new
-            teamRepository.save(team)
-            true
+    override fun getAllTeam(): MutableIterable<TeamResponse> {
+        val teams = teamRepository.findAll()
+        val result = mutableListOf<TeamResponse>()
+        for (i in teams) {
+            result.add(i.toTeamResponse())
         }
-        else
-            false
+        return result
+    }
+
+    override fun getTeamById(teamId: Long): TeamResponse? {
+        val tmpTeam = teamRepository.findById(teamId)
+        if(!tmpTeam.isPresent){
+            return null
+        }
+        return tmpTeam.get().toTeamResponse()
+    }
+
+    override fun createTeam(team: TeamRequest): TeamResponse {
+        val saveTeam = team.toTeam(userRepository)
+        val result = teamRepository.save(saveTeam)
+        return result.toTeamResponse()
+    }
+
+    override fun updateTeam(team: TeamRequest): TeamResponse? {
+        val tmp = teamRepository.findById(team.id)
+        if(tmp.isPresent) {
+            val saveTeam = team.toTeam(userRepository)
+            val result = teamRepository.save(saveTeam)
+            return result.toTeamResponse()
+        }
+        return null
     }
 
     override fun deleteTeam(teamId: Long): Boolean {
-        val tmp = getTeamById(teamId)
+        //TODO: not implemented
+        return false
+        /*val tmp = teamRepository.findById(teamId)
         if (tmp.isPresent) {
             val temporal = tmp.get()
             if(temporal.members.size == 1) {
                 val temporalMemberId = temporal.members[0].id
                 val adminId = temporal.getAdmin()?.id
                 if(adminId == null) {
-                    //TODO: ha az admin null, akkor már régen meg kellett volna szűnnie a csoportnak (vagy nem létrejönni)
                     teamRepository.delete(temporal)
                     return true
                 } else if(adminId == temporalMemberId) {
@@ -49,11 +62,10 @@ class TeamService(val teamRepository: TeamRepository) : ITeamService {
                     teamRepository.delete(temporal)
                     return true
                 } else {
-                    //TODO: ez itt kutyafasz (az admin nincs benne a csoportban, ha ez itt megtörténik)
                     return false
                 }
             }
         }
-        return false
+        return false*/
     }
 }

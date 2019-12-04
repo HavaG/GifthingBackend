@@ -27,21 +27,21 @@ class GiftService(
         return tmpGift.get().toGiftResponse()
     }
 
-    override fun saveGift(gift: GiftRequest): GiftResponse {
+    override fun createGift(gift: GiftRequest): GiftResponse {
         val saveGift = gift.toGift(userRepository)
         val result = giftRepository.save(saveGift)
         return result.toGiftResponse()
     }
 
-    override fun updateGift(gift: GiftRequest): Boolean {
+    override fun updateGift(gift: GiftRequest): GiftResponse? {
         val tmp = giftRepository.findById(gift.id)
-        return if(tmp.isPresent) {
+        if(tmp.isPresent) {
             val saveGift = gift.toGift(userRepository)
-            giftRepository.save(saveGift)
-            true
+            val result = giftRepository.save(saveGift)
+            return result.toGiftResponse()
         }
         else
-            false
+            return null
     }
 
     override fun deleteGift(giftId: Long): Boolean {

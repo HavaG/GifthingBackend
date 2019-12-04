@@ -6,7 +6,7 @@ import HavaG.Gifthing.models.gift.dto.GiftResponse
 interface IGiftService {
     fun getAllGift(): MutableIterable<GiftResponse>
     fun getGiftById(giftId: Long): GiftResponse?
-    fun saveGift(gift: GiftRequest): GiftResponse
-    fun updateGift(gift: GiftRequest): Boolean
+    fun createGift(gift: GiftRequest): GiftResponse
+    fun updateGift(gift: GiftRequest): GiftResponse?
     fun deleteGift(giftId: Long): Boolean
 }

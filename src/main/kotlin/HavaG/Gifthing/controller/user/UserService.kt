@@ -1,16 +1,17 @@
 package HavaG.Gifthing.controller.user
 
+import HavaG.Gifthing.controller.gift.GiftRepository
+import HavaG.Gifthing.controller.team.TeamRepository
 import HavaG.Gifthing.models.user.User
+import HavaG.Gifthing.models.user.dto.UserRequest
 import HavaG.Gifthing.models.user.dto.UserResponse
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class UserService(val userRepository: UserRepository) : IUserService {
-
-    override fun getUserByEmail(userEmail: String): Optional<User> {
-        return userRepository.findByEmail(userEmail)
-    }
+class UserService(val userRepository: UserRepository,
+                  val giftRepository: GiftRepository,
+                  val teamRepository: TeamRepository) : IUserService {
 
     override fun getAllUser(): MutableIterable<UserResponse> {
         val tmpUsers = userRepository.findAll()
@@ -21,54 +22,63 @@ class UserService(val userRepository: UserRepository) : IUserService {
         return response
     }
 
-    override fun getUserById(userId: Long): Optional<User> {
-        return userRepository.findById(userId)
-    }
+    override fun getUserById(userId: Long): UserResponse?  {
 
-    override fun addUser(user: User): Boolean {
-        for(i in userRepository.findAll()) {
-            //Already exist
-            if(i.email == user.email) {
-                return false
-            }
+        val tmpUser = userRepository.findById(userId)
+        if(!tmpUser.isPresent){
+            return null
         }
-        userRepository.save(user)
-        return true
+        return tmpUser.get().toUserResponse()
     }
 
-    override fun updateUser(user: User): Boolean {
-        //check if exist in db
-        val tmp = userRepository.findById(user.id)
-        return if(tmp.isPresent) {
-            //save new
-            userRepository.save(user)
-            true
+    override fun getUserByEmail(userEmail: String): UserResponse? {
+
+        val tmpUser = userRepository.findByEmail(userEmail)
+        if(!tmpUser.isPresent){
+            return null
         }
-        else
-            false
+        return tmpUser.get().toUserResponse()
     }
 
-    //TODO: if a user is an admin in any team, then it cant be deleted
     override fun deleteUser(userId: Long): Boolean {
-        val tmp = getUserById(userId)
+        //TODO: not implemented
+        return false
+        /*val tmp = userRepository.findById(userId)
         if (tmp.isPresent) {
             val temporal = tmp.get()
             if(temporal.getMyOwnedTeams().isNotEmpty()) {
                 return false
             } else {
-                //remove all the reserved gifts
-                temporal.removeAllReservedGift()
-                //remove all my gifts from other reserved lists, and all the gifts
-                temporal.removeAllGifts()
-                //remove from teams
-                temporal.removeFromAllTeam()
-                //update
+                temporal.removeAllReservedGift() //remove all the reserved gifts
+                temporal.removeAllGifts() //remove all my gifts from other reserved lists, and all the gifts
+                temporal.removeFromAllTeam() //remove from teams
                 updateUser(temporal)
-                //delete
                 userRepository.delete(temporal)
                 return true
             }
         }
-        return false
+        return false*/
+    }
+
+
+    override fun createUser(user: UserRequest): UserResponse? {
+        for(i in userRepository.findAll()) {
+            if(i.email == user.email) {
+                return null
+            }
+        }
+        val result = user.toUser(giftRepository, teamRepository)
+        userRepository.save(result)
+        return result.toUserResponse()
+    }
+
+    override fun updateUser(user: UserRequest): UserResponse? {
+        val tmp = userRepository.findById(user.id)
+        if(tmp.isPresent) {
+            val saveUser = user.toUser(giftRepository, teamRepository)
+            val result = userRepository.save(saveUser)
+            return result.toUserResponse()
+        }
+        return null
     }
 }
