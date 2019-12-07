@@ -47,6 +47,8 @@ class DbSeeder(val userRepository: UserRepository,
         p1.addGift(g1)
         p1.addGift(g2)
         p1.addGift(g3)
+        p1.addGift(g4)
+        p1.addGift(g5)
 
         team1.setAdmin(p1)
         team2.setAdmin(p1)
@@ -54,7 +56,12 @@ class DbSeeder(val userRepository: UserRepository,
         team4.setAdmin(p2)
         team5.setAdmin(p2)
 
+        team1.addMember(p1)
         team1.addMember(p2)
+        team2.addMember(p1)
+        team3.addMember(p1)
+        team4.addMember(p2)
+        team5.addMember(p2)
 
         val users = mutableListOf<User>()
         users.add(p1)

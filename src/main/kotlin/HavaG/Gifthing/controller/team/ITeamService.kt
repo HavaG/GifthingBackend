@@ -12,4 +12,5 @@ interface ITeamService {
     fun createTeam(team: TeamRequest): TeamResponse
     fun updateTeam(team: TeamRequest): TeamResponse?
     fun deleteTeam(teamId: Long): Boolean
+    fun addUser(groupId: Long, userId: Long): TeamResponse?
 }

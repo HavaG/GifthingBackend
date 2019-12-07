@@ -16,7 +16,7 @@ class GiftService(
         val user = userRepository.findById(userId)
         return if(gift.isPresent && user.isPresent) {
             val tmp = gift.get()
-            val tmpReserver = tmp.getReserveBy()
+            /*val tmpReserver = tmp.getReserveBy()
             if(tmpReserver != null){
                 if(tmpReserver.id == userId) { //unreserve
                     tmp.reservedBy = null
@@ -25,7 +25,7 @@ class GiftService(
                 } else { //valaki más már lefoglalta az ajit
                     return null
                 }
-            }
+            }*/
             tmp.setReserveBy(user.get()) //reserve
             val result = giftRepository.save(tmp)
             result.toGiftResponse()

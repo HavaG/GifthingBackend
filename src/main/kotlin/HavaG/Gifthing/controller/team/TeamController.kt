@@ -38,4 +38,10 @@ class TeamController (val iTeamService: ITeamService){
     fun create(@RequestBody newTeam: TeamRequest): TeamResponse {
         return iTeamService.createTeam(newTeam)
     }
+
+    @PutMapping("/add/{groupId}/{userId}")
+    fun addUser(@PathVariable(value = "groupId") groupId: Long,
+                @PathVariable(value = "userId") userId: Long): TeamResponse? {
+        return iTeamService.addUser(groupId, userId)
+    }
 }

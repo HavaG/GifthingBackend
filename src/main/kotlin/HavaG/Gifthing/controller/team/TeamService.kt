@@ -11,6 +11,20 @@ import java.util.*
 class TeamService(val teamRepository: TeamRepository,
                   val userRepository: UserRepository) : ITeamService {
 
+    //TODO: probaly not working
+    override fun addUser(groupId: Long, userId: Long): TeamResponse? {
+        val group = teamRepository.findById(groupId)
+        val user = userRepository.findById(userId)
+        if(user.isPresent && group.isPresent) {
+            val saveGroup = group.get()
+            saveGroup.addMember(user.get())
+            val result = teamRepository.save(saveGroup)
+            return result.toTeamResponse()
+        } else {
+            return null
+        }
+    }
+
     override fun getAllTeam(): MutableIterable<TeamResponse> {
         val teams = teamRepository.findAll()
         val result = mutableListOf<TeamResponse>()
