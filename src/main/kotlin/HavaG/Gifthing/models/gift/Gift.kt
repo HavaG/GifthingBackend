@@ -38,7 +38,7 @@ class Gift(var name: String,
 
     @ManyToOne(cascade= [CascadeType.ALL])
     @JoinColumn(name = "reserve_id")
-    private var reservedBy: User? = null
+    var reservedBy: User? = null
 
     fun setReserveBy(user: User?){
         reservedBy = user
@@ -70,12 +70,9 @@ class Gift(var name: String,
                 this.description,
                 this.price
                 )
-        if(this.owner != null) {
-            tmp.owner = this.getOwner()!!.id
-        }
-        if(this.reservedBy != null) {
-            tmp.reservedBy = this.getReserveBy()!!.toUserGiftResponse()
-        }
+        this.owner?.let{ tmp.owner = it.id }
+
+        this.reservedBy?.let{ tmp.reservedBy = it.id }
 
         return tmp
     }

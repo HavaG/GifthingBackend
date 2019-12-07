@@ -7,5 +7,5 @@ class GiftResponse (
         var description: String? = null,
         var price: Int? = null,
         var owner: Long? = null,
-        var reservedBy: UserGiftResponse? = null
+        var reservedBy: Long? = null
 )

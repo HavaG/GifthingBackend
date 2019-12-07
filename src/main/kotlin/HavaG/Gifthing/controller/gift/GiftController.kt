@@ -35,4 +35,10 @@ class GiftController (val iGiftService: IGiftService){
     fun create(@RequestBody newGift: GiftRequest): GiftResponse     {
         return iGiftService.createGift(newGift)
     }
+
+    @PutMapping("/reserve/{giftId}/{userId}")
+    fun reserveGift(@PathVariable(value = "giftId") giftId: Long,
+                    @PathVariable(value = "userId") userId: Long): GiftResponse? {
+        return iGiftService.reserveGift(giftId, userId)
+    }
 }

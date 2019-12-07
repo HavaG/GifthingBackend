@@ -3,12 +3,36 @@ package HavaG.Gifthing.controller.gift
 import HavaG.Gifthing.controller.user.UserRepository
 import HavaG.Gifthing.models.gift.dto.GiftRequest
 import HavaG.Gifthing.models.gift.dto.GiftResponse
+import HavaG.Gifthing.models.user.User
 import org.springframework.stereotype.Service
 
 @Service
 class GiftService(
         val giftRepository: GiftRepository,
         val userRepository: UserRepository) : IGiftService {
+
+    override fun reserveGift(giftId: Long, userId: Long): GiftResponse? {
+        val gift = giftRepository.findById(giftId)
+        val user = userRepository.findById(userId)
+        return if(gift.isPresent && user.isPresent) {
+            val tmp = gift.get()
+            val tmpReserver = tmp.getReserveBy()
+            if(tmpReserver != null){
+                if(tmpReserver.id == userId) { //unreserve
+                    tmp.reservedBy = null
+                    val result = giftRepository.save(tmp)
+                    result.toGiftResponse()
+                } else { //valaki más már lefoglalta az ajit
+                    return null
+                }
+            }
+            tmp.setReserveBy(user.get()) //reserve
+            val result = giftRepository.save(tmp)
+            result.toGiftResponse()
+        } else {
+            null
+        }
+    }
 
     override fun getAllGift(): MutableIterable<GiftResponse> {
         val gifts = giftRepository.findAll()

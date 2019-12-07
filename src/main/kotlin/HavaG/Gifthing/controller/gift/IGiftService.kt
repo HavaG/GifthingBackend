@@ -9,4 +9,5 @@ interface IGiftService {
     fun createGift(gift: GiftRequest): GiftResponse
     fun updateGift(gift: GiftRequest): GiftResponse?
     fun deleteGift(giftId: Long): Boolean
+    fun reserveGift(giftId: Long, userId: Long): GiftResponse?
 }
