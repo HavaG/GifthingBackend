@@ -4,6 +4,7 @@ class UserGiftResponse(
         var email: String,
         var password: String,
         var id: Long = 0,
-        var name: String? = null,
+        var firstName: String,
+        var lastName: String,
         var nickName: String? = null
         )

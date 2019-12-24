@@ -10,6 +10,8 @@ class UserRequest(
         var email: String,
         var password: String,
         var id: Long,
+        var firstName: String,
+        var lastName: String,
         var nickName: String?
 ) {
     private var giftsId = mutableListOf<Long>()
@@ -21,7 +23,7 @@ class UserRequest(
     private var myTeamsId = mutableListOf<Long>()
 
     fun toUser(giftRepository: GiftRepository, teamRepository: TeamRepository): User {
-        val result = User(this.email, this.password)
+        val result = User(this.email, this.password, this.firstName, this.lastName)
         result.id = this.id
         val giftList = mutableListOf<Gift>()
         val teamList = mutableListOf<Team>()

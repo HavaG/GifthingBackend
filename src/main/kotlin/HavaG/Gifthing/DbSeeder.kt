@@ -20,11 +20,11 @@ class DbSeeder(val userRepository: UserRepository,
         this.giftRepository.deleteAll()
         this.teamRepository.deleteAll()
 
-        val p1 = User("a@aa.a", "a")
-        p1.name = "Gaborka"
-        val p2 = User("nemisemail@nincsilyen.hu", "rnd")
+        val p1 = User("a@aa.a", "a", "first", "last")
+        p1.nickName = "Gaborka"
+        val p2 = User("nemisemail@nincsilyen.hu", "rnd", "Random", "kereszt")
 
-        val p3 = User("admin@admin.com", "admin")
+        val p3 = User("admin@admin.com", "admin", "Gabor", "Havasi")
 
         val g1 = Gift("kes")
         val g2 = Gift("villa")

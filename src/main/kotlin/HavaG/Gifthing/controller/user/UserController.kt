@@ -35,7 +35,7 @@ class UserController (val iUserService: IUserService){
             return ResponseEntity(tmp, HttpStatus.OK)
         else
             //TODO: ez így full szar HttpStatus.FAILED
-            return ResponseEntity(UserResponse("a","a", 0), HttpStatus.CREATED)
+            return ResponseEntity(UserResponse("","", 0, "", ""), HttpStatus.CREATED)
 
     }
 

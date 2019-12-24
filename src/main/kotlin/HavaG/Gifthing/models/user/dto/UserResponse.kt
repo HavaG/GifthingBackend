@@ -4,7 +4,8 @@ class UserResponse(
         var email: String,
         var password: String,
         var id: Long,
-        var name: String? = null,
+        var firstName: String,
+        var lastName: String,
         var nickName: String? = null
 ) {
 

@@ -15,11 +15,14 @@ import javax.persistence.ManyToMany
 
 @Entity(name = "User")
 @Table(name = "user")
-class User(var email: String, var password: String) {
+class User(
+        var email: String,
+        private var password: String,
+        var firstName: String,
+        var lastName: String) {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long = 0
-    var name: String? = null
     var nickName: String? = null
 
     @OneToMany(mappedBy = "owner",
@@ -144,7 +147,8 @@ class User(var email: String, var password: String) {
                 this.email,
                 this.password,
                 this.id,
-                this.name,
+                this.firstName,
+                this.lastName,
                 this.nickName)
 
         val tmpGiftList = mutableListOf<GiftUserResponse>()
@@ -180,7 +184,8 @@ class User(var email: String, var password: String) {
                 this.email,
                 this.password,
                 this.id,
-                this.name,
+                this.firstName,
+                this.lastName,
                 this.nickName)
     }
 }
