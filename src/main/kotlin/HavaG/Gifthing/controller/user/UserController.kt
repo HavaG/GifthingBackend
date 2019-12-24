@@ -1,16 +1,10 @@
 package HavaG.Gifthing.controller.user
 
-import HavaG.Gifthing.models.user.User
 import HavaG.Gifthing.models.user.dto.UserRequest
 import HavaG.Gifthing.models.user.dto.UserResponse
-import org.apache.coyote.Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.PostMapping
-import java.util.*
 
 
 @RestController
@@ -18,39 +12,54 @@ import java.util.*
 class UserController (val iUserService: IUserService){
 
     @GetMapping("/all")
-    fun all(): MutableIterable<UserResponse> {
-        return iUserService.getAllUser()
+    fun all(): ResponseEntity<MutableIterable<UserResponse>> {
+        return ResponseEntity(iUserService.getAllUser(), HttpStatus.OK)
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable(value = "id") id: Long): UserResponse? {
-        return iUserService.getUserById(id)
+    fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<UserResponse> {
+        val tmp = iUserService.getUserById(id)
+        return if(tmp != null) {
+            ResponseEntity(tmp, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
     }
 
     @GetMapping("/email/{email}")
     @ResponseBody
-    fun findByEmail(@PathVariable(value = "email") email: String): ResponseEntity<UserResponse?> {
-        val tmp: UserResponse? = iUserService.getUserByEmail(email)
-        if(tmp != null)
-            return ResponseEntity(tmp, HttpStatus.OK)
+    fun findByEmail(@PathVariable(value = "email") email: String): ResponseEntity<UserResponse> {
+        val tmp = iUserService.getUserByEmail(email)
+        return if(tmp != null)
+            ResponseEntity(tmp, HttpStatus.OK)
         else
-            //TODO: ez így full szar HttpStatus.FAILED
-            return ResponseEntity(UserResponse("","", 0, "", ""), HttpStatus.CREATED)
-
+            ResponseEntity(HttpStatus.NOT_FOUND)
     }
 
     @DeleteMapping("/delete/{id}")
-    fun deleteById(@PathVariable(value = "id") id: Long): Boolean{
-        return iUserService.deleteUser(id)
+    fun deleteById(@PathVariable(value = "id") id: Long) : ResponseEntity<Boolean>{
+        return if(iUserService.deleteUser(id)) {
+            ResponseEntity(true, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
     }
 
     @PutMapping("/update")
-    fun update(@RequestBody editUser: UserRequest): UserResponse? {
-        return iUserService.updateUser(editUser)
+    fun update(@RequestBody editUser: UserRequest): ResponseEntity<UserResponse> {
+        val tmp = iUserService.updateUser(editUser)
+        return if(tmp != null)
+            ResponseEntity(tmp, HttpStatus.OK)
+        else
+            ResponseEntity(HttpStatus.NOT_FOUND)
     }
 
     @PostMapping("/create")
-    fun create(@RequestBody newUser: UserRequest): UserResponse? {
-        return iUserService.createUser(newUser)
+    fun create(@RequestBody newUser: UserRequest): ResponseEntity<UserResponse> {
+        val tmp = iUserService.createUser(newUser)
+        return if(tmp != null)
+            ResponseEntity(tmp, HttpStatus.OK)
+        else
+            ResponseEntity(HttpStatus.CONFLICT)
     }
 }
