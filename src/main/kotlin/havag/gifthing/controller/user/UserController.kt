@@ -1,14 +1,14 @@
-package HavaG.Gifthing.controller.user
+package havag.gifthing.controller.user
 
-import HavaG.Gifthing.models.user.dto.UserRequest
-import HavaG.Gifthing.models.user.dto.UserResponse
+import havag.gifthing.models.user.dto.UserRequest
+import havag.gifthing.models.user.dto.UserResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
-//This is develop branch
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/test/user")
 class UserController (val iUserService: IUserService){
 
     @GetMapping("/all")
@@ -17,6 +17,7 @@ class UserController (val iUserService: IUserService){
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<UserResponse> {
         val tmp = iUserService.getUserById(id)
         return if(tmp != null) {

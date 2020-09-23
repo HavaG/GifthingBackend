@@ -1,12 +1,10 @@
-package HavaG.Gifthing.controller.user
+package havag.gifthing.controller.user
 
-import HavaG.Gifthing.controller.gift.GiftRepository
-import HavaG.Gifthing.controller.team.TeamRepository
-import HavaG.Gifthing.models.user.User
-import HavaG.Gifthing.models.user.dto.UserRequest
-import HavaG.Gifthing.models.user.dto.UserResponse
+import havag.gifthing.controller.gift.GiftRepository
+import havag.gifthing.controller.team.TeamRepository
+import havag.gifthing.models.user.dto.UserRequest
+import havag.gifthing.models.user.dto.UserResponse
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class UserService(val userRepository: UserRepository,

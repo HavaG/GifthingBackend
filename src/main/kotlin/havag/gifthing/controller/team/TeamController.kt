@@ -1,15 +1,13 @@
-package HavaG.Gifthing.controller.team
+package havag.gifthing.controller.team
 
-import HavaG.Gifthing.models.team.Team
-import HavaG.Gifthing.models.team.dto.TeamRequest
-import HavaG.Gifthing.models.team.dto.TeamResponse
+import havag.gifthing.models.team.dto.TeamRequest
+import havag.gifthing.models.team.dto.TeamResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.PostMapping
-import java.util.*
 
 
 @RestController

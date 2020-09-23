@@ -1,9 +1,7 @@
-package HavaG.Gifthing.controller.user
+package havag.gifthing.controller.user
 
-import HavaG.Gifthing.models.user.User
-import HavaG.Gifthing.models.user.dto.UserRequest
-import HavaG.Gifthing.models.user.dto.UserResponse
-import java.util.*
+import havag.gifthing.models.user.dto.UserRequest
+import havag.gifthing.models.user.dto.UserResponse
 
 interface IUserService {
 

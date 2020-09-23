@@ -1,4 +1,4 @@
-package HavaG.Gifthing.models.gift.dto
+package havag.gifthing.models.gift.dto
 
 class GiftResponse (
         var id: Long,

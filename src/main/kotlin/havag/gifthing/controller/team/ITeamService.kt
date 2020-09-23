@@ -1,9 +1,7 @@
-package HavaG.Gifthing.controller.team
+package havag.gifthing.controller.team
 
-import HavaG.Gifthing.models.team.Team
-import HavaG.Gifthing.models.team.dto.TeamRequest
-import HavaG.Gifthing.models.team.dto.TeamResponse
-import java.util.*
+import havag.gifthing.models.team.dto.TeamRequest
+import havag.gifthing.models.team.dto.TeamResponse
 
 interface ITeamService {
 

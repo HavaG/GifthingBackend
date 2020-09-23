@@ -1,6 +1,6 @@
-package HavaG.Gifthing.controller.team
+package havag.gifthing.controller.team
 
-import HavaG.Gifthing.models.team.Team
+import havag.gifthing.models.team.Team
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

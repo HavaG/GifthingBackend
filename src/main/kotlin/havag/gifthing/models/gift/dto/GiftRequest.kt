@@ -1,7 +1,7 @@
-package HavaG.Gifthing.models.gift.dto
+package havag.gifthing.models.gift.dto
 
-import HavaG.Gifthing.controller.user.UserRepository
-import HavaG.Gifthing.models.gift.Gift
+import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.models.gift.Gift
 
 class GiftRequest (
         var id: Long,

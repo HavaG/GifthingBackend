@@ -1,8 +1,8 @@
-package HavaG.Gifthing.models.team.dto
+package havag.gifthing.models.team.dto
 
-import HavaG.Gifthing.controller.user.UserRepository
-import HavaG.Gifthing.models.team.Team
-import HavaG.Gifthing.models.user.dto.UserResponse
+import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.models.team.Team
+import havag.gifthing.models.user.dto.UserResponse
 
 class TeamRequest(
         var name: String,

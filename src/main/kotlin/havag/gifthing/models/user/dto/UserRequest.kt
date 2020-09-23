@@ -1,10 +1,10 @@
-package HavaG.Gifthing.models.user.dto
+package havag.gifthing.models.user.dto
 
-import HavaG.Gifthing.controller.gift.GiftRepository
-import HavaG.Gifthing.controller.team.TeamRepository
-import HavaG.Gifthing.models.gift.Gift
-import HavaG.Gifthing.models.team.Team
-import HavaG.Gifthing.models.user.User
+import havag.gifthing.controller.gift.GiftRepository
+import havag.gifthing.controller.team.TeamRepository
+import havag.gifthing.models.gift.Gift
+import havag.gifthing.models.team.Team
+import havag.gifthing.models.user.User
 
 class UserRequest(
         var email: String,
@@ -12,7 +12,7 @@ class UserRequest(
         var id: Long,
         var firstName: String,
         var lastName: String,
-        var nickName: String?
+        var username: String?
 ) {
     private var giftsId = mutableListOf<Long>()
 
@@ -23,7 +23,7 @@ class UserRequest(
     private var myTeamsId = mutableListOf<Long>()
 
     fun toUser(giftRepository: GiftRepository, teamRepository: TeamRepository): User {
-        val result = User(this.email, this.password, this.firstName, this.lastName)
+        val result = User(this.username!!, this.email, this.password)
         result.id = this.id
         val giftList = mutableListOf<Gift>()
         val teamList = mutableListOf<Team>()

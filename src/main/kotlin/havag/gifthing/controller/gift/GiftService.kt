@@ -1,9 +1,8 @@
-package HavaG.Gifthing.controller.gift
+package havag.gifthing.controller.gift
 
-import HavaG.Gifthing.controller.user.UserRepository
-import HavaG.Gifthing.models.gift.dto.GiftRequest
-import HavaG.Gifthing.models.gift.dto.GiftResponse
-import HavaG.Gifthing.models.user.User
+import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.models.gift.dto.GiftRequest
+import havag.gifthing.models.gift.dto.GiftResponse
 import org.springframework.stereotype.Service
 
 @Service

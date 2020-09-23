@@ -1,4 +1,4 @@
-package HavaG.Gifthing.models.user.dto
+package havag.gifthing.models.user.dto
 
 class TeamUserResponse(
         var name: String,

@@ -1,11 +1,9 @@
-package HavaG.Gifthing.controller.team
+package havag.gifthing.controller.team
 
-import HavaG.Gifthing.controller.user.UserRepository
-import HavaG.Gifthing.models.team.Team
-import HavaG.Gifthing.models.team.dto.TeamRequest
-import HavaG.Gifthing.models.team.dto.TeamResponse
+import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.models.team.dto.TeamRequest
+import havag.gifthing.models.team.dto.TeamResponse
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class TeamService(val teamRepository: TeamRepository,

@@ -1,7 +1,7 @@
-package HavaG.Gifthing.models.team.dto
+package havag.gifthing.models.team.dto
 
-import HavaG.Gifthing.models.user.User
-import HavaG.Gifthing.models.user.dto.UserResponse
+import havag.gifthing.models.user.User
+import havag.gifthing.models.user.dto.UserResponse
 
 class TeamResponse(
     var name: String,

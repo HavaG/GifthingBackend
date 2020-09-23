@@ -1,7 +1,7 @@
-package HavaG.Gifthing.controller.gift
+package havag.gifthing.controller.gift
 
-import HavaG.Gifthing.models.gift.dto.GiftRequest
-import HavaG.Gifthing.models.gift.dto.GiftResponse
+import havag.gifthing.models.gift.dto.GiftRequest
+import havag.gifthing.models.gift.dto.GiftResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

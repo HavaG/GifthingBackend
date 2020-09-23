@@ -1,4 +1,4 @@
-package HavaG.Gifthing.models.gift.dto
+package havag.gifthing.models.gift.dto
 
 class UserGiftResponse(
         var email: String,
@@ -6,5 +6,5 @@ class UserGiftResponse(
         var id: Long = 0,
         var firstName: String,
         var lastName: String,
-        var nickName: String? = null
+        var username: String? = null
         )

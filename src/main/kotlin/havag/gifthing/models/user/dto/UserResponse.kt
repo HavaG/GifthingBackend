@@ -1,4 +1,4 @@
-package HavaG.Gifthing.models.user.dto
+package havag.gifthing.models.user.dto
 
 class UserResponse(
         var email: String,
@@ -6,7 +6,7 @@ class UserResponse(
         var id: Long,
         var firstName: String,
         var lastName: String,
-        var nickName: String? = null
+        var username: String? = null
 ) {
 
     private var gifts = mutableListOf<GiftUserResponse>()
