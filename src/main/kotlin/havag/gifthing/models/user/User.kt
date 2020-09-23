@@ -1,29 +1,46 @@
-package HavaG.Gifthing.models.user
+package havag.gifthing.models.user
 
-import HavaG.Gifthing.models.team.Team
-import HavaG.Gifthing.models.gift.Gift
-import HavaG.Gifthing.models.gift.dto.GiftResponse
-import HavaG.Gifthing.models.gift.dto.UserGiftResponse
-import HavaG.Gifthing.models.user.dto.GiftUserResponse
-import HavaG.Gifthing.models.user.dto.TeamUserResponse
-import HavaG.Gifthing.models.user.dto.UserResponse
 import com.fasterxml.jackson.annotation.JsonIgnore
+import havag.gifthing.models.Role
+import havag.gifthing.models.gift.Gift
+import havag.gifthing.models.gift.dto.UserGiftResponse
+import havag.gifthing.models.team.Team
+import havag.gifthing.models.user.dto.GiftUserResponse
+import havag.gifthing.models.user.dto.TeamUserResponse
+import havag.gifthing.models.user.dto.UserResponse
+import java.util.*
 import javax.persistence.*
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.ManyToMany
+import javax.validation.constraints.Email
+import javax.validation.constraints.NotBlank
+
 
 @Entity(name = "User")
-@Table(name = "user")
+@Table(	name = "users")
 class User(
-        var email: String,
-        private var password: String,
-        var firstName: String,
-        var lastName: String) {
+    @Column(unique=true)
+    var username: String,
+    @Column(unique = true)
+    @NotBlank
+    @Email
+    var email: String,
+    @NotBlank
+    private var password: String) {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long = 0
-    var nickName: String? = null
+
+    var firstName: String = ""
+
+    var lastName: String = ""
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id")])
+    private var roles: Set<Role> = HashSet<Role>()
+
 
     @OneToMany(mappedBy = "owner",
             cascade= [CascadeType.ALL])
@@ -57,6 +74,10 @@ class User(
 
     fun setGifts(gifts: MutableList<Gift>) {
         this.gifts = gifts
+    }
+
+    fun getPassword():String {
+        return password
     }
 
     @OneToMany(mappedBy = "reservedBy",
@@ -142,6 +163,14 @@ class User(
         myTeams = mutableListOf()
     }
 
+    fun getRoles(): Set<Role?>? {
+        return roles
+    }
+
+    fun setRoles(roles: Set<Role>) {
+        this.roles = roles
+    }
+
     fun toUserResponse(): UserResponse {
         val tmpOneUser = UserResponse(
                 this.email,
@@ -149,7 +178,7 @@ class User(
                 this.id,
                 this.firstName,
                 this.lastName,
-                this.nickName)
+                this.username)
 
         val tmpGiftList = mutableListOf<GiftUserResponse>()
         val tmpReservedGiftList = mutableListOf<GiftUserResponse>()
@@ -186,6 +215,6 @@ class User(
                 this.id,
                 this.firstName,
                 this.lastName,
-                this.nickName)
+                this.username)
     }
 }

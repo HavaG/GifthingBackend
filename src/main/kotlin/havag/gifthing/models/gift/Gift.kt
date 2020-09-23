@@ -1,14 +1,14 @@
-package HavaG.Gifthing.models.gift
+package havag.gifthing.models.gift
 
-import HavaG.Gifthing.models.gift.dto.GiftResponse
-import HavaG.Gifthing.models.user.dto.GiftUserResponse
-import HavaG.Gifthing.models.user.User
+import havag.gifthing.models.gift.dto.GiftResponse
+import havag.gifthing.models.user.dto.GiftUserResponse
+import havag.gifthing.models.user.User
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
 
 @Entity(name = "Gift")
-@Table(name = "gift")
+@Table(name = "gifts")
 class Gift(var name: String,
            var link: String? = null,
            var description: String? = null,

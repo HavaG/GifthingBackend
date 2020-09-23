@@ -1,4 +1,4 @@
-package HavaG.Gifthing
+package havag.gifthing
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

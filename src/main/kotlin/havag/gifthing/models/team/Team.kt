@@ -1,12 +1,12 @@
-package HavaG.Gifthing.models.team
+package havag.gifthing.models.team
 
-import HavaG.Gifthing.models.team.dto.TeamResponse
-import HavaG.Gifthing.models.user.dto.TeamUserResponse
-import HavaG.Gifthing.models.user.User
+import havag.gifthing.models.team.dto.TeamResponse
+import havag.gifthing.models.user.dto.TeamUserResponse
+import havag.gifthing.models.user.User
 import javax.persistence.*
 
 @Entity(name = "Team")
-@Table(name = "team")
+@Table(name = "teams")
 class Team(var name: String)
 {
     @Id

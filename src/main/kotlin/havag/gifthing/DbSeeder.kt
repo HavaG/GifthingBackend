@@ -1,11 +1,11 @@
-package HavaG.Gifthing
+package havag.gifthing
 
-import HavaG.Gifthing.controller.gift.GiftRepository
-import HavaG.Gifthing.controller.team.TeamRepository
-import HavaG.Gifthing.controller.user.UserRepository
-import HavaG.Gifthing.models.gift.Gift
-import HavaG.Gifthing.models.team.Team
-import HavaG.Gifthing.models.user.User
+import havag.gifthing.controller.gift.GiftRepository
+import havag.gifthing.controller.team.TeamRepository
+import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.models.gift.Gift
+import havag.gifthing.models.team.Team
+import havag.gifthing.models.user.User
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 
@@ -16,15 +16,16 @@ class DbSeeder(val userRepository: UserRepository,
                ) : CommandLineRunner
 {
     override fun run(vararg p0: String?) {
+        /*
         this.userRepository.deleteAll()
         this.giftRepository.deleteAll()
         this.teamRepository.deleteAll()
 
-        val p1 = User("a@aa.a", "a", "first", "last")
-        p1.nickName = "Gaborka"
-        val p2 = User("nemisemail@nincsilyen.hu", "rnd", "Random", "kereszt")
+        val p1 = User(email ="a@aa.a", username = "a", password ="first")
+        p1.username = "Gaborka"
+        val p2 = User(email = "nemisemail@nincsilyen.hu", username = "rnd", password = "Random")
 
-        val p3 = User("admin@admin.com", "admin", "Gabor", "Havasi")
+        val p3 = User(email = "admin@admin.com", username = "admin", password = "Gabor")
 
         val g1 = Gift("kes")
         val g2 = Gift("villa")
@@ -87,5 +88,7 @@ class DbSeeder(val userRepository: UserRepository,
         this.giftRepository.saveAll(gifts)
         this.teamRepository.saveAll(teams)
         println(" -- Database has been initialized")
+
+         */
     }
 }
