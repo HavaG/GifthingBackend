@@ -5,6 +5,7 @@ import havag.gifthing.models.gift.dto.GiftResponse
 import havag.gifthing.models.user.dto.GiftUserResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -14,17 +15,21 @@ import org.springframework.web.bind.annotation.PostMapping
 @RequestMapping("/api/gift")
 class GiftController (val iGiftService: IGiftService){
 
+    //TODO: Ennek van értelme?
     @GetMapping("/all")
+    @PreAuthorize("hasRole('USER')")
     fun all(): ResponseEntity<MutableIterable<GiftResponse>> {
         return ResponseEntity(iGiftService.findAll(), HttpStatus.OK)
     }
 
     @GetMapping("/my-gifts")
+    @PreAuthorize("hasRole('USER')")
     fun myGifts(): ResponseEntity<MutableIterable<GiftUserResponse>> {
         return ResponseEntity(iGiftService.myGifts(), HttpStatus.OK)
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<GiftResponse> {
         val tmp = iGiftService.findById(id)
         return if(tmp != null) {
@@ -35,6 +40,7 @@ class GiftController (val iGiftService: IGiftService){
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('USER')")
     fun deleteById(@PathVariable(value = "id") id: Long): ResponseEntity<Boolean>{
         return ResponseEntity(iGiftService.delete(id), HttpStatus.OK)
     }

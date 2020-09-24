@@ -74,12 +74,22 @@ class GiftService(
 
     override fun delete(giftId: Long): Boolean {
         val tmp = giftRepository.findById(giftId)
+
         if (tmp.isPresent) {
             val temporal = tmp.get()
-            temporal.removeOwner()
-            temporal.removeReserveBy()
-            giftRepository.delete(temporal)
-            return true
+            val myGiftList = userService.getUser().getGifts()
+            var owner = false
+            myGiftList.forEach{
+                if(it.id == tmp.get().id)
+                    owner = true
+            }
+            if(owner) {
+                temporal.removeOwner()
+                temporal.removeReserveBy()
+                giftRepository.delete(temporal)
+                return true
+            }
+            return false
         }
         return true
     }
