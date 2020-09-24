@@ -10,6 +10,6 @@ interface IGiftService {
 	fun create(gift: GiftRequest): GiftResponse
 	fun update(gift: GiftRequest): GiftResponse?
 	fun delete(giftId: Long): Boolean
-	fun reserve(giftId: Long, userId: Long): GiftResponse?
+	fun reserve(giftId: Long): GiftResponse?
 	fun myGifts(): MutableIterable<GiftUserResponse>
 }

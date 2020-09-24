@@ -15,27 +15,24 @@ class GiftService(
     val userService: UserDetailsProvider
 ) : IGiftService {
 
-    override fun reserve(giftId: Long, userId: Long): GiftResponse? {
+    override fun reserve(giftId: Long): GiftResponse? {
         val gift = giftRepository.findById(giftId)
-        val user = userRepository.findById(userId)
-        return if(gift.isPresent && user.isPresent) {
-            val tmp = gift.get()
-            /*val tmpReserver = tmp.getReserveBy()
-            if(tmpReserver != null){
-                if(tmpReserver.id == userId) { //unreserve
-                    tmp.reservedBy = null
-                    val result = giftRepository.save(tmp)
-                    result.toGiftResponse()
-                } else { //valaki más már lefoglalta az ajit
-                    return null
-                }
-            }*/
-            tmp.setReserveBy(user.get()) //reserve
-            val result = giftRepository.save(tmp)
-            result.toGiftResponse()
-        } else {
-            null
-        }
+        return if(gift.isPresent) {
+            val tmpGift = gift.get()
+            val user = userService.getUser()
+            val myGiftList = user.getGifts()
+            var owner = false
+            myGiftList.forEach{
+                if(it.id == tmpGift.id)
+                    owner = true
+            }
+            if(!owner) { //TODO: itt még lehet kavarodás ha már le van foglalva
+                val dbUser = userRepository.findById(user.id)
+                tmpGift.setReserveBy(dbUser.get())
+                val result = giftRepository.save(tmpGift)
+                result.toGiftResponse()
+            } else null
+        } else null
     }
 
     override fun findAll(): MutableIterable<GiftResponse> {
@@ -56,6 +53,8 @@ class GiftService(
     }
 
     override fun create(gift: GiftRequest): GiftResponse {
+        val user = userService.getUser()
+        gift.owner = user.id
         val saveGift = gift.toGift(userRepository)
         val result = giftRepository.save(saveGift)
         return result.toGiftResponse()
@@ -64,9 +63,18 @@ class GiftService(
     override fun update(gift: GiftRequest): GiftResponse? {
         val tmp = giftRepository.findById(gift.id)
         if(tmp.isPresent) {
-            val saveGift = gift.toGift(userRepository)
-            val result = giftRepository.save(saveGift)
-            return result.toGiftResponse()
+            val myGiftList = userService.getUser().getGifts()
+            var owner = false
+            myGiftList.forEach{
+                if(it.id == tmp.get().id)
+                    owner = true
+            }
+            if(owner) {
+                val saveGift = gift.toGift(userRepository)
+                val result = giftRepository.save(saveGift)
+                return result.toGiftResponse()
+            }
+            return null //TODO: Nem a gift tulajdonosa
         }
         else
             return null
@@ -80,7 +88,7 @@ class GiftService(
             val myGiftList = userService.getUser().getGifts()
             var owner = false
             myGiftList.forEach{
-                if(it.id == tmp.get().id)
+                if(it.id == temporal.id)
                     owner = true
             }
             if(owner) {

@@ -46,6 +46,7 @@ class GiftController (val iGiftService: IGiftService){
     }
 
     @PutMapping("/update")
+    @PreAuthorize("hasRole('USER')")
     fun update(@RequestBody editGift: GiftRequest): ResponseEntity<GiftResponse> {
         val tmp = iGiftService.update(editGift)
         return if(tmp != null) {
@@ -56,14 +57,15 @@ class GiftController (val iGiftService: IGiftService){
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('USER')")
     fun create(@RequestBody newGift: GiftRequest): ResponseEntity<GiftResponse>     {
         return ResponseEntity(iGiftService.create(newGift), HttpStatus.OK)
     }
 
-    @PutMapping("/reserve/{giftId}/{userId}")
-    fun reserveGift(@PathVariable(value = "giftId") giftId: Long,
-                    @PathVariable(value = "userId") userId: Long): ResponseEntity<GiftResponse> {
-        val tmp = iGiftService.reserve(giftId, userId)
+    @PutMapping("/reserve/{giftId}")
+    @PreAuthorize("hasRole('USER')")
+    fun reserveGift(@PathVariable(value = "giftId") giftId: Long): ResponseEntity<GiftResponse> {
+        val tmp = iGiftService.reserve(giftId)
         return if(tmp != null)
             ResponseEntity(tmp, HttpStatus.OK)
         else
