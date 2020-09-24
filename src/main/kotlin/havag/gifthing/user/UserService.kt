@@ -5,12 +5,14 @@ import havag.gifthing.repositories.TeamRepository
 import havag.gifthing.models.user.dto.UserRequest
 import havag.gifthing.models.user.dto.UserResponse
 import havag.gifthing.repositories.UserRepository
+import havag.gifthing.security.services.UserDetailsProvider
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(val userRepository: UserRepository,
                   val giftRepository: GiftRepository,
-                  val teamRepository: TeamRepository
+                  val teamRepository: TeamRepository,
+                  val userService: UserDetailsProvider
 ) : IUserService {
 
     override fun findAll(): MutableIterable<UserResponse> {
@@ -60,7 +62,6 @@ class UserService(val userRepository: UserRepository,
         return false*/
     }
 
-
     override fun create(user: UserRequest): UserResponse? {
         for(i in userRepository.findAll()) {
             if(i.email == user.email) {
@@ -74,11 +75,13 @@ class UserService(val userRepository: UserRepository,
 
     override fun update(user: UserRequest): UserResponse? {
         val tmp = userRepository.findById(user.id)
-        if(tmp.isPresent) {
-            val saveUser = user.toUser(giftRepository, teamRepository)
-            val result = userRepository.save(saveUser)
-            return result.toUserResponse()
-        }
-        return null
+        return if(tmp.isPresent) {
+            val currentUser = userService.getUser()
+            if(tmp.get().id == currentUser.id) {
+                val saveUser = user.toUser(giftRepository, teamRepository)
+                val result = userRepository.save(saveUser)
+                result.toUserResponse()
+            } else null
+        } else null
     }
 }

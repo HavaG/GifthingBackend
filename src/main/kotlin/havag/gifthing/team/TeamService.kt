@@ -4,15 +4,17 @@ import havag.gifthing.repositories.UserRepository
 import havag.gifthing.models.team.dto.TeamRequest
 import havag.gifthing.models.team.dto.TeamResponse
 import havag.gifthing.repositories.TeamRepository
+import havag.gifthing.security.services.UserDetailsProvider
 import org.springframework.stereotype.Service
 
 @Service
 class TeamService(val teamRepository: TeamRepository,
-                  val userRepository: UserRepository
+                  val userRepository: UserRepository,
+                  val userService: UserDetailsProvider
 ) : ITeamService {
 
     //TODO: probaly not working
-    override fun addUser(groupId: Long, userId: Long): TeamResponse? {
+    override fun addMember(groupId: Long, userId: Long): TeamResponse? {
         val group = teamRepository.findById(groupId)
         val user = userRepository.findById(userId)
         if(user.isPresent && group.isPresent) {
@@ -23,6 +25,10 @@ class TeamService(val teamRepository: TeamRepository,
         } else {
             return null
         }
+    }
+
+    override fun removeMember(groupId: Long, userId: Long): TeamResponse? {
+        TODO("Not yet implemented")
     }
 
     override fun findAll(): MutableIterable<TeamResponse> {
@@ -36,10 +42,18 @@ class TeamService(val teamRepository: TeamRepository,
 
     override fun findById(teamId: Long): TeamResponse? {
         val tmpTeam = teamRepository.findById(teamId)
-        if(!tmpTeam.isPresent){
-            return null
-        }
-        return tmpTeam.get().toTeamResponse()
+        return if(tmpTeam.isPresent){
+            val team = tmpTeam.get()
+            var member = false
+            val myTeams = userService.getUser().getMyTeams()
+            myTeams.forEach{
+                if(it.id == team.id)
+                    member = true
+            }
+            if(member)
+                team.toTeamResponse()
+            else null
+        } else null
     }
 
     override fun create(team: TeamRequest): TeamResponse {
@@ -50,12 +64,19 @@ class TeamService(val teamRepository: TeamRepository,
 
     override fun update(team: TeamRequest): TeamResponse? {
         val tmp = teamRepository.findById(team.id)
-        if(tmp.isPresent) {
-            val saveTeam = team.toTeam(userRepository)
-            val result = teamRepository.save(saveTeam)
-            return result.toTeamResponse()
-        }
-        return null
+        return if(tmp.isPresent) {
+            val myOwnedTeams = userService.getUser().getMyOwnedTeams()
+            var owned = false
+            myOwnedTeams.forEach {
+                if(it.id == team.id)
+                    owned = true
+            }
+            return if(owned) {
+                val saveTeam = team.toTeam(userRepository)
+                val result = teamRepository.save(saveTeam)
+                result.toTeamResponse()
+            } else null
+        } else null
     }
 
     override fun delete(teamId: Long): Boolean {

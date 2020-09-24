@@ -17,7 +17,7 @@ class GiftController (val iGiftService: IGiftService){
 
     //TODO: Ennek van értelme?
     @GetMapping("/all")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     fun all(): ResponseEntity<MutableIterable<GiftResponse>> {
         return ResponseEntity(iGiftService.findAll(), HttpStatus.OK)
     }

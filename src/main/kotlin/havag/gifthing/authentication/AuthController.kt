@@ -87,31 +87,25 @@ class AuthController {
 		)
 		val strRoles: Set<String> =  signUpRequest.role!!
 		val roles: MutableSet<Role> = HashSet<Role>()
-		if (strRoles == null) {
-			val userRole: Role = roleRepository!!.findByName(ERole.ROLE_USER)
-				.orElseThrow { RuntimeException("Error: Role is not found.") }
-			roles.add(userRole)
-		} else {
-			strRoles.forEach(Consumer { role: String? ->
-				when (role) {
-					"admin" -> {
-						val adminRole: Role = roleRepository!!.findByName(ERole.ROLE_ADMIN)
-							.orElseThrow { RuntimeException("Error: Role is not found.") }
-						roles.add(adminRole)
-					}
-					"mod" -> {
-						val modRole: Role = roleRepository!!.findByName(ERole.ROLE_MODERATOR)
-							.orElseThrow { RuntimeException("Error: Role is not found.") }
-						roles.add(modRole)
-					}
-					else -> {
-						val userRole: Role = roleRepository!!.findByName(ERole.ROLE_USER)
-							.orElseThrow { RuntimeException("Error: Role is not found.") }
-						roles.add(userRole)
-					}
+		strRoles.forEach(Consumer { role: String? ->
+			when (role) {
+				"admin" -> {
+					val adminRole: Role = roleRepository!!.findByName(ERole.ROLE_ADMIN)
+						.orElseThrow { RuntimeException("Error: Role is not found.") }
+					roles.add(adminRole)
 				}
-			})
-		}
+				"mod" -> {
+					val modRole: Role = roleRepository!!.findByName(ERole.ROLE_MODERATOR)
+						.orElseThrow { RuntimeException("Error: Role is not found.") }
+					roles.add(modRole)
+				}
+				else -> {
+					val userRole: Role = roleRepository!!.findByName(ERole.ROLE_USER)
+						.orElseThrow { RuntimeException("Error: Role is not found.") }
+					roles.add(userRole)
+				}
+			}
+		})
 		user.setRoles(roles)
 		userRepository!!.save(user)
 		return ResponseEntity.ok(MessageResponse("User registered successfully!"))

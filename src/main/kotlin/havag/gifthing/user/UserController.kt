@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/user")
 class UserController (val iUserService: IUserService){
 
+    //TODO: ennek van értelme?
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     fun all(): ResponseEntity<MutableIterable<UserResponse>> {
         return ResponseEntity(iUserService.findAll(), HttpStatus.OK)
     }
 
+    //TODO: ezt nem tudom, hogy ki csinálhatja meg
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<UserResponse> {
         val tmp = iUserService.findById(id)
         return if(tmp != null) {
@@ -27,8 +30,9 @@ class UserController (val iUserService: IUserService){
         }
     }
 
+    //TODO: ezt be lehet szüntetni (elvileg)
     @GetMapping("/email/{email}")
-    @ResponseBody
+    @PreAuthorize("hasRole('USER')")
     fun findByEmail(@PathVariable(value = "email") email: String): ResponseEntity<UserResponse> {
         val tmp = iUserService.findByEmail(email)
         return if(tmp != null)
@@ -37,7 +41,9 @@ class UserController (val iUserService: IUserService){
             ResponseEntity(HttpStatus.NOT_FOUND)
     }
 
+    //TODO: ez tuti admin funkció
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     fun deleteById(@PathVariable(value = "id") id: Long) : ResponseEntity<Boolean>{
         return if(iUserService.delete(id)) {
             ResponseEntity(true, HttpStatus.OK)
@@ -47,6 +53,7 @@ class UserController (val iUserService: IUserService){
     }
 
     @PutMapping("/update")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     fun update(@RequestBody editUser: UserRequest): ResponseEntity<UserResponse> {
         val tmp = iUserService.update(editUser)
         return if(tmp != null)
@@ -55,12 +62,15 @@ class UserController (val iUserService: IUserService){
             ResponseEntity(HttpStatus.NOT_FOUND)
     }
 
+    /*
     @PostMapping("/create")
+    @PreAuthorize("hasRole('USER')")
     fun create(@RequestBody newUser: UserRequest): ResponseEntity<UserResponse> {
         val tmp = iUserService.create(newUser)
         return if(tmp != null)
             ResponseEntity(tmp, HttpStatus.OK)
         else
             ResponseEntity(HttpStatus.CONFLICT)
-    }
+    } */
+
 }
