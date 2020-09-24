@@ -1,17 +1,19 @@
-package havag.gifthing.controller.user
+package havag.gifthing.user
 
-import havag.gifthing.controller.gift.GiftRepository
-import havag.gifthing.controller.team.TeamRepository
+import havag.gifthing.repositories.GiftRepository
+import havag.gifthing.repositories.TeamRepository
 import havag.gifthing.models.user.dto.UserRequest
 import havag.gifthing.models.user.dto.UserResponse
+import havag.gifthing.repositories.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(val userRepository: UserRepository,
                   val giftRepository: GiftRepository,
-                  val teamRepository: TeamRepository) : IUserService {
+                  val teamRepository: TeamRepository
+) : IUserService {
 
-    override fun getAllUser(): MutableIterable<UserResponse> {
+    override fun findAll(): MutableIterable<UserResponse> {
         val tmpUsers = userRepository.findAll()
         val response = mutableListOf<UserResponse>()
         for(i in tmpUsers) {
@@ -20,7 +22,7 @@ class UserService(val userRepository: UserRepository,
         return response
     }
 
-    override fun getUserById(userId: Long): UserResponse?  {
+    override fun findById(userId: Long): UserResponse?  {
 
         val tmpUser = userRepository.findById(userId)
         if(!tmpUser.isPresent){
@@ -29,7 +31,7 @@ class UserService(val userRepository: UserRepository,
         return tmpUser.get().toUserResponse()
     }
 
-    override fun getUserByEmail(userEmail: String): UserResponse? {
+    override fun findByEmail(userEmail: String): UserResponse? {
 
         val tmpUser = userRepository.findByEmail(userEmail)
         if(!tmpUser.isPresent){
@@ -38,7 +40,7 @@ class UserService(val userRepository: UserRepository,
         return tmpUser.get().toUserResponse()
     }
 
-    override fun deleteUser(userId: Long): Boolean {
+    override fun delete(userId: Long): Boolean {
         //TODO: not implemented
         return false
         /*val tmp = userRepository.findById(userId)
@@ -59,7 +61,7 @@ class UserService(val userRepository: UserRepository,
     }
 
 
-    override fun createUser(user: UserRequest): UserResponse? {
+    override fun create(user: UserRequest): UserResponse? {
         for(i in userRepository.findAll()) {
             if(i.email == user.email) {
                 return null
@@ -70,7 +72,7 @@ class UserService(val userRepository: UserRepository,
         return result.toUserResponse()
     }
 
-    override fun updateUser(user: UserRequest): UserResponse? {
+    override fun update(user: UserRequest): UserResponse? {
         val tmp = userRepository.findById(user.id)
         if(tmp.isPresent) {
             val saveUser = user.toUser(giftRepository, teamRepository)

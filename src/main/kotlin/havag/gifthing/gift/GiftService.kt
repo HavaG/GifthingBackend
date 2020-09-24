@@ -1,16 +1,21 @@
-package havag.gifthing.controller.gift
+package havag.gifthing.gift
 
-import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.repositories.UserRepository
 import havag.gifthing.models.gift.dto.GiftRequest
 import havag.gifthing.models.gift.dto.GiftResponse
+import havag.gifthing.models.user.dto.GiftUserResponse
+import havag.gifthing.repositories.GiftRepository
+import havag.gifthing.security.services.UserDetailsProvider
 import org.springframework.stereotype.Service
 
 @Service
 class GiftService(
-        val giftRepository: GiftRepository,
-        val userRepository: UserRepository) : IGiftService {
+	val giftRepository: GiftRepository,
+	val userRepository: UserRepository,
+    val userService: UserDetailsProvider
+) : IGiftService {
 
-    override fun reserveGift(giftId: Long, userId: Long): GiftResponse? {
+    override fun reserve(giftId: Long, userId: Long): GiftResponse? {
         val gift = giftRepository.findById(giftId)
         val user = userRepository.findById(userId)
         return if(gift.isPresent && user.isPresent) {
@@ -33,7 +38,7 @@ class GiftService(
         }
     }
 
-    override fun getAllGift(): MutableIterable<GiftResponse> {
+    override fun findAll(): MutableIterable<GiftResponse> {
         val gifts = giftRepository.findAll()
         val result = mutableListOf<GiftResponse>()
         for(i in gifts) {
@@ -42,7 +47,7 @@ class GiftService(
         return result
     }
 
-    override fun getGiftById(giftId: Long): GiftResponse? {
+    override fun findById(giftId: Long): GiftResponse? {
         val tmpGift = giftRepository.findById(giftId)
         if(!tmpGift.isPresent){
             return null
@@ -50,13 +55,13 @@ class GiftService(
         return tmpGift.get().toGiftResponse()
     }
 
-    override fun createGift(gift: GiftRequest): GiftResponse {
+    override fun create(gift: GiftRequest): GiftResponse {
         val saveGift = gift.toGift(userRepository)
         val result = giftRepository.save(saveGift)
         return result.toGiftResponse()
     }
 
-    override fun updateGift(gift: GiftRequest): GiftResponse? {
+    override fun update(gift: GiftRequest): GiftResponse? {
         val tmp = giftRepository.findById(gift.id)
         if(tmp.isPresent) {
             val saveGift = gift.toGift(userRepository)
@@ -67,7 +72,7 @@ class GiftService(
             return null
     }
 
-    override fun deleteGift(giftId: Long): Boolean {
+    override fun delete(giftId: Long): Boolean {
         val tmp = giftRepository.findById(giftId)
         if (tmp.isPresent) {
             val temporal = tmp.get()
@@ -78,4 +83,10 @@ class GiftService(
         }
         return true
     }
+
+    override fun myGifts(): MutableIterable<GiftUserResponse> {
+        return userService.getUser().getGifts()
+    }
+
+
 }

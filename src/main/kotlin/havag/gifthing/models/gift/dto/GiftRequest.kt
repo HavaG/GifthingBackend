@@ -1,6 +1,6 @@
 package havag.gifthing.models.gift.dto
 
-import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.repositories.UserRepository
 import havag.gifthing.models.gift.Gift
 
 class GiftRequest (

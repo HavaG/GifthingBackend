@@ -1,11 +1,8 @@
 package havag.gifthing
 
-import havag.gifthing.controller.gift.GiftRepository
-import havag.gifthing.controller.team.TeamRepository
-import havag.gifthing.controller.user.UserRepository
-import havag.gifthing.models.gift.Gift
-import havag.gifthing.models.team.Team
-import havag.gifthing.models.user.User
+import havag.gifthing.repositories.GiftRepository
+import havag.gifthing.repositories.TeamRepository
+import havag.gifthing.repositories.UserRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 

@@ -1,4 +1,4 @@
-package havag.gifthing.controller.team
+package havag.gifthing.team
 
 import havag.gifthing.models.team.dto.TeamRequest
 import havag.gifthing.models.team.dto.TeamResponse
@@ -16,12 +16,12 @@ class TeamController (val iTeamService: ITeamService){
 
     @GetMapping("/all")
     fun all(): ResponseEntity<MutableIterable<TeamResponse>> {
-        return ResponseEntity(iTeamService.getAllTeam(), HttpStatus.OK)
+        return ResponseEntity(iTeamService.findAll(), HttpStatus.OK)
     }
 
     @GetMapping("/{id}")
     fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<TeamResponse> {
-        val tmp =  iTeamService.getTeamById(id)
+        val tmp =  iTeamService.findById(id)
         return if(tmp != null) {
             ResponseEntity(tmp, HttpStatus.OK)
         }
@@ -32,7 +32,7 @@ class TeamController (val iTeamService: ITeamService){
 
     @DeleteMapping("/delete/{id}")
     fun deleteById(@PathVariable(value = "id") id: Long): ResponseEntity<Boolean>{
-        return if(iTeamService.deleteTeam(id)) {
+        return if(iTeamService.delete(id)) {
             ResponseEntity(true, HttpStatus.OK)
         } else {
             ResponseEntity(HttpStatus.NOT_FOUND)
@@ -41,7 +41,7 @@ class TeamController (val iTeamService: ITeamService){
 
     @PutMapping("/update")
     fun update(@RequestBody editTeam: TeamRequest): ResponseEntity<TeamResponse> {
-        val tmp = iTeamService.updateTeam(editTeam)
+        val tmp = iTeamService.update(editTeam)
         return if(tmp != null)
             ResponseEntity(tmp, HttpStatus.OK)
         else
@@ -50,7 +50,7 @@ class TeamController (val iTeamService: ITeamService){
 
     @PostMapping("/create")
     fun create(@RequestBody newTeam: TeamRequest): ResponseEntity<TeamResponse> {
-        return ResponseEntity(iTeamService.createTeam(newTeam), HttpStatus.OK)
+        return ResponseEntity(iTeamService.create(newTeam), HttpStatus.OK)
     }
 
     @PutMapping("/add/{groupId}/{userId}")

@@ -1,7 +1,7 @@
 package havag.gifthing.models.user.dto
 
-import havag.gifthing.controller.gift.GiftRepository
-import havag.gifthing.controller.team.TeamRepository
+import havag.gifthing.repositories.GiftRepository
+import havag.gifthing.repositories.TeamRepository
 import havag.gifthing.models.gift.Gift
 import havag.gifthing.models.team.Team
 import havag.gifthing.models.user.User

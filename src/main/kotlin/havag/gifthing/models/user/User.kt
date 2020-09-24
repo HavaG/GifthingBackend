@@ -34,6 +34,8 @@ class User(
 
     var lastName: String = ""
 
+    //TODO: add isActive var isActive: Boolean = true
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",

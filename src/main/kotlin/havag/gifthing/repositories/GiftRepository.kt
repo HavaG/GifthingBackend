@@ -1,4 +1,4 @@
-package havag.gifthing.controller.gift
+package havag.gifthing.repositories
 
 import havag.gifthing.models.gift.Gift
 import org.springframework.data.repository.CrudRepository

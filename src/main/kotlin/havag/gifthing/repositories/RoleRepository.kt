@@ -1,4 +1,4 @@
-package havag.gifthing.controller
+package havag.gifthing.repositories
 
 import havag.gifthing.models.ERole
 import havag.gifthing.models.Role

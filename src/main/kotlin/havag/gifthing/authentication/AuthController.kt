@@ -4,8 +4,8 @@ import havag.gifthing.authentication.payload.request.LoginRequest
 import havag.gifthing.authentication.payload.request.SignupRequest
 import havag.gifthing.authentication.payload.response.JwtResponse
 import havag.gifthing.authentication.payload.response.MessageResponse
-import havag.gifthing.controller.RoleRepository
-import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.repositories.RoleRepository
+import havag.gifthing.repositories.UserRepository
 import havag.gifthing.models.ERole
 import havag.gifthing.models.Role
 import havag.gifthing.models.user.User
@@ -44,7 +44,7 @@ class AuthController {
 	@Autowired
 	var jwtUtils: JwtUtils? = null
 
-	@PostMapping("/signin")
+	@PostMapping("/login")
 	fun authenticateUser(@RequestBody loginRequest: @Valid LoginRequest?): ResponseEntity<*> {
 		val authentication = authenticationManager!!.authenticate(
 			UsernamePasswordAuthenticationToken(loginRequest!!.username, loginRequest.password)

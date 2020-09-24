@@ -1,6 +1,6 @@
 package havag.gifthing.models.team.dto
 
-import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.repositories.UserRepository
 import havag.gifthing.models.team.Team
 import havag.gifthing.models.user.dto.UserResponse
 

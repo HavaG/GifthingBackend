@@ -1,6 +1,6 @@
 package havag.gifthing.security.services
 
-import havag.gifthing.controller.user.UserRepository
+import havag.gifthing.repositories.UserRepository
 import havag.gifthing.models.user.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails
