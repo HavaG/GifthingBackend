@@ -10,7 +10,7 @@ import javax.persistence.*
 class Team(var name: String)
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     var id: Long = 0
 
     @ManyToOne(cascade= [CascadeType.ALL])

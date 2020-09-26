@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 
 
 @RestController
-@RequestMapping("/team")
+@RequestMapping("/api/team")
 class TeamController (val iTeamService: ITeamService){
 
     //TODO: Ennek nincs is értelme (?)

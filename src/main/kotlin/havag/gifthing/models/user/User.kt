@@ -12,6 +12,7 @@ import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
+import kotlin.collections.HashSet
 
 
 @Entity(name = "User")
@@ -27,7 +28,7 @@ class User(
     private var password: String) {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     var id: Long = 0
 
     var firstName: String = ""
@@ -165,7 +166,7 @@ class User(
         myTeams = mutableListOf()
     }
 
-    fun getRoles(): Set<Role?>? {
+    fun getRoles(): Set<Role> {
         return roles
     }
 

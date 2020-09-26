@@ -14,7 +14,7 @@ class Gift(var name: String,
            var description: String? = null,
            var price: Int? = null) {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     var id: Long = 0
 
     @JsonIgnore

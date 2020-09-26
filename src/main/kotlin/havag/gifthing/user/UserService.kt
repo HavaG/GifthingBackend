@@ -42,6 +42,14 @@ class UserService(val userRepository: UserRepository,
         return tmpUser.get().toUserResponse()
     }
 
+    override fun findByUsername(username: String): UserResponse? {
+        val tmpUser = userRepository.findByUsername(username)
+        if(!tmpUser.isPresent){
+            return null
+        }
+        return tmpUser.get().toUserResponse()
+    }
+
     override fun delete(userId: Long): Boolean {
         //TODO: not implemented
         return false
@@ -60,6 +68,15 @@ class UserService(val userRepository: UserRepository,
             }
         }
         return false*/
+    }
+
+    override fun getUsernames(): ArrayList<String> {
+        val users = this.findAll()
+        val usernames: ArrayList<String> = ArrayList<String>()
+        users.forEach {
+            usernames.add(it.username!!)
+        }
+        return usernames
     }
 
     override fun create(user: UserRequest): UserResponse? {

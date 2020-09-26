@@ -41,6 +41,22 @@ class UserController (val iUserService: IUserService){
             ResponseEntity(HttpStatus.NOT_FOUND)
     }
 
+    @GetMapping("/username/{username}")
+    @PreAuthorize("hasRole('USER')")
+    fun findByUsername(@PathVariable(value = "username") username: String): ResponseEntity<UserResponse> {
+        val tmp = iUserService.findByUsername(username)
+        return if(tmp != null)
+            ResponseEntity(tmp, HttpStatus.OK)
+        else
+            ResponseEntity(HttpStatus.NOT_FOUND)
+    }
+
+    @GetMapping("/usernames")
+    @PreAuthorize("hasRole('USER')")
+    fun getUsernames(): ArrayList<String> {
+        return iUserService.getUsernames()
+    }
+
     //TODO: ez tuti admin funkció
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")

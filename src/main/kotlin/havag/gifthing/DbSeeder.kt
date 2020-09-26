@@ -29,7 +29,7 @@ class DbSeeder(val userRepository: UserRepository,
             val p1 = User(
                 email = "a@aa.a",
                 username = "a",
-                password = "first"
+                password = "b"
             )
 
             p1.firstName = "elso"
@@ -121,6 +121,5 @@ class DbSeeder(val userRepository: UserRepository,
             this.roleRepository.saveAll(roles)
         }
         println(" -- Database has been initialized")
-
     }
 }
