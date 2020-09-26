@@ -1,6 +1,7 @@
 package havag.gifthing.authentication
 
 import havag.gifthing.authentication.payload.request.LoginRequest
+import havag.gifthing.authentication.payload.request.RolesRequest
 import havag.gifthing.authentication.payload.request.SignupRequest
 import havag.gifthing.authentication.payload.response.JwtResponse
 import havag.gifthing.authentication.payload.response.MessageResponse
@@ -13,16 +14,17 @@ import havag.gifthing.security.jwt.JwtUtils
 import havag.gifthing.security.services.UserDetailsImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
-import java.util.*
 import java.util.function.Consumer
 import java.util.stream.Collectors
 import javax.validation.Valid
+import kotlin.collections.HashSet
 
 
 @CrossOrigin(origins = ["*"], maxAge = 3600)
@@ -79,35 +81,64 @@ class AuthController {
 				.body(MessageResponse("Error: Email is already in use!"))
 		}
 
-		// Create new user's account
 		val user = User(
 			signUpRequest.username!!,
 			signUpRequest.email!!,
 			encoder!!.encode(signUpRequest.password)
 		)
-		val strRoles: Set<String> =  signUpRequest.role!!
 		val roles: MutableSet<Role> = HashSet<Role>()
-		strRoles.forEach(Consumer { role: String? ->
-			when (role) {
-				"admin" -> {
-					val adminRole: Role = roleRepository!!.findByName(ERole.ROLE_ADMIN)
-						.orElseThrow { RuntimeException("Error: Role is not found.") }
-					roles.add(adminRole)
-				}
-				"mod" -> {
-					val modRole: Role = roleRepository!!.findByName(ERole.ROLE_MODERATOR)
-						.orElseThrow { RuntimeException("Error: Role is not found.") }
-					roles.add(modRole)
-				}
-				else -> {
-					val userRole: Role = roleRepository!!.findByName(ERole.ROLE_USER)
-						.orElseThrow { RuntimeException("Error: Role is not found.") }
-					roles.add(userRole)
-				}
-			}
-		})
+		val userRole: Role = roleRepository!!.findByName(ERole.ROLE_USER)
+			.orElseThrow { RuntimeException("Error: User role is not found.") }
+		roles.add(userRole)
 		user.setRoles(roles)
 		userRepository!!.save(user)
 		return ResponseEntity.ok(MessageResponse("User registered successfully!"))
 	}
+
+	@PostMapping("/set-roles/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	fun setAdmin(@PathVariable(value = "id") id: Long, @RequestBody rolesRequest: @Valid RolesRequest?): ResponseEntity<*> {
+		val user = userRepository!!.findById(id)
+		if(user.isPresent) {
+			val realUser = user.get()
+
+			val strRoles: Set<String> =  rolesRequest!!.roles!!
+			val newRoles: MutableSet<Role> = HashSet<Role>()
+			strRoles.forEach(Consumer { role: String? ->
+				when (role) {
+					"admin" -> {
+						val adminRole: Role = roleRepository!!.findByName(ERole.ROLE_ADMIN)
+							.orElseThrow { RuntimeException("Error: Role is not found.") }
+						newRoles.add(adminRole)
+					}
+					"mod" -> {
+						val modRole: Role = roleRepository!!.findByName(ERole.ROLE_MODERATOR)
+							.orElseThrow { RuntimeException("Error: Role is not found.") }
+						newRoles.add(modRole)
+					}
+					"user" -> {
+						val userRole: Role = roleRepository!!.findByName(ERole.ROLE_USER)
+							.orElseThrow { RuntimeException("Error: Role is not found.") }
+						newRoles.add(userRole)
+					}
+					else -> { }
+					//TODO: not found
+				}
+			})
+			realUser.setRoles(newRoles)
+			userRepository!!.save(realUser)
+			return ResponseEntity.ok(MessageResponse("User roles updated successfully!"))
+		} else {
+			return ResponseEntity
+				.badRequest()
+				.body(MessageResponse("Error: User not exists!"))
+		}
+	}
+
+	/* TODO: logout
+	@PostMapping("/logout")
+	fun logout(@RequestBody logoutRequest: @Valid LogoutRequest?): ResponseEntity<*> {
+
+	}
+	 */
 }
