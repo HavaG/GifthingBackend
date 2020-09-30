@@ -8,11 +8,9 @@ import havag.gifthing.models.team.Team
 import havag.gifthing.models.user.dto.GiftUserResponse
 import havag.gifthing.models.user.dto.TeamUserResponse
 import havag.gifthing.models.user.dto.UserResponse
-import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
-import kotlin.collections.HashSet
 
 
 @Entity(name = "User")

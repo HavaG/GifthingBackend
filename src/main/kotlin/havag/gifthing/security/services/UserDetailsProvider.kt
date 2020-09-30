@@ -2,10 +2,10 @@ package havag.gifthing.security.services
 
 import havag.gifthing.models.user.dto.UserResponse
 import havag.gifthing.repositories.UserRepository
-import havag.gifthing.user.UserService
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Service
 
-class UserDetailsProvider(val userRepository: UserRepository) {
+class UserDetailsProvider(private val userRepository: UserRepository) {
 
 	fun getUser(): UserResponse {
 		val tmpUser = userRepository.findById(getUserDetail()!!.id)

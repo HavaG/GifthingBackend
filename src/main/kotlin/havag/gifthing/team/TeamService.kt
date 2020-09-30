@@ -1,9 +1,9 @@
 package havag.gifthing.team
 
-import havag.gifthing.repositories.UserRepository
 import havag.gifthing.models.team.dto.TeamRequest
 import havag.gifthing.models.team.dto.TeamResponse
 import havag.gifthing.repositories.TeamRepository
+import havag.gifthing.repositories.UserRepository
 import havag.gifthing.security.services.UserDetailsProvider
 import org.springframework.stereotype.Service
 

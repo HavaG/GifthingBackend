@@ -14,7 +14,7 @@ class Role {
 	@Column(length = 20)
 	private var name: ERole? = null
 
-	constructor() {}
+	constructor()
 	constructor(name: ERole?) {
 		this.name = name
 	}

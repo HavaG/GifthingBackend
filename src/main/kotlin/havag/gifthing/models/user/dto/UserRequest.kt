@@ -1,10 +1,10 @@
 package havag.gifthing.models.user.dto
 
-import havag.gifthing.repositories.GiftRepository
-import havag.gifthing.repositories.TeamRepository
 import havag.gifthing.models.gift.Gift
 import havag.gifthing.models.team.Team
 import havag.gifthing.models.user.User
+import havag.gifthing.repositories.GiftRepository
+import havag.gifthing.repositories.TeamRepository
 
 class UserRequest(
         var email: String,

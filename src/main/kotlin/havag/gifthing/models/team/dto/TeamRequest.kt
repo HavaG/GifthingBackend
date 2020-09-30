@@ -1,8 +1,8 @@
 package havag.gifthing.models.team.dto
 
-import havag.gifthing.repositories.UserRepository
 import havag.gifthing.models.team.Team
 import havag.gifthing.models.user.dto.UserResponse
+import havag.gifthing.repositories.UserRepository
 
 class TeamRequest(
         var name: String,

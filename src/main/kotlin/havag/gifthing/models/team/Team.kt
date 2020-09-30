@@ -1,8 +1,8 @@
 package havag.gifthing.models.team
 
 import havag.gifthing.models.team.dto.TeamResponse
-import havag.gifthing.models.user.dto.TeamUserResponse
 import havag.gifthing.models.user.User
+import havag.gifthing.models.user.dto.TeamUserResponse
 import javax.persistence.*
 
 @Entity(name = "Team")

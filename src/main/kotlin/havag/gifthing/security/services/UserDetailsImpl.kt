@@ -42,7 +42,7 @@ class UserDetailsImpl(
 	companion object {
 		private const val serialVersionUID = 1L
 		fun build(user: User): UserDetailsImpl {
-			val authorities: List<GrantedAuthority> = user.getRoles()!!.stream()
+			val authorities: List<GrantedAuthority> = user.getRoles().stream()
 				.map { role -> SimpleGrantedAuthority(role!!.getName()!!.name) }
 				.collect(Collectors.toList())
 			return UserDetailsImpl(

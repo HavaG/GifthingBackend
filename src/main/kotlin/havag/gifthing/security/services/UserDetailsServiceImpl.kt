@@ -1,13 +1,13 @@
 package havag.gifthing.security.services
 
-import havag.gifthing.repositories.UserRepository
 import havag.gifthing.models.user.User
+import havag.gifthing.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional
 
 
 @Service

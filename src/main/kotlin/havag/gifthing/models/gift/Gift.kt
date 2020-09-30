@@ -1,9 +1,9 @@
 package havag.gifthing.models.gift
 
-import havag.gifthing.models.gift.dto.GiftResponse
-import havag.gifthing.models.user.dto.GiftUserResponse
-import havag.gifthing.models.user.User
 import com.fasterxml.jackson.annotation.JsonIgnore
+import havag.gifthing.models.gift.dto.GiftResponse
+import havag.gifthing.models.user.User
+import havag.gifthing.models.user.dto.GiftUserResponse
 import javax.persistence.*
 
 
