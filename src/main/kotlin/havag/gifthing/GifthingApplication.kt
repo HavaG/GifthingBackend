@@ -3,7 +3,9 @@ package havag.gifthing
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication
+
+
+@SpringBootApplication(scanBasePackages= ["havag.gifthing.security.services"])
 class GifthingApplication
 
 fun main(args: Array<String>) {
