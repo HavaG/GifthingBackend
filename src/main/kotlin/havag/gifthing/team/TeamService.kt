@@ -5,29 +5,33 @@ import havag.gifthing.models.team.dto.TeamResponse
 import havag.gifthing.repositories.TeamRepository
 import havag.gifthing.repositories.UserRepository
 import havag.gifthing.security.services.UserDetailsProvider
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class TeamService(val teamRepository: TeamRepository,
                   val userRepository: UserRepository,
-                  val userService: UserDetailsProvider
+                  val userService: UserDetailsProvider,
+                  val logger: Logger = LoggerFactory.getLogger(TeamService::class.java)
 ) : ITeamService {
-
     //TODO: probaly not working
-    override fun addMember(groupId: Long, userId: Long): TeamResponse? {
-        val group = teamRepository.findById(groupId)
+    override fun addMember(teamId: Long, userId: Long): TeamResponse? {
+        val team = teamRepository.findById(teamId)
         val user = userRepository.findById(userId)
-        if(user.isPresent && group.isPresent) {
-            val saveGroup = group.get()
-            saveGroup.addMember(user.get())
-            val result = teamRepository.save(saveGroup)
-            return result.toTeamResponse()
+        return if(user.isPresent && team.isPresent) {
+            val saveTeam = team.get()
+            saveTeam.addMember(user.get())
+            val result = teamRepository.save(saveTeam)
+            logger.info("UserId ${userService.getUser().id} added userId $userId to teamId ${result.id}")
+            result.toTeamResponse()
         } else {
-            return null
+            logger.info("Could not add userId $userId to teamId $teamId")
+            null
         }
     }
 
-    override fun removeMember(groupId: Long, userId: Long): TeamResponse? {
+    override fun removeMember(teamId: Long, userId: Long): TeamResponse? {
         TODO("Not yet implemented")
     }
 
@@ -37,6 +41,7 @@ class TeamService(val teamRepository: TeamRepository,
         for (i in teams) {
             result.add(i.toTeamResponse())
         }
+        logger.info("UserId ${userService.getUser().id} get all teams")
         return result
     }
 
@@ -50,22 +55,32 @@ class TeamService(val teamRepository: TeamRepository,
                 if(it.id == team.id)
                     member = true
             }
-            if(member)
+            if(member) {
+                logger.info("UserId ${userService.getUser().id} get teamId $teamId")
                 team.toTeamResponse()
-            else null
-        } else null
+            }
+            else {
+                logger.info("UserId ${userService.getUser().id} not member of the teamId $teamId")
+                null
+            }
+        } else {
+            logger.info("Requested team is not exists userId ${userService.getUser().id}")
+            null
+        }
     }
 
     override fun create(team: TeamRequest): TeamResponse {
         val saveTeam = team.toTeam(userRepository)
         val result = teamRepository.save(saveTeam)
+        logger.info("UserId ${userService.getUser().id} created teamId ${result.id}")
         return result.toTeamResponse()
     }
 
     override fun update(team: TeamRequest): TeamResponse? {
         val tmp = teamRepository.findById(team.id)
         return if(tmp.isPresent) {
-            val myOwnedTeams = userService.getUser().getMyOwnedTeams()
+            val user = userService.getUser()
+            val myOwnedTeams = user.getMyOwnedTeams()
             var owned = false
             myOwnedTeams.forEach {
                 if(it.id == team.id)
@@ -74,9 +89,16 @@ class TeamService(val teamRepository: TeamRepository,
             return if(owned) {
                 val saveTeam = team.toTeam(userRepository)
                 val result = teamRepository.save(saveTeam)
+                logger.info("UserId ${userService.getUser().id} updated teamId ${result.id}")
                 result.toTeamResponse()
-            } else null
-        } else null
+            } else {
+                logger.info("Update team failed userId ${user.id} gift ${tmp.get().id} (not owner)")
+                null
+            }
+        } else {
+            logger.info("Update team failed userId ${userService.getUser().id} teamId ${team.id}")
+            null
+        }
     }
 
     override fun delete(teamId: Long): Boolean {

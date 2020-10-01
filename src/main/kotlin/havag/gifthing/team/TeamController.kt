@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/team")
 class TeamController (val iTeamService: ITeamService){
 
-    //TODO: Ennek nincs is értelme (?)
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     fun all(): ResponseEntity<MutableIterable<TeamResponse>> {
@@ -58,11 +57,11 @@ class TeamController (val iTeamService: ITeamService){
     }
 
     //TODO: invite link pls (not working btw)
-    @PutMapping("/join/{groupId}/{userId}")
+    @PutMapping("/join/{teamId}/{userId}")
     @PreAuthorize("hasRole('USER')")
-    fun join(@PathVariable(value = "groupId") groupId: Long,
-                @PathVariable(value = "userId") userId: Long): ResponseEntity<TeamResponse> {
-        val tmp = iTeamService.addMember(groupId, userId)
+    fun join(@PathVariable(value = "teamId") teamId: Long,
+             @PathVariable(value = "userId") userId: Long): ResponseEntity<TeamResponse> {
+        val tmp = iTeamService.addMember(teamId, userId)
         return if(tmp != null)
             ResponseEntity(tmp, HttpStatus.OK)
         else
@@ -70,11 +69,11 @@ class TeamController (val iTeamService: ITeamService){
     }
 
     //TODO: not implemented
-    @PutMapping("/remove/{groupId}/{userId}")
+    @PutMapping("/remove/{teamId}/{userId}")
     @PreAuthorize("hasRole('MODERATOR')")
-    fun remove(@PathVariable(value = "groupId") groupId: Long,
-                @PathVariable(value = "userId") userId: Long): ResponseEntity<TeamResponse> {
-        val tmp = iTeamService.removeMember(groupId, userId)
+    fun remove(@PathVariable(value = "teamId") teamId: Long,
+               @PathVariable(value = "userId") userId: Long): ResponseEntity<TeamResponse> {
+        val tmp = iTeamService.removeMember(teamId, userId)
         return if(tmp != null)
             ResponseEntity(tmp, HttpStatus.OK)
         else

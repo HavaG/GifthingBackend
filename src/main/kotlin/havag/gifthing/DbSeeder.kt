@@ -9,6 +9,8 @@ import havag.gifthing.repositories.GiftRepository
 import havag.gifthing.repositories.RoleRepository
 import havag.gifthing.repositories.TeamRepository
 import havag.gifthing.repositories.UserRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 
@@ -16,7 +18,8 @@ import org.springframework.stereotype.Component
 class DbSeeder(val userRepository: UserRepository,
                val giftRepository: GiftRepository,
                val roleRepository: RoleRepository,
-               val teamRepository: TeamRepository
+               val teamRepository: TeamRepository,
+               val logger: Logger = LoggerFactory.getLogger(DbSeeder::class.java)
                ) : CommandLineRunner
 {
     override fun run(vararg p0: String?) {
@@ -120,6 +123,7 @@ class DbSeeder(val userRepository: UserRepository,
             this.teamRepository.saveAll(teams)
             this.roleRepository.saveAll(roles)
         }
-        println(" -- Database has been initialized")
+
+        logger.info(" -- Database has been initialized")
     }
 }

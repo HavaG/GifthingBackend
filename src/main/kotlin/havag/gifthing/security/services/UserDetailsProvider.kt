@@ -3,7 +3,6 @@ package havag.gifthing.security.services
 import havag.gifthing.models.user.dto.UserResponse
 import havag.gifthing.repositories.UserRepository
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.stereotype.Service
 
 class UserDetailsProvider(private val userRepository: UserRepository) {
 

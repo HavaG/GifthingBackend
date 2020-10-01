@@ -8,7 +8,6 @@ interface IUserService {
 	fun findByEmail(userEmail: String): UserResponse?
 	fun findById(userId: Long): UserResponse?
 	fun findByUsername(username: String): UserResponse?
-	fun create(user: UserRequest): UserResponse?
 	fun update(user: UserRequest): UserResponse?
 	fun delete(userId: Long): Boolean
 	fun getUsernames(): ArrayList<String>

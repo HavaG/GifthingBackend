@@ -77,16 +77,4 @@ class UserController (val iUserService: IUserService){
         else
             ResponseEntity(HttpStatus.NOT_FOUND)
     }
-
-    /*
-    @PostMapping("/create")
-    @PreAuthorize("hasRole('USER')")
-    fun create(@RequestBody newUser: UserRequest): ResponseEntity<UserResponse> {
-        val tmp = iUserService.create(newUser)
-        return if(tmp != null)
-            ResponseEntity(tmp, HttpStatus.OK)
-        else
-            ResponseEntity(HttpStatus.CONFLICT)
-    } */
-
 }
