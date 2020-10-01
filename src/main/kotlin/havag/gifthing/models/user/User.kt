@@ -175,7 +175,6 @@ class User(
     fun toUserResponse(): UserResponse {
         val tmpOneUser = UserResponse(
                 this.email,
-                this.password,
                 this.id,
                 this.firstName,
                 this.lastName,

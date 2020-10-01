@@ -2,7 +2,6 @@ package havag.gifthing.models.user.dto
 
 class UserResponse(
         var email: String,
-        var password: String, //TODO: remove password
         var id: Long,
         var firstName: String,
         var lastName: String,
