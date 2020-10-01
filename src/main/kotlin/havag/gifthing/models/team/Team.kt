@@ -62,4 +62,8 @@ class Team(var name: String)
         result.setTeamMembers(this.members)
         return result
     }
+
+    fun isMember(user: User): Boolean {
+        return members.contains(user)
+    }
 }

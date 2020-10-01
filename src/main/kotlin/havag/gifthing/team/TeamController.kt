@@ -14,7 +14,7 @@ class TeamController (val iTeamService: ITeamService){
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
-    fun all(): ResponseEntity<MutableIterable<TeamResponse>> {
+    fun findAll(): ResponseEntity<MutableIterable<TeamResponse>> {
         return ResponseEntity(iTeamService.findAll(), HttpStatus.OK)
     }
 
@@ -28,6 +28,12 @@ class TeamController (val iTeamService: ITeamService){
         else {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
+    }
+
+    @GetMapping("/my-teams")
+    @PreAuthorize("hasRole('USER')")
+    fun getMyTeams(): ResponseEntity<MutableList<TeamResponse>> {
+        return ResponseEntity(iTeamService.getMyTeams(), HttpStatus.OK)
     }
 
     @DeleteMapping("/delete/{id}")

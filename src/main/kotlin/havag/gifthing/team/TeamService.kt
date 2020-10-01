@@ -35,6 +35,18 @@ class TeamService(val teamRepository: TeamRepository,
         TODO("Not yet implemented")
     }
 
+    override fun getMyTeams(): MutableList<TeamResponse> {
+        val teams = teamRepository.findAll()
+        val result = mutableListOf<TeamResponse>()
+        val user = userRepository.findById(userService.getUser().id).get()
+        for (i in teams) {
+            if(i.isMember(user))
+                result.add(i.toTeamResponse())
+        }
+        logger.info("UserId ${userService.getUser().id} get my teams")
+        return result
+    }
+
     override fun findAll(): MutableIterable<TeamResponse> {
         val teams = teamRepository.findAll()
         val result = mutableListOf<TeamResponse>()

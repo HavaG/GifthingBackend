@@ -12,4 +12,5 @@ interface ITeamService {
 	fun delete(teamId: Long): Boolean
 	fun addMember(teamId: Long, userId: Long): TeamResponse?
 	fun removeMember(teamId: Long, userId: Long): TeamResponse?
+	fun getMyTeams(): MutableList<TeamResponse>
 }
