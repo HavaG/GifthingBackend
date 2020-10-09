@@ -14,207 +14,219 @@ import javax.validation.constraints.NotBlank
 
 
 @Entity(name = "User")
-@Table(	name = "users")
+@Table(name = "users")
 class User(
-    @Column(unique=true)
-    var username: String,
-    @Column(unique = true)
-    @NotBlank
-    @Email
-    var email: String,
-    @NotBlank
-    private var password: String) {
+	@Column(unique = true)
+	var username: String,
+	@Column(unique = true)
+	@NotBlank
+	@Email
+	var email: String,
+	@NotBlank
+	private var password: String
+) {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Long = 0
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	var id: Long = 0
 
-    var firstName: String = ""
+	var firstName: String = ""
 
-    var lastName: String = ""
+	var lastName: String = ""
 
-    //TODO: add isActive var isActive: Boolean = true
-
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-        joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "role_id")])
-    private var roles: Set<Role> = HashSet<Role>()
+	//TODO: add isActive var isActive: Boolean = true
 
 
-    @OneToMany(mappedBy = "owner",
-            cascade= [CascadeType.ALL])
-    private var gifts = mutableListOf<Gift>()
-
-    fun addGift(gift: Gift) {
-        gifts.add(gift)
-        gift.setOwner(this)
-    }
-
-    //remove a gift
-    fun removeGift(gift: Gift) {
-        //remove from my gift list
-        gifts.remove(gift)
-        gift.setOwner(null)
-        gift.setReserveBy(null)
-    }
-
-    //remove all gifts one by one
-    fun removeAllGifts() {
-        for(i in gifts) {
-            i.setOwner(null)
-            i.setReserveBy(null)
-        }
-        gifts = mutableListOf<Gift>()
-    }
-
-    fun getGifts(): MutableList<Gift> {
-        return gifts
-    }
-
-    fun setGifts(gifts: MutableList<Gift>) {
-        this.gifts = gifts
-    }
-
-    fun getPassword():String {
-        return password
-    }
-
-    @OneToMany(mappedBy = "reservedBy",
-            cascade= [CascadeType.ALL])
-    private var reservedGifts = mutableListOf<Gift>()
-
-    fun reserveGift(gift: Gift) {
-        reservedGifts.add(gift)
-        gift.setReserveBy(this)
-    }
-
-    fun removeReservedGift(gift: Gift) {
-        reservedGifts.remove(gift)
-        gift.setReserveBy(null)
-    }
-
-    fun removeAllReservedGift() {
-        for(i in reservedGifts) {
-            i.setReserveBy(null)
-        }
-        reservedGifts = mutableListOf<Gift>()
-    }
-
-    fun getReservedGifts(): MutableList<Gift> {
-        return reservedGifts
-    }
-
-    fun setReservedGifts(reservedGifts: MutableList<Gift>) {
-        this.reservedGifts = reservedGifts
-    }
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+		name = "user_roles",
+		joinColumns = [JoinColumn(name = "user_id")],
+		inverseJoinColumns = [JoinColumn(name = "role_id")]
+	)
+	private var roles: Set<Role> = HashSet<Role>()
 
 
-    //the team, where the user is admin
-    @OneToMany(mappedBy = "admin",
-            cascade= [CascadeType.ALL])
-    private var myOwnedTeams = mutableListOf<Team>()
+	@OneToMany(
+		mappedBy = "owner",
+		cascade = [CascadeType.ALL]
+	)
+	private var gifts = mutableListOf<Gift>()
 
-    fun addMyOwnedTeam(team: Team) {
-        myOwnedTeams.add(team)
-    }
+	fun addGift(gift: Gift) {
+		gifts.add(gift)
+		gift.setOwner(this)
+	}
 
-    fun removeMyOwnedTeam(team: Team) {
-        myOwnedTeams.remove(team)
-        team.removeAdmin()
-    }
+	//remove a gift
+	fun removeGift(gift: Gift) {
+		//remove from my gift list
+		gifts.remove(gift)
+		gift.setOwner(null)
+		gift.setReserveBy(null)
+	}
 
-    @JsonIgnore
-    fun getMyOwnedTeams(): MutableList<Team> {
-        return myOwnedTeams
-    }
+	//remove all gifts one by one
+	fun removeAllGifts() {
+		for (i in gifts) {
+			i.setOwner(null)
+			i.setReserveBy(null)
+		}
+		gifts = mutableListOf<Gift>()
+	}
 
-    fun setMyOwnedTeams(ownedTeams: MutableList<Team>) {
-        this.myOwnedTeams = ownedTeams
-    }
+	fun getGifts(): MutableList<Gift> {
+		return gifts
+	}
 
-    //The team, where the user is a member
+	fun setGifts(gifts: MutableList<Gift>) {
+		this.gifts = gifts
+	}
 
-    @ManyToMany(cascade= [CascadeType.ALL])
-    @JoinTable(
-            name = "team_members",
-            joinColumns = [JoinColumn(name = "user_id")],
-            inverseJoinColumns = [JoinColumn(name = "team_id")])
-    private var myTeams = mutableListOf<Team>()
+	fun getPassword(): String {
+		return password
+	}
 
-    @JsonIgnore
-    fun getMyTeams(): MutableList<Team> {
-        return myTeams
-    }
+	@OneToMany(
+		mappedBy = "reservedBy",
+		cascade = [CascadeType.ALL]
+	)
+	private var reservedGifts = mutableListOf<Gift>()
 
-    fun setMyTeams(myTeams: MutableList<Team>) {
-        this.myTeams = myTeams
-    }
+	fun reserveGift(gift: Gift) {
+		reservedGifts.add(gift)
+		gift.setReserveBy(this)
+	}
 
-    fun addMyTeam(team: Team) {
-        myTeams.add(team)
-    }
+	fun removeReservedGift(gift: Gift) {
+		reservedGifts.remove(gift)
+		gift.setReserveBy(null)
+	}
 
-    fun removeMyTeam(team: Team) {
-        myTeams.remove(team)
-    }
+	fun removeAllReservedGift() {
+		for (i in reservedGifts) {
+			i.setReserveBy(null)
+		}
+		reservedGifts = mutableListOf<Gift>()
+	}
 
-    fun removeFromAllTeam() {
-        myTeams = mutableListOf()
-    }
+	fun getReservedGifts(): MutableList<Gift> {
+		return reservedGifts
+	}
 
-    fun getRoles(): Set<Role> {
-        return roles
-    }
+	fun setReservedGifts(reservedGifts: MutableList<Gift>) {
+		this.reservedGifts = reservedGifts
+	}
 
-    fun setRoles(roles: Set<Role>) {
-        this.roles = roles
-    }
 
-    fun toUserResponse(): UserResponse {
-        val tmpOneUser = UserResponse(
-                this.email,
-                this.id,
-                this.firstName,
-                this.lastName,
-                this.username)
+	//the team, where the user is admin
+	@OneToMany(
+		mappedBy = "admin",
+		cascade = [CascadeType.ALL]
+	)
+	private var myOwnedTeams = mutableListOf<Team>()
 
-        val tmpGiftList = mutableListOf<GiftUserResponse>()
-        val tmpReservedGiftList = mutableListOf<GiftUserResponse>()
-        val tmpTeamList = mutableListOf<TeamUserResponse>()
-        val tmpOwnedTeamList = mutableListOf<TeamUserResponse>()
+	fun addMyOwnedTeam(team: Team) {
+		myOwnedTeams.add(team)
+	}
 
-        for(j in this.getGifts()) {
-            tmpGiftList.add(j.toGiftUserResponse())
-        }
-        tmpOneUser.setGifts(tmpGiftList)
+	fun removeMyOwnedTeam(team: Team) {
+		myOwnedTeams.remove(team)
+		team.removeAdmin()
+	}
 
-        for(j in this.getReservedGifts()) {
-            tmpReservedGiftList.add(j.toGiftUserResponse())
-        }
-        tmpOneUser.setReservedGifts(tmpReservedGiftList)
+	@JsonIgnore
+	fun getMyOwnedTeams(): MutableList<Team> {
+		return myOwnedTeams
+	}
 
-        for(j in this.getMyTeams()) {
-            tmpTeamList.add(j.toTeamUserResponse())
-        }
-        tmpOneUser.setMyTeams(tmpTeamList)
+	fun setMyOwnedTeams(ownedTeams: MutableList<Team>) {
+		this.myOwnedTeams = ownedTeams
+	}
 
-        for(j in this.getMyOwnedTeams()) {
-            tmpOwnedTeamList.add(j.toTeamUserResponse())
-        }
-        tmpOneUser.setMyOwnedTeams(tmpOwnedTeamList)
+	//The team, where the user is a member
 
-        return tmpOneUser
-    }
+	@ManyToMany(cascade = [CascadeType.ALL])
+	@JoinTable(
+		name = "team_members",
+		joinColumns = [JoinColumn(name = "user_id")],
+		inverseJoinColumns = [JoinColumn(name = "team_id")]
+	)
+	private var myTeams = mutableListOf<Team>()
 
-    fun toUserGiftResponse(): UserGiftResponse {
-        return UserGiftResponse(
-                this.email,
-                this.password,
-                this.id,
-                this.firstName,
-                this.lastName,
-                this.username)
-    }
+	@JsonIgnore
+	fun getMyTeams(): MutableList<Team> {
+		return myTeams
+	}
+
+	fun setMyTeams(myTeams: MutableList<Team>) {
+		this.myTeams = myTeams
+	}
+
+	fun addMyTeam(team: Team) {
+		myTeams.add(team)
+	}
+
+	fun removeMyTeam(team: Team) {
+		myTeams.remove(team)
+	}
+
+	fun removeFromAllTeam() {
+		myTeams = mutableListOf()
+	}
+
+	fun getRoles(): Set<Role> {
+		return roles
+	}
+
+	fun setRoles(roles: Set<Role>) {
+		this.roles = roles
+	}
+
+	fun toUserResponse(): UserResponse {
+		val tmpOneUser = UserResponse(
+			this.email,
+			this.id,
+			this.firstName,
+			this.lastName,
+			this.username
+		)
+
+		val tmpGiftList = mutableListOf<GiftUserResponse>()
+		val tmpReservedGiftList = mutableListOf<GiftUserResponse>()
+		val tmpTeamList = mutableListOf<TeamUserResponse>()
+		val tmpOwnedTeamList = mutableListOf<TeamUserResponse>()
+
+		for (j in this.getGifts()) {
+			tmpGiftList.add(j.toGiftUserResponse())
+		}
+		tmpOneUser.setGifts(tmpGiftList)
+
+		for (j in this.getReservedGifts()) {
+			tmpReservedGiftList.add(j.toGiftUserResponse())
+		}
+		tmpOneUser.setReservedGifts(tmpReservedGiftList)
+
+		for (j in this.getMyTeams()) {
+			tmpTeamList.add(j.toTeamUserResponse())
+		}
+		tmpOneUser.setMyTeams(tmpTeamList)
+
+		for (j in this.getMyOwnedTeams()) {
+			tmpOwnedTeamList.add(j.toTeamUserResponse())
+		}
+		tmpOneUser.setMyOwnedTeams(tmpOwnedTeamList)
+
+		return tmpOneUser
+	}
+
+	fun toUserGiftResponse(): UserGiftResponse {
+		return UserGiftResponse(
+			this.email,
+			this.password,
+			this.id,
+			this.firstName,
+			this.lastName,
+			this.username
+		)
+	}
 }

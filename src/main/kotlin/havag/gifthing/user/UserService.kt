@@ -8,6 +8,7 @@ import havag.gifthing.repositories.UserRepository
 import havag.gifthing.security.services.UserDetailsProvider
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
@@ -62,9 +63,9 @@ class UserService(
 		return null
 	}
 
-	override fun delete(userId: Long): Boolean {
+	override fun delete(userId: Long): HttpStatus {
 		//TODO: not implemented
-		return false
+		return HttpStatus.NOT_FOUND
 		/*val tmp = userRepository.findById(userId)
 		if (tmp.isPresent) {
 			val temporal = tmp.get()
@@ -82,7 +83,7 @@ class UserService(
 		return false*/
 	}
 
-	override fun getUsernames(): ArrayList<String> {
+	override fun getUsernames(): MutableIterable<String> {
 		val users = userRepository.findAll()
 		val usernames: ArrayList<String> = ArrayList()
 		users.forEach {

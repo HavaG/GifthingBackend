@@ -8,6 +8,7 @@ import havag.gifthing.repositories.UserRepository
 import havag.gifthing.security.services.UserDetailsProvider
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
@@ -100,7 +101,7 @@ class GiftService(
 		}
 	}
 
-	override fun delete(giftId: Long): Boolean {
+	override fun delete(giftId: Long): HttpStatus {
 		val tmp = giftRepository.findById(giftId)
 		return if (tmp.isPresent) {
 			val temporal = tmp.get()
@@ -116,14 +117,14 @@ class GiftService(
 				temporal.removeReserveBy()
 				giftRepository.delete(temporal)
 				logger.info("UserId ${temporal.id} deleted gift $giftId")
-				true
+				HttpStatus.OK
 			} else {
 				logger.info("Delete gift failed userId ${user.id} gift ${temporal.id} (not owner)")
-				false
+				HttpStatus.UNAUTHORIZED
 			}
 		} else {
 			logger.info("Requested gift is not exists userId ${userService.getUser().id}")
-			true
+			HttpStatus.NOT_FOUND
 		}
 	}
 

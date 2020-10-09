@@ -10,62 +10,53 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/gift")
-class GiftController (val iGiftService: IGiftService){
+class GiftController(val iGiftService: IGiftService) {
 
-    //TODO: Ennek van értelme?
-    @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN')")
-    fun all(): ResponseEntity<MutableIterable<GiftResponse>> {
-        return ResponseEntity(iGiftService.findAll(), HttpStatus.OK)
-    }
+	//TODO: Ennek van értelme?
+	@GetMapping("/all")
+	@PreAuthorize("hasRole('ADMIN')")
+	fun all(): ResponseEntity<MutableIterable<GiftResponse>> {
+		return ResponseEntity(iGiftService.findAll(), HttpStatus.OK)
+	}
 
-    @GetMapping("/my-gifts")
-    @PreAuthorize("hasRole('USER')")
-    fun myGifts(): ResponseEntity<MutableIterable<GiftUserResponse>> {
-        return ResponseEntity(iGiftService.myGifts(), HttpStatus.OK)
-    }
+	@GetMapping("/my-gifts")
+	@PreAuthorize("hasRole('USER')")
+	fun myGifts(): ResponseEntity<MutableIterable<GiftUserResponse>> {
+		return ResponseEntity(iGiftService.myGifts(), HttpStatus.OK)
+	}
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
-    fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<GiftResponse> {
-        val tmp = iGiftService.findById(id)
-        return if(tmp != null) {
-            ResponseEntity(tmp, HttpStatus.OK)
-        } else {
-            ResponseEntity(HttpStatus.NOT_FOUND)
-        }
-    }
+	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('USER')")
+	fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<GiftResponse> {
+		val gift = iGiftService.findById(id)
+		return gift?.let { ResponseEntity(it, HttpStatus.OK) } ?: ResponseEntity(HttpStatus.NOT_FOUND)
+	}
 
-    @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('USER')")
-    fun deleteById(@PathVariable(value = "id") id: Long): ResponseEntity<Boolean>{
-        return ResponseEntity(iGiftService.delete(id), HttpStatus.OK)
-    }
+	@DeleteMapping("/delete/{id}")
+	@PreAuthorize("hasRole('USER')")
+	fun deleteById(@PathVariable(value = "id") id: Long): ResponseEntity<Boolean> {
+		val status = iGiftService.delete(id)
+		val success = status.is2xxSuccessful
+		return ResponseEntity(success, status)
+	}
 
-    @PutMapping("/update")
-    @PreAuthorize("hasRole('USER')")
-    fun update(@RequestBody editGift: GiftRequest): ResponseEntity<GiftResponse> {
-        val tmp = iGiftService.update(editGift)
-        return if(tmp != null) {
-            ResponseEntity(tmp, HttpStatus.OK)
-        } else {
-            ResponseEntity(HttpStatus.NOT_FOUND)
-        }
-    }
+	@PutMapping("/update")
+	@PreAuthorize("hasRole('USER')")
+	fun update(@RequestBody editGift: GiftRequest): ResponseEntity<GiftResponse> {
+		val gift = iGiftService.update(editGift)
+		return gift?.let { ResponseEntity(gift, HttpStatus.OK) } ?: ResponseEntity(HttpStatus.NOT_FOUND)
+	}
 
-    @PostMapping("/create")
-    @PreAuthorize("hasRole('USER')")
-    fun create(@RequestBody newGift: GiftRequest): ResponseEntity<GiftResponse>     {
-        return ResponseEntity(iGiftService.create(newGift), HttpStatus.OK)
-    }
+	@PostMapping("/create")
+	@PreAuthorize("hasRole('USER')")
+	fun create(@RequestBody newGift: GiftRequest): ResponseEntity<GiftResponse> {
+		return ResponseEntity(iGiftService.create(newGift), HttpStatus.OK)
+	}
 
-    @PutMapping("/reserve/{giftId}")
-    @PreAuthorize("hasRole('USER')")
-    fun reserveGift(@PathVariable(value = "giftId") giftId: Long): ResponseEntity<GiftResponse> {
-        val tmp = iGiftService.reserve(giftId)
-        return if(tmp != null)
-            ResponseEntity(tmp, HttpStatus.OK)
-        else
-            ResponseEntity(HttpStatus.CONFLICT)
-    }
+	@PutMapping("/reserve/{giftId}")
+	@PreAuthorize("hasRole('USER')")
+	fun reserveGift(@PathVariable(value = "giftId") giftId: Long): ResponseEntity<GiftResponse> {
+		val gift = iGiftService.reserve(giftId)
+		return gift?.let { ResponseEntity(gift, HttpStatus.OK) } ?: ResponseEntity(HttpStatus.CONFLICT)
+	}
 }

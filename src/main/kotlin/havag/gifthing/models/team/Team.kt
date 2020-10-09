@@ -7,63 +7,65 @@ import javax.persistence.*
 
 @Entity(name = "Team")
 @Table(name = "teams")
-class Team(var name: String)
-{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Long = 0
+class Team(var name: String) {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	var id: Long = 0
 
-    @ManyToOne(cascade= [CascadeType.ALL])
-    @JoinColumn(name = "admin_id")
-    private var admin: User? = null
+	@ManyToOne(cascade = [CascadeType.ALL])
+	@JoinColumn(name = "admin_id")
+	private var admin: User? = null
 
-    fun setAdmin(user: User) {
-        admin = user
-        user.addMyOwnedTeam(this)
-        addMember(user)
-    }
+	fun setAdmin(user: User) {
+		admin = user
+		user.addMyOwnedTeam(this)
+		addMember(user)
+	}
 
-    fun removeAdmin() {
-        admin = null
-    }
+	fun removeAdmin() {
+		admin = null
+	}
 
-    fun getAdmin(): User? {
-        return admin
-    }
+	fun getAdmin(): User? {
+		return admin
+	}
 
-    @ManyToMany(mappedBy = "myTeams",
-                cascade= [CascadeType.ALL])
-    var members = mutableListOf<User>()
+	@ManyToMany(
+		mappedBy = "myTeams",
+		cascade = [CascadeType.ALL]
+	)
+	var members = mutableListOf<User>()
 
-    fun addMember(user: User) {
-        //csak akkor adja hozzá, ha nincs még benne
-        if(!members.contains(user)){
-            members.add(user)
-            user.addMyTeam(this)
-        }
-    }
+	fun addMember(user: User) {
+		//csak akkor adja hozzá, ha nincs még benne
+		if (!members.contains(user)) {
+			members.add(user)
+			user.addMyTeam(this)
+		}
+	}
 
-    fun removeMember(user: User) {
-        members.remove(user)
-    }
-    fun removeAllMember() {
-        for(i in members) {
-            i.removeMyTeam(this)
-        }
-        members = mutableListOf<User>()
-    }
+	fun removeMember(user: User) {
+		members.remove(user)
+	}
 
-    fun toTeamUserResponse(): TeamUserResponse {
-        return TeamUserResponse(this.name, this.id)
-    }
+	fun removeAllMember() {
+		for (i in members) {
+			i.removeMyTeam(this)
+		}
+		members = mutableListOf<User>()
+	}
 
-    fun toTeamResponse(): TeamResponse {
-        val result =  TeamResponse(this.name, this.id, this.admin!!.id)
-        result.setTeamMembers(this.members)
-        return result
-    }
+	fun toTeamUserResponse(): TeamUserResponse {
+		return TeamUserResponse(this.name, this.id)
+	}
 
-    fun isMember(user: User): Boolean {
-        return members.contains(user)
-    }
+	fun toTeamResponse(): TeamResponse {
+		val result = TeamResponse(this.name, this.id, this.admin!!.id)
+		result.setTeamMembers(this.members)
+		return result
+	}
+
+	fun isMember(user: User): Boolean {
+		return members.contains(user)
+	}
 }
