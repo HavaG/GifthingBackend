@@ -81,6 +81,9 @@ class AuthService(
 			signUpRequest.email!!,
 			encoder!!.encode(signUpRequest.password)
 		)
+		signUpRequest.firstname?.let { user.firstName = it }
+		signUpRequest.lastname?.let { user.lastName = it }
+
 		val roles: MutableSet<Role> = HashSet()
 		val userRole: Role = roleRepository!!.findByName(ERole.ROLE_USER)
 			.orElseThrow {
