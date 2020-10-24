@@ -19,6 +19,8 @@ class Gift(
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	var id: Long = 0
 
+	var lastUpdate: Long = System.currentTimeMillis()
+
 	@JsonIgnore
 	@ManyToOne(cascade = [CascadeType.ALL])
 	@JoinColumn(name = "user_id")
@@ -71,7 +73,8 @@ class Gift(
 			this.name,
 			this.link,
 			this.description,
-			this.price
+			this.price,
+			lastUpdate = this.lastUpdate
 		)
 		this.owner?.let { tmp.owner = it.id }
 

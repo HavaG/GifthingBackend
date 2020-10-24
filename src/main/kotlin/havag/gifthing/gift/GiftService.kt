@@ -33,6 +33,7 @@ class GiftService(
 			if (!owner) { //TODO: itt még lehet kavarodás ha már le van foglalva
 				val dbUser = userRepository.findById(user.id)
 				tmpGift.setReserveBy(dbUser.get())
+				tmpGift.lastUpdate = System.currentTimeMillis()
 				val result = giftRepository.save(tmpGift)
 				logger.info("UserId ${user.id} reserved giftId ${tmpGift.id}")
 				result.toGiftResponse()
@@ -70,6 +71,7 @@ class GiftService(
 		val user = userService.getUser()
 		gift.owner = user.id
 		val saveGift = gift.toGift(userRepository)
+		saveGift.lastUpdate = System.currentTimeMillis()
 		val result = giftRepository.save(saveGift)
 		logger.info("UserId ${user.id} created gift ${result.id}")
 		return result.toGiftResponse()
@@ -88,6 +90,7 @@ class GiftService(
 			}
 			if (owner) {
 				val saveGift = gift.toGift(userRepository)
+				saveGift.lastUpdate = System.currentTimeMillis()
 				val result = giftRepository.save(saveGift)
 				logger.info("UserId ${user.id} updated gift ${result.id}")
 				result.toGiftResponse()
