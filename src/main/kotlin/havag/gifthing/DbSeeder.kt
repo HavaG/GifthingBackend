@@ -109,7 +109,6 @@ class DbSeeder(
 			teams.add(team5)
 
 			val roles = mutableListOf<Role>()
-
 			val role1 = Role(ERole.ROLE_ADMIN)
 			val role2 = Role(ERole.ROLE_MODERATOR)
 			val role3 = Role(ERole.ROLE_USER)

@@ -1,7 +1,9 @@
 package havag.gifthing.gift
 
+import havag.gifthing.models.gift.Gift
 import havag.gifthing.models.gift.dto.GiftRequest
 import havag.gifthing.models.gift.dto.GiftResponse
+import havag.gifthing.models.user.User
 import havag.gifthing.models.user.dto.GiftUserResponse
 import havag.gifthing.repositories.GiftRepository
 import havag.gifthing.repositories.UserRepository
@@ -19,30 +21,84 @@ class GiftService(
 	val logger: Logger = LoggerFactory.getLogger(GiftService::class.java)
 ) : IGiftService {
 
-	override fun reserve(giftId: Long): GiftResponse? {
+	private fun isPresentGift(giftId: Long): Gift? {
 		val gift = giftRepository.findById(giftId)
 		return if (gift.isPresent) {
-			val tmpGift = gift.get()
-			val user = userService.getUser()
-			val myGiftList = user.getGifts()
-			var owner = false
-			myGiftList.forEach {
-				if (it.id == tmpGift.id)
-					owner = true
-			}
-			if (!owner) { //TODO: itt még lehet kavarodás ha már le van foglalva
-				val dbUser = userRepository.findById(user.id)
-				tmpGift.setReserveBy(dbUser.get())
-				tmpGift.lastUpdate = System.currentTimeMillis()
-				val result = giftRepository.save(tmpGift)
-				logger.info("UserId ${user.id} reserved giftId ${tmpGift.id}")
+			gift.get()
+		} else {
+			null
+		}
+	}
+
+	private fun isPresentUser(userId: Long): User? {
+		val user = userRepository.findById(userId)
+		return if (user.isPresent) {
+			user.get()
+		} else {
+			null
+		}
+	}
+
+	private fun isOwner(userId: Long, giftId: Long): Boolean {
+		val user = isPresentUser(userId)
+		val myGiftList = user?.getGifts()
+		var owner = false
+		myGiftList?.forEach {
+			if (it.id == giftId)
+				owner = true
+		}
+		return owner
+	}
+
+	override fun reserve(giftId: Long): GiftResponse? {
+		val gift = isPresentGift(giftId)
+		val userId = userService.getUser().id
+		return if (gift != null) {
+			val owner = isOwner(userId, giftId)
+			if (!owner) {
+				gift.reservedBy?.let {
+					logger.info("Requested giftId ${gift.id} is already reserved. UserId $userId")
+					return null
+				} ?: run {
+					val dbUser = isPresentUser(userId)
+					gift.setReserveBy(dbUser)
+					logger.info("UserId $userId reserved giftId $giftId")
+				}
+				gift.lastUpdate = System.currentTimeMillis()
+				val result = giftRepository.save(gift)
 				result.toGiftResponse()
 			} else {
-				logger.info("Can't reserve owned gift userId ${user.id}")
+				logger.info("Can't reserve owned gift userId $userId")
 				null
 			}
 		} else {
-			logger.info("Requested gift is not exists userId ${userService.getUser().id}")
+			logger.info("Requested gift is not exists userId $userId")
+			null
+		}
+	}
+
+	override fun release(giftId: Long): GiftResponse? {
+		val gift = isPresentGift(giftId)
+		val userId = userService.getUser().id
+		return if (gift != null) {
+			val owner = isOwner(userId, giftId)
+			if (!owner) {
+				gift.reservedBy?.let {
+					gift.removeReserveBy()
+					logger.info("UserId $userId released giftId $giftId")
+				} ?: run {
+					logger.info("GiftId $giftId is not reserved by anyone")
+					return null
+				}
+				gift.lastUpdate = System.currentTimeMillis()
+				val result = giftRepository.save(gift)
+				result.toGiftResponse()
+			} else {
+				logger.info("Can't reserve owned gift userId $userId")
+				null
+			}
+		} else {
+			logger.info("Requested gift is not exists userId $userId")
 			null
 		}
 	}
@@ -58,10 +114,10 @@ class GiftService(
 	}
 
 	override fun findById(giftId: Long): GiftResponse? {
-		val tmpGift = giftRepository.findById(giftId)
-		if (tmpGift.isPresent) {
-			logger.info("UserId ${userService.getUser().id} get giftId ${tmpGift.get().id}")
-			return tmpGift.get().toGiftResponse()
+		val gift = isPresentGift(giftId)
+		if (gift != null) {
+			logger.info("UserId ${userService.getUser().id} get giftId ${gift.id}")
+			return gift.toGiftResponse()
 		}
 		logger.info("Requested gift is not exists userId ${userService.getUser().id}")
 		return null
@@ -71,7 +127,6 @@ class GiftService(
 		val user = userService.getUser()
 		gift.owner = user.id
 		val saveGift = gift.toGift(userRepository)
-		saveGift.lastUpdate = System.currentTimeMillis()
 		val result = giftRepository.save(saveGift)
 		logger.info("UserId ${user.id} created gift ${result.id}")
 		return result.toGiftResponse()
@@ -90,7 +145,6 @@ class GiftService(
 			}
 			if (owner) {
 				val saveGift = gift.toGift(userRepository)
-				saveGift.lastUpdate = System.currentTimeMillis()
 				val result = giftRepository.save(saveGift)
 				logger.info("UserId ${user.id} updated gift ${result.id}")
 				result.toGiftResponse()

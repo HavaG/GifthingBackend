@@ -3,7 +3,6 @@ package havag.gifthing.models.user
 import com.fasterxml.jackson.annotation.JsonIgnore
 import havag.gifthing.models.Role
 import havag.gifthing.models.gift.Gift
-import havag.gifthing.models.gift.dto.UserGiftResponse
 import havag.gifthing.models.team.Team
 import havag.gifthing.models.user.dto.GiftUserResponse
 import havag.gifthing.models.user.dto.TeamUserResponse
@@ -36,6 +35,7 @@ class User(
 
 	//TODO: add isActive var isActive: Boolean = true
 
+	private var lastUpdate: Long = System.currentTimeMillis()
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
@@ -188,7 +188,8 @@ class User(
 			this.id,
 			this.firstName,
 			this.lastName,
-			this.username
+			this.username,
+			this.lastUpdate
 		)
 
 		val tmpGiftList = mutableListOf<GiftUserResponse>()
@@ -217,16 +218,5 @@ class User(
 		tmpOneUser.setMyOwnedTeams(tmpOwnedTeamList)
 
 		return tmpOneUser
-	}
-
-	fun toUserGiftResponse(): UserGiftResponse {
-		return UserGiftResponse(
-			this.email,
-			this.password,
-			this.id,
-			this.firstName,
-			this.lastName,
-			this.username
-		)
 	}
 }

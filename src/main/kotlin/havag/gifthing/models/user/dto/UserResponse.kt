@@ -3,9 +3,10 @@ package havag.gifthing.models.user.dto
 class UserResponse(
 	var email: String,
 	var id: Long,
-	var firstName: String,
-	var lastName: String,
-	var username: String? = null
+	var firstName: String? = null,
+	var lastName: String? = null,
+	var username: String,
+	var lastUpdate: Long
 ) {
 
 	private var gifts = mutableListOf<GiftUserResponse>()

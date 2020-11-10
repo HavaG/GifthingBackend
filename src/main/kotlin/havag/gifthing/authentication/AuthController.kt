@@ -3,7 +3,9 @@ package havag.gifthing.authentication
 import havag.gifthing.authentication.payload.request.LoginRequest
 import havag.gifthing.authentication.payload.request.RolesRequest
 import havag.gifthing.authentication.payload.request.SignupRequest
+import havag.gifthing.authentication.payload.request.SignupResponse
 import havag.gifthing.authentication.payload.response.MessageResponse
+import havag.gifthing.models.user.User
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -25,11 +27,15 @@ class AuthController(
 
 	@PostMapping("/signup")
 	fun registerUser(@RequestBody signUpRequest: @Valid SignupRequest?): ResponseEntity<*> {
+		val signupResponse =  SignupResponse()
 		return try {
-			authService.registerUser(signUpRequest)
-			ResponseEntity.ok(MessageResponse("User registered successfully!"))
+			val newUser: User = authService.registerUser(signUpRequest)
+			signupResponse.user = newUser.toUserResponse()
+			signupResponse.message = "User registered successfully"
+ 			ResponseEntity.ok(signupResponse)
 		} catch (e: Exception) {
-			ResponseEntity.badRequest().body(MessageResponse(e.message!!))
+			signupResponse.message = e.message!!
+			ResponseEntity.badRequest().body(signupResponse)
 		}
 	}
 

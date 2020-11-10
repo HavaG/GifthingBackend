@@ -65,7 +65,7 @@ class AuthService(
 		)
 	}
 
-	fun registerUser(signUpRequest: SignupRequest?) {
+	fun registerUser(signUpRequest: SignupRequest?): User {
 		if (userRepository!!.existsByUsername(signUpRequest!!.username)!!) {
 			logger.info("Error: Username ${signUpRequest.username} is already taken!")
 			throw IllegalArgumentException("Error: Username is already taken!")
@@ -93,7 +93,7 @@ class AuthService(
 		user.setRoles(roles)
 		val dbUser = userRepository!!.save(user)
 		logger.info("UserId ${dbUser.id} is registered")
-		return
+		return user
 	}
 
 	fun setAdmin(id: Long, rolesRequest: RolesRequest?) {

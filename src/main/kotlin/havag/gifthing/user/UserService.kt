@@ -37,7 +37,7 @@ class UserService(
 			logger.info("UserId ${userService.getUser().id} get userId ${user.id} by id")
 			return user.toUserResponse()
 		}
-		logger.info("Requested user is not exists userId ${userService.getUser().id}")
+		logger.info("Requested user is not exists with userId $userId (request userId ${userService.getUser().id})")
 		return null
 	}
 

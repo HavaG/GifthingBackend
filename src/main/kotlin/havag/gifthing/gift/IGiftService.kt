@@ -12,5 +12,6 @@ interface IGiftService {
 	fun update(gift: GiftRequest): GiftResponse?
 	fun delete(giftId: Long): HttpStatus
 	fun reserve(giftId: Long): GiftResponse?
+	fun release(giftId: Long): GiftResponse?
 	fun myGifts(): MutableIterable<GiftUserResponse>
 }

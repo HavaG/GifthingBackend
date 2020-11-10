@@ -59,4 +59,11 @@ class GiftController(val iGiftService: IGiftService) {
 		val gift = iGiftService.reserve(giftId)
 		return gift?.let { ResponseEntity(gift, HttpStatus.OK) } ?: ResponseEntity(HttpStatus.CONFLICT)
 	}
+
+	@PutMapping("/release/{giftId}")
+	@PreAuthorize("hasRole('USER')")
+	fun releaseGift(@PathVariable(value = "giftId") giftId: Long): ResponseEntity<GiftResponse> {
+		val gift = iGiftService.release(giftId)
+		return gift?.let { ResponseEntity(gift, HttpStatus.OK) } ?: ResponseEntity(HttpStatus.CONFLICT)
+	}
 }

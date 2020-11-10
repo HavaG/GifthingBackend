@@ -11,8 +11,8 @@ import javax.persistence.*
 @Table(name = "gifts")
 class Gift(
 	var name: String,
-	var link: String? = null,
-	var description: String? = null,
+	private var link: String? = null,
+	private var description: String? = null,
 	var price: Int? = null
 ) {
 	@Id
@@ -30,11 +30,6 @@ class Gift(
 		owner = user
 	}
 
-	@JsonIgnore
-	fun getOwner(): User? {
-		return owner
-	}
-
 	fun removeOwner() {
 		setOwner(null)
 		setReserveBy(null)
@@ -46,11 +41,6 @@ class Gift(
 
 	fun setReserveBy(user: User?) {
 		reservedBy = user
-	}
-
-	@JsonIgnore
-	fun getReserveBy(): User? {
-		return reservedBy
 	}
 
 	fun removeReserveBy() {
@@ -68,18 +58,16 @@ class Gift(
 	}
 
 	fun toGiftResponse(): GiftResponse {
-		val tmp = GiftResponse(
-			this.id,
-			this.name,
-			this.link,
-			this.description,
-			this.price,
+		val result = GiftResponse(
+			id = this.id,
+			name = this.name,
+			link = this.link,
+			description = this.description,
+			price = this.price,
 			lastUpdate = this.lastUpdate
 		)
-		this.owner?.let { tmp.owner = it.id }
-
-		this.reservedBy?.let { tmp.reservedBy = it.id }
-
-		return tmp
+		this.owner?.let { result.owner = it.id }
+		this.reservedBy?.let { result.reservedBy = it.id }
+		return result
 	}
 }
