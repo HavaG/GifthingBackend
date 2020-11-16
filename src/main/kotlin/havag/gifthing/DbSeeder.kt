@@ -29,6 +29,21 @@ class DbSeeder(
 			this.giftRepository.deleteAll()
 			this.teamRepository.deleteAll()
 
+
+			val roles = mutableListOf<Role>()
+			val role1 = Role(ERole.ROLE_ADMIN)
+			val role2 = Role(ERole.ROLE_MODERATOR)
+			val role3 = Role(ERole.ROLE_USER)
+
+			roles.add(role1)
+			roles.add(role2)
+			roles.add(role3)
+
+			this.roleRepository.saveAll(roles)
+
+			val userRole =roleRepository.findByName(ERole.ROLE_USER).get()
+
+
 			val p1 = User(
 				email = "a@aa.a",
 				username = "a",
@@ -49,6 +64,13 @@ class DbSeeder(
 				username = "admin",
 				password = "Gabor"
 			)
+
+			val userRoleSet = HashSet<Role>()
+			userRoleSet.add(userRole)
+			p1.setRoles(userRoleSet)
+			p2.setRoles(userRoleSet)
+			p3.setRoles(userRoleSet)
+
 
 			val g1 = Gift("kes")
 			val g2 = Gift("villa")
@@ -108,19 +130,10 @@ class DbSeeder(
 			teams.add(team4)
 			teams.add(team5)
 
-			val roles = mutableListOf<Role>()
-			val role1 = Role(ERole.ROLE_ADMIN)
-			val role2 = Role(ERole.ROLE_MODERATOR)
-			val role3 = Role(ERole.ROLE_USER)
-
-			roles.add(role1)
-			roles.add(role2)
-			roles.add(role3)
 
 			this.userRepository.saveAll(users)
 			this.giftRepository.saveAll(gifts)
 			this.teamRepository.saveAll(teams)
-			this.roleRepository.saveAll(roles)
 
 		}
 		logger.info(" -- Database has been initialized")

@@ -24,6 +24,7 @@ class TeamService(
 		return if (user.isPresent && team.isPresent) {
 			val saveTeam = team.get()
 			saveTeam.addMember(user.get())
+			saveTeam.lastUpdate = System.currentTimeMillis()
 			val result = teamRepository.save(saveTeam)
 			logger.info("UserId ${userService.getUser().id} added userId $userId to teamId ${result.id}")
 			result.toTeamResponse()
@@ -84,6 +85,7 @@ class TeamService(
 
 	override fun create(team: TeamRequest): TeamResponse {
 		val saveTeam = team.toTeam(userRepository)
+		saveTeam.lastUpdate = System.currentTimeMillis()
 		val result = teamRepository.save(saveTeam)
 		logger.info("UserId ${userService.getUser().id} created teamId ${result.id}")
 		return result.toTeamResponse()
@@ -101,6 +103,7 @@ class TeamService(
 			}
 			return if (owned) {
 				val saveTeam = team.toTeam(userRepository)
+				saveTeam.lastUpdate = System.currentTimeMillis()
 				val result = teamRepository.save(saveTeam)
 				logger.info("UserId ${userService.getUser().id} updated teamId ${result.id}")
 				result.toTeamResponse()

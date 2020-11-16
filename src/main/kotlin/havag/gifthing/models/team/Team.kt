@@ -12,6 +12,9 @@ class Team(var name: String) {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	var id: Long = 0
 
+	var lastUpdate: Long = System.currentTimeMillis()
+
+
 	@ManyToOne(cascade = [CascadeType.ALL])
 	@JoinColumn(name = "admin_id")
 	private var admin: User? = null
@@ -56,11 +59,21 @@ class Team(var name: String) {
 	}
 
 	fun toTeamUserResponse(): TeamUserResponse {
-		return TeamUserResponse(this.admin!!.id, this.name, this.id)
+		return TeamUserResponse(
+			this.admin!!.id,
+			this.name,
+			this.id,
+			System.currentTimeMillis()
+		)
 	}
 
 	fun toTeamResponse(): TeamResponse {
-		val result = TeamResponse(this.name, this.id, this.admin!!.id)
+		val result = TeamResponse(
+			this.name,
+			this.id,
+			this.admin!!.id,
+			System.currentTimeMillis()
+		)
 		result.setTeamMembers(this.members)
 		return result
 	}

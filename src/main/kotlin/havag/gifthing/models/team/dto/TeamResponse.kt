@@ -6,7 +6,8 @@ import havag.gifthing.models.user.dto.UserResponse
 class TeamResponse(
 	var name: String,
 	var id: Long,
-	var admin: Long
+	var admin: Long,
+	var lastUpdate: Long
 ) {
 	var members = mutableListOf<UserResponse>()
 
