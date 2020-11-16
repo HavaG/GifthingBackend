@@ -5,5 +5,6 @@ class GiftUserResponse(
 	var id: Long,
 	var link: String? = null,
 	var description: String? = null,
-	var price: Int? = null
+	var price: Int? = null,
+	var owner: Long
 )

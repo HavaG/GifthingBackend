@@ -53,7 +53,8 @@ class Gift(
 			this.id,
 			this.description,
 			this.link,
-			this.price
+			this.price,
+			this.owner!!.id
 		)
 	}
 

@@ -56,7 +56,7 @@ class Team(var name: String) {
 	}
 
 	fun toTeamUserResponse(): TeamUserResponse {
-		return TeamUserResponse(this.name, this.id)
+		return TeamUserResponse(this.admin!!.id, this.name, this.id)
 	}
 
 	fun toTeamResponse(): TeamResponse {
