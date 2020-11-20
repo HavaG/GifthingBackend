@@ -59,10 +59,13 @@ class Team(var name: String) {
 	}
 
 	fun toTeamUserResponse(): TeamUserResponse {
+		val members = mutableListOf<Long>()
+		this.members.forEach{members.add(it.id)}
 		return TeamUserResponse(
 			this.admin!!.id,
 			this.name,
 			this.id,
+			members,
 			System.currentTimeMillis()
 		)
 	}

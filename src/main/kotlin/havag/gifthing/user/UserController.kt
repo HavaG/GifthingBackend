@@ -18,7 +18,6 @@ class UserController(val iUserService: IUserService) {
 		return ResponseEntity(iUserService.findAll(), HttpStatus.OK)
 	}
 
-	//TODO: ezt nem tudom, hogy ki csinálhatja meg
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('USER')")
 	fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<UserResponse> {
