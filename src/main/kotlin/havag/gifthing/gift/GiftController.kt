@@ -2,7 +2,6 @@ package havag.gifthing.gift
 
 import havag.gifthing.models.gift.dto.GiftRequest
 import havag.gifthing.models.gift.dto.GiftResponse
-import havag.gifthing.models.user.dto.GiftUserResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -21,8 +20,14 @@ class GiftController(val iGiftService: IGiftService) {
 
 	@GetMapping("/my-gifts")
 	@PreAuthorize("hasRole('USER')")
-	fun myGifts(): ResponseEntity<MutableIterable<GiftUserResponse>> {
+	fun myGifts(): ResponseEntity<MutableIterable<GiftResponse>> {
 		return ResponseEntity(iGiftService.myGifts(), HttpStatus.OK)
+	}
+
+	@GetMapping("/his-gifts/{id}")
+	@PreAuthorize("hasRole('USER')")
+	fun hisGifts(@PathVariable(value = "id") userId: Long): ResponseEntity<MutableIterable<GiftResponse>> {
+		return ResponseEntity(iGiftService.hisGifts(userId), HttpStatus.OK)
 	}
 
 	@GetMapping("/{id}")
@@ -53,14 +58,14 @@ class GiftController(val iGiftService: IGiftService) {
 		return ResponseEntity(iGiftService.create(newGift), HttpStatus.OK)
 	}
 
-	@PutMapping("/reserve/{giftId}")
+	@GetMapping("/reserve/{giftId}")
 	@PreAuthorize("hasRole('USER')")
 	fun reserveGift(@PathVariable(value = "giftId") giftId: Long): ResponseEntity<GiftResponse> {
 		val gift = iGiftService.reserve(giftId)
 		return gift?.let { ResponseEntity(gift, HttpStatus.OK) } ?: ResponseEntity(HttpStatus.CONFLICT)
 	}
 
-	@PutMapping("/release/{giftId}")
+	@GetMapping("/release/{giftId}")
 	@PreAuthorize("hasRole('USER')")
 	fun releaseGift(@PathVariable(value = "giftId") giftId: Long): ResponseEntity<GiftResponse> {
 		val gift = iGiftService.release(giftId)

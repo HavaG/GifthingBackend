@@ -90,12 +90,13 @@ class DbSeeder(
 			val team5 = Team("otodikCsoport")
 
 			p2.reserveGift(g1)
+			p2.addGift(g4)
+			p2.addGift(g5)
 
+			p1.reserveGift(g4)
 			p1.addGift(g1)
 			p1.addGift(g2)
 			p1.addGift(g3)
-			p1.addGift(g4)
-			p1.addGift(g5)
 
 			team1.setAdmin(p1)
 			team2.setAdmin(p1)

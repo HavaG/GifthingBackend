@@ -2,7 +2,6 @@ package havag.gifthing.gift
 
 import havag.gifthing.models.gift.dto.GiftRequest
 import havag.gifthing.models.gift.dto.GiftResponse
-import havag.gifthing.models.user.dto.GiftUserResponse
 import org.springframework.http.HttpStatus
 
 interface IGiftService {
@@ -13,5 +12,6 @@ interface IGiftService {
 	fun delete(giftId: Long): HttpStatus
 	fun reserve(giftId: Long): GiftResponse?
 	fun release(giftId: Long): GiftResponse?
-	fun myGifts(): MutableIterable<GiftUserResponse>
+	fun myGifts(): MutableIterable<GiftResponse>
+	fun hisGifts(userId: Long): MutableIterable<GiftResponse>
 }

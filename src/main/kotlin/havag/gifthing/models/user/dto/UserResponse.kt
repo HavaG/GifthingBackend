@@ -1,5 +1,7 @@
 package havag.gifthing.models.user.dto
 
+import havag.gifthing.models.gift.dto.GiftResponse
+
 class UserResponse(
 	var email: String,
 	var id: Long,
@@ -9,24 +11,24 @@ class UserResponse(
 	var lastUpdate: Long
 ) {
 
-	private var gifts = mutableListOf<GiftUserResponse>()
-	private var reservedGifts = mutableListOf<GiftUserResponse>()
+	private var gifts = mutableListOf<GiftResponse>()
+	private var reservedGifts = mutableListOf<GiftResponse>()
 	private var myOwnedTeams = mutableListOf<TeamUserResponse>()
 	private var myTeams = mutableListOf<TeamUserResponse>()
 
-	fun getGifts(): MutableList<GiftUserResponse> {
+	fun getGifts(): MutableList<GiftResponse> {
 		return gifts
 	}
 
-	fun setGifts(gifts: MutableList<GiftUserResponse>) {
+	fun setGifts(gifts: MutableList<GiftResponse>) {
 		this.gifts = gifts
 	}
 
-	fun getReservedGifts(): MutableList<GiftUserResponse> {
+	fun getReservedGifts(): MutableList<GiftResponse> {
 		return reservedGifts
 	}
 
-	fun setReservedGifts(reservedGifts: MutableList<GiftUserResponse>) {
+	fun setReservedGifts(reservedGifts: MutableList<GiftResponse>) {
 		this.reservedGifts = reservedGifts
 	}
 

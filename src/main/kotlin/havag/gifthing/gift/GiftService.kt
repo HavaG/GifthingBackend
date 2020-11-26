@@ -4,7 +4,6 @@ import havag.gifthing.models.gift.Gift
 import havag.gifthing.models.gift.dto.GiftRequest
 import havag.gifthing.models.gift.dto.GiftResponse
 import havag.gifthing.models.user.User
-import havag.gifthing.models.user.dto.GiftUserResponse
 import havag.gifthing.repositories.GiftRepository
 import havag.gifthing.repositories.UserRepository
 import havag.gifthing.security.services.UserDetailsProvider
@@ -185,8 +184,15 @@ class GiftService(
 		}
 	}
 
-	override fun myGifts(): MutableIterable<GiftUserResponse> {
+	override fun myGifts(): MutableIterable<GiftResponse> {
 		logger.info("UserId ${userService.getUser().id} get my gifts")
 		return userService.getUser().getGifts()
+	}
+
+	override fun hisGifts(userId: Long): MutableIterable<GiftResponse> {
+		logger.info("UserId ${userService.getUser().id} get his gifts userId: $userId")
+		val result = mutableListOf<GiftResponse>()
+		userRepository.findById(userId).get().getGifts().forEach { result.add(it.toGiftResponse()) }
+		return result
 	}
 }

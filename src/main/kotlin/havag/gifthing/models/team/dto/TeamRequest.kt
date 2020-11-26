@@ -6,29 +6,16 @@ import havag.gifthing.repositories.UserRepository
 
 class TeamRequest(
 	var name: String,
-	var id: Long,
-	var adminId: Long
+	var id: Long?,
+	var adminId: Long,
+	var members: MutableList<Long>
 ) {
-
-	var members = mutableListOf<UserResponse>()
-
-	fun getTeamMembers(): MutableList<UserResponse> {
-		return members
-	}
-
-	fun setTeamMembers(members: MutableList<UserResponse>) {
-		this.members = members
-	}
-
 	fun toTeam(userRepository: UserRepository): Team {
 		val result = Team(name = this.name)
-		result.id = this.id
+		this.id?.let { result.id = it }
 		val admin = userRepository.findById(this.adminId)
 		result.setAdmin(admin.get())
-		this.members.forEach {
-			val tmp = userRepository.findById(it.id)
-			result.addMember(tmp.get())
-		}
+		this.members.forEach { result.addMember(userRepository.findById(it).get()) }
 		return result
 	}
 }

@@ -3,9 +3,10 @@ package havag.gifthing.models.user
 import com.fasterxml.jackson.annotation.JsonIgnore
 import havag.gifthing.models.Role
 import havag.gifthing.models.gift.Gift
+import havag.gifthing.models.gift.dto.GiftResponse
 import havag.gifthing.models.team.Team
-import havag.gifthing.models.user.dto.GiftUserResponse
 import havag.gifthing.models.user.dto.TeamUserResponse
+import havag.gifthing.models.user.dto.GiftUserResponse
 import havag.gifthing.models.user.dto.UserResponse
 import javax.persistence.*
 import javax.validation.constraints.Email
@@ -192,18 +193,18 @@ class User(
 			this.lastUpdate
 		)
 
-		val tmpGiftList = mutableListOf<GiftUserResponse>()
-		val tmpReservedGiftList = mutableListOf<GiftUserResponse>()
+		val tmpGiftList = mutableListOf<GiftResponse>()
+		val tmpReservedGiftList = mutableListOf<GiftResponse>()
 		val tmpTeamList = mutableListOf<TeamUserResponse>()
 		val tmpOwnedTeamList = mutableListOf<TeamUserResponse>()
 
 		for (j in this.getGifts()) {
-			tmpGiftList.add(j.toGiftUserResponse())
+			tmpGiftList.add(j.toGiftResponse())
 		}
 		tmpOneUser.setGifts(tmpGiftList)
 
 		for (j in this.getReservedGifts()) {
-			tmpReservedGiftList.add(j.toGiftUserResponse())
+			tmpReservedGiftList.add(j.toGiftResponse())
 		}
 		tmpOneUser.setReservedGifts(tmpReservedGiftList)
 
@@ -218,5 +219,16 @@ class User(
 		tmpOneUser.setMyOwnedTeams(tmpOwnedTeamList)
 
 		return tmpOneUser
+	}
+
+	fun toUserGiftResponse(): GiftUserResponse {
+		return GiftUserResponse(
+			this.email,
+			this.id,
+			this.firstName,
+			this.lastName,
+			this.username,
+			this.lastUpdate
+		)
 	}
 }

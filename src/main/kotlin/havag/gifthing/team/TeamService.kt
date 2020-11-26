@@ -43,7 +43,7 @@ class TeamService(
 		val result = mutableListOf<TeamResponse>()
 		val user = userRepository.findById(userService.getUser().id).get()
 		for (i in teams) {
-			if (i.isMember(user))
+			if (i.isMember(user) || i.getAdmin()?.id == user.id)
 				result.add(i.toTeamResponse())
 		}
 		logger.info("UserId ${userService.getUser().id} get my teams")
@@ -92,7 +92,7 @@ class TeamService(
 	}
 
 	override fun update(team: TeamRequest): TeamResponse? {
-		val tmp = teamRepository.findById(team.id)
+		val tmp = teamRepository.findById(team.id!!)
 		return if (tmp.isPresent) {
 			val user = userService.getUser()
 			val myOwnedTeams = user.getMyOwnedTeams()

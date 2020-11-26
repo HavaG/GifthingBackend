@@ -3,7 +3,6 @@ package havag.gifthing.models.gift
 import com.fasterxml.jackson.annotation.JsonIgnore
 import havag.gifthing.models.gift.dto.GiftResponse
 import havag.gifthing.models.user.User
-import havag.gifthing.models.user.dto.GiftUserResponse
 import javax.persistence.*
 
 
@@ -47,17 +46,6 @@ class Gift(
 		setReserveBy(null)
 	}
 
-	fun toGiftUserResponse(): GiftUserResponse {
-		return GiftUserResponse(
-			this.name,
-			this.id,
-			this.description,
-			this.link,
-			this.price,
-			this.owner!!.id
-		)
-	}
-
 	fun toGiftResponse(): GiftResponse {
 		val result = GiftResponse(
 			id = this.id,
@@ -67,8 +55,8 @@ class Gift(
 			price = this.price,
 			lastUpdate = this.lastUpdate
 		)
-		this.owner?.let { result.owner = it.id }
-		this.reservedBy?.let { result.reservedBy = it.id }
+		this.owner?.let { result.owner = it.toUserGiftResponse() }
+		this.reservedBy?.let { result.reservedBy = it.toUserGiftResponse() }
 		return result
 	}
 }
