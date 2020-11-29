@@ -41,8 +41,10 @@ class DbSeeder(
 
 			this.roleRepository.saveAll(roles)
 
-			val userRole =roleRepository.findByName(ERole.ROLE_USER).get()
 
+
+			/*
+			val userRole =roleRepository.findByName(ERole.ROLE_USER).get()
 
 			val p1 = User(
 				email = "a@aa.a",
@@ -132,9 +134,11 @@ class DbSeeder(
 			teams.add(team5)
 
 
+
 			this.userRepository.saveAll(users)
 			this.giftRepository.saveAll(gifts)
 			this.teamRepository.saveAll(teams)
+			 */
 
 		}
 		logger.info(" -- Database has been initialized")
