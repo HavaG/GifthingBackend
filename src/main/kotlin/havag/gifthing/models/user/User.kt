@@ -8,6 +8,7 @@ import havag.gifthing.models.team.Team
 import havag.gifthing.models.user.dto.TeamUserResponse
 import havag.gifthing.models.user.dto.GiftUserResponse
 import havag.gifthing.models.user.dto.UserResponse
+import org.springframework.transaction.annotation.Transactional
 import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -175,6 +176,11 @@ class User(
 		myTeams = mutableListOf()
 	}
 
+
+	fun removeFromAllAdminTeam() {
+		myOwnedTeams = mutableListOf()
+	}
+
 	fun getRoles(): Set<Role> {
 		return roles
 	}
@@ -230,5 +236,9 @@ class User(
 			this.username,
 			this.lastUpdate
 		)
+	}
+
+	fun delete() {
+
 	}
 }

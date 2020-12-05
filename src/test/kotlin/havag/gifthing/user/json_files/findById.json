@@ -1,0 +1,12 @@
+{
+	"email":"example@gmail.com",
+	"id":1,
+	"firstName":"",
+	"lastName":"",
+	"username":"example",
+	"lastUpdate":0,
+	"gifts":[],
+	"reservedGifts":[],
+	"myOwnedTeams":[],
+	"myTeams":[]
+}

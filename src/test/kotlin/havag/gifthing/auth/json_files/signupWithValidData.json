@@ -1,0 +1,15 @@
+{
+	"user":{
+		"email":"example@gmail.com",
+		"id":0,
+		"firstName":"",
+		"lastName":"",
+		"username":"example",
+		"lastUpdate":0,
+		"gifts":[],
+		"reservedGifts":[],
+		"myOwnedTeams":[],
+		"myTeams":[]
+	},
+	"message":"User registered successfully"
+}

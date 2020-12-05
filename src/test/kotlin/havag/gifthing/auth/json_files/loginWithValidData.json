@@ -1,0 +1,10 @@
+{
+	"accessToken":"token",
+	"id":0,
+	"username":"example",
+	"email":"example@gmail.com",
+	"roles":[
+		"ROLE_USER"
+	],
+	"tokenType":"Bearer"
+}

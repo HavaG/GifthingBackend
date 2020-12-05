@@ -8,7 +8,5 @@ import org.springframework.boot.runApplication
 class GifthingApplication
 
 fun main(args: Array<String>) {
-	runApplication<GifthingApplication>(*args) {
-		addInitializers(Startup())
-	}
+	runApplication<GifthingApplication>(*args)
 }

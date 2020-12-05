@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class UserDetailsServiceImpl : UserDetailsService {
 	@Autowired
-	var userRepository: UserRepository? = null
+	lateinit var userRepository: UserRepository
 
 	@Transactional
 	@Throws(UsernameNotFoundException::class)
 	override fun loadUserByUsername(username: String): UserDetails {
-		val user: User = userRepository!!.findByUsername(username)
+		val user: User = userRepository.findByUsername(username)
 			.orElseThrow { UsernameNotFoundException("User Not Found with username: $username") }
 		return UserDetailsImpl.build(user)
 	}

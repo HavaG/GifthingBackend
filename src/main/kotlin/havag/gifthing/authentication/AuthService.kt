@@ -1,7 +1,6 @@
 package havag.gifthing.authentication
 
 import havag.gifthing.authentication.payload.request.LoginRequest
-import havag.gifthing.authentication.payload.request.RolesRequest
 import havag.gifthing.authentication.payload.request.SignupRequest
 import havag.gifthing.authentication.payload.response.JwtResponse
 import havag.gifthing.models.ERole
@@ -21,35 +20,37 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import java.util.function.Consumer
 import java.util.stream.Collectors
 
 @Service
-class AuthService(
-	val userService: UserDetailsProvider,
+class AuthService {
 	val logger: Logger = LoggerFactory.getLogger(AuthService::class.java)
-) {
-	@Autowired
-	var authenticationManager: AuthenticationManager? = null
 
 	@Autowired
-	var jwtUtils: JwtUtils? = null
+	lateinit var userService: UserDetailsProvider
 
 	@Autowired
-	var userRepository: UserRepository? = null
+	lateinit var authenticationManager: AuthenticationManager
 
 	@Autowired
-	var roleRepository: RoleRepository? = null
+	lateinit var jwtUtils: JwtUtils
 
 	@Autowired
-	var encoder: PasswordEncoder? = null
+	lateinit var userRepository: UserRepository
+
+	@Autowired
+	lateinit var roleRepository: RoleRepository
+
+	@Autowired
+	lateinit var encoder: PasswordEncoder
 
 	fun authenticateUser(loginRequest: LoginRequest?): JwtResponse {
-		val authentication = authenticationManager!!.authenticate(
+		val authentication = authenticationManager.authenticate(
 			UsernamePasswordAuthenticationToken(loginRequest!!.username, loginRequest.password)
 		)
+
 		SecurityContextHolder.getContext().authentication = authentication
-		val jwt = jwtUtils!!.generateJwtToken(authentication)
+		val jwt = jwtUtils.generateJwtToken(authentication)
 		val userDetails = authentication.principal as UserDetailsImpl
 		val roles = userDetails.authorities.stream()
 			.map { item: GrantedAuthority -> item.authority }
@@ -66,36 +67,37 @@ class AuthService(
 	}
 
 	fun registerUser(signUpRequest: SignupRequest?): User {
-		if (userRepository!!.existsByUsername(signUpRequest!!.username)!!) {
+		if (userRepository.existsByUsername(signUpRequest!!.username)!!) {
 			logger.info("Error: Username ${signUpRequest.username} is already taken!")
 			throw IllegalArgumentException("Error: Username is already taken!")
 		}
-		if (userRepository!!.existsByEmail(signUpRequest.email)!!) {
+		if (userRepository.existsByEmail(signUpRequest.email)!!) {
 			logger.info("Error: Email ${signUpRequest.email} is already in use!")
 			throw IllegalArgumentException("Error: Email is already in use!")
 		}
 
 		val user = User(
-			signUpRequest.username!!,
-			signUpRequest.email!!,
-			encoder!!.encode(signUpRequest.password)
+			signUpRequest.username,
+			signUpRequest.email,
+			encoder.encode(signUpRequest.password)
 		)
 		signUpRequest.firstname?.let { user.firstName = it }
 		signUpRequest.lastname?.let { user.lastName = it }
 
 		val roles: MutableSet<Role> = HashSet()
-		val userRole: Role = roleRepository!!.findByName(ERole.ROLE_USER)
+		val userRole: Role = roleRepository.findByName(ERole.ROLE_USER)
 			.orElseThrow {
 				logger.info("Error: ${ERole.ROLE_USER} User role is not found.")
 				RuntimeException("Error: User role is not found.")
 			}
 		roles.add(userRole)
 		user.setRoles(roles)
-		val dbUser = userRepository!!.save(user)
+		val dbUser = userRepository.save(user)
 		logger.info("UserId ${dbUser.id} is registered")
 		return user
 	}
 
+	/*
 	fun setAdmin(id: Long, rolesRequest: RolesRequest?) {
 		val user = userRepository!!.findById(id)
 		if (user.isPresent) {
@@ -144,4 +146,5 @@ class AuthService(
 			throw IllegalArgumentException("Error: User not exists!")
 		}
 	}
+	 */
 }

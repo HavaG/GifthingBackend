@@ -8,6 +8,7 @@ import havag.gifthing.authentication.payload.response.MessageResponse
 import havag.gifthing.models.user.User
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.authentication.jaas.LoginExceptionResolver
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -22,7 +23,11 @@ class AuthController(
 
 	@PostMapping("/login")
 	fun authenticateUser(@RequestBody loginRequest: @Valid LoginRequest?): ResponseEntity<*> {
-		return ResponseEntity.ok(authService.authenticateUser(loginRequest))
+		return try {
+			ResponseEntity.ok(authService.authenticateUser(loginRequest))
+		} catch (e: Exception) {
+			ResponseEntity.badRequest().body(e.message)
+		}
 	}
 
 	@PostMapping("/signup")
@@ -39,6 +44,7 @@ class AuthController(
 		}
 	}
 
+	/*
 	@PostMapping("/set-roles/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	fun setAdmin(@PathVariable(value = "id") id: Long, @RequestBody rolesRequest: @Valid RolesRequest?): ResponseEntity<*> {
@@ -50,7 +56,6 @@ class AuthController(
 		}
 	}
 
-	/* TODO: logout
 	@PostMapping("/logout")
 	fun logout(@RequestBody logoutRequest: @Valid LogoutRequest?): ResponseEntity<*> {
 

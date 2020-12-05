@@ -10,14 +10,13 @@ import java.util.stream.Collectors
 
 
 class UserDetailsImpl(
-	val id: Long,
 	private val username: String,
-	val email: String,
 	@field:JsonIgnore
 	private val password: String,
-	private val authorities: Collection<GrantedAuthority>
+	private val authorities: Collection<GrantedAuthority>,
+	val id: Long,
+	val email: String
 ) : UserDetails {
-
 	override fun getAuthorities() = authorities
 
 	override fun getPassword() = password
@@ -46,11 +45,11 @@ class UserDetailsImpl(
 				.map { role -> SimpleGrantedAuthority(role!!.getName()!!.name) }
 				.collect(Collectors.toList())
 			return UserDetailsImpl(
-				user.id,
 				user.username,
-				user.email,
 				user.getPassword(),
-				authorities
+				authorities,
+				user.id,
+				user.email
 			)
 		}
 	}

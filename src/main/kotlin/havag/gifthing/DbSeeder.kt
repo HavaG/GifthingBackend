@@ -11,37 +11,39 @@ import havag.gifthing.repositories.TeamRepository
 import havag.gifthing.repositories.UserRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 
 @Component
 class DbSeeder(
-	val userRepository: UserRepository,
-	val giftRepository: GiftRepository,
-	val roleRepository: RoleRepository,
-	val teamRepository: TeamRepository,
-	val logger: Logger = LoggerFactory.getLogger(DbSeeder::class.java)
 ) : CommandLineRunner {
+	@Autowired
+	lateinit var userRepository: UserRepository
+
+	@Autowired
+	lateinit var giftRepository: GiftRepository
+
+	@Autowired
+	lateinit var roleRepository: RoleRepository
+
+	@Autowired
+	lateinit var teamRepository: TeamRepository
+
+	val logger: Logger = LoggerFactory.getLogger(DbSeeder::class.java)
+
 	override fun run(vararg p0: String?) {
 
-		if (!userRepository.existsById(1)) {
+		if (roleRepository.findAll().count() == 0) {
 			this.userRepository.deleteAll()
 			this.giftRepository.deleteAll()
 			this.teamRepository.deleteAll()
 
-
 			val roles = mutableListOf<Role>()
-			val role1 = Role(ERole.ROLE_ADMIN)
-			val role2 = Role(ERole.ROLE_MODERATOR)
-			val role3 = Role(ERole.ROLE_USER)
-
-			roles.add(role1)
-			roles.add(role2)
-			roles.add(role3)
-
+			roles.add(Role(ERole.ROLE_ADMIN))
+			roles.add(Role(ERole.ROLE_MODERATOR))
+			roles.add(Role(ERole.ROLE_USER))
 			this.roleRepository.saveAll(roles)
-
-
 
 			/*
 			val userRole =roleRepository.findByName(ERole.ROLE_USER).get()
