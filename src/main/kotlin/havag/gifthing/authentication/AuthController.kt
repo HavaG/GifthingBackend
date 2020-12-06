@@ -16,15 +16,13 @@ import javax.validation.Valid
 @CrossOrigin(origins = ["*"])
 @RestController
 @RequestMapping("/api/auth")
-class AuthController(
-	val authService: AuthService
-) {
+class AuthController(val iAuthService: IAuthService) {
 
 
 	@PostMapping("/login")
 	fun authenticateUser(@RequestBody loginRequest: @Valid LoginRequest?): ResponseEntity<*> {
 		return try {
-			ResponseEntity.ok(authService.authenticateUser(loginRequest))
+			ResponseEntity.ok(iAuthService.authenticateUser(loginRequest))
 		} catch (e: Exception) {
 			ResponseEntity.badRequest().body(e.message)
 		}
@@ -34,7 +32,7 @@ class AuthController(
 	fun registerUser(@RequestBody signUpRequest: @Valid SignupRequest?): ResponseEntity<*> {
 		val signupResponse =  SignupResponse()
 		return try {
-			val newUser: User = authService.registerUser(signUpRequest)
+			val newUser: User = iAuthService.registerUser(signUpRequest)
 			signupResponse.user = newUser.toUserResponse()
 			signupResponse.message = "User registered successfully"
  			ResponseEntity.ok(signupResponse)

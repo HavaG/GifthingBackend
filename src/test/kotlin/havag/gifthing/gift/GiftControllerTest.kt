@@ -24,13 +24,6 @@ internal class GiftControllerTest : AbstractTest() {
 	@Autowired
 	lateinit var userService: UserService
 
-	@Before
-	public override fun setUp() {
-		logger.info("before START")
-		super.setUp()
-		logger.info("before END")
-	}
-
 	@Test
 	@WithUserDetails("example")
 	@Throws(Exception::class)

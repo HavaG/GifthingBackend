@@ -23,11 +23,8 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class AuthService {
+class AuthService : IAuthService {
 	val logger: Logger = LoggerFactory.getLogger(AuthService::class.java)
-
-	@Autowired
-	lateinit var userService: UserDetailsProvider
 
 	@Autowired
 	lateinit var authenticationManager: AuthenticationManager
@@ -44,7 +41,7 @@ class AuthService {
 	@Autowired
 	lateinit var encoder: PasswordEncoder
 
-	fun authenticateUser(loginRequest: LoginRequest?): JwtResponse {
+	override fun authenticateUser(loginRequest: LoginRequest?): JwtResponse {
 		val authentication = authenticationManager.authenticate(
 			UsernamePasswordAuthenticationToken(loginRequest!!.username, loginRequest.password)
 		)
@@ -66,7 +63,7 @@ class AuthService {
 		)
 	}
 
-	fun registerUser(signUpRequest: SignupRequest?): User {
+	override fun registerUser(signUpRequest: SignupRequest?): User {
 		if (userRepository.existsByUsername(signUpRequest!!.username)!!) {
 			logger.info("Error: Username ${signUpRequest.username} is already taken!")
 			throw IllegalArgumentException("Error: Username is already taken!")

@@ -16,13 +16,6 @@ class UserControllerTest : AbstractTest() {
 	private val utils = Utils()
 	private val logger: Logger = LoggerFactory.getLogger(UserControllerTest::class.java)
 
-	@Before
-	public override fun setUp() {
-		logger.info("before START")
-		super.setUp()
-		logger.info("before END")
-	}
-
 	@Test
 	@WithUserDetails("example")
 	@Throws(Exception::class)

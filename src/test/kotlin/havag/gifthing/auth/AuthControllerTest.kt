@@ -2,16 +2,20 @@ package havag.gifthing.auth
 
 import havag.gifthing.AbstractTest
 import havag.gifthing.Utils
+import havag.gifthing.authentication.AuthService
 import havag.gifthing.authentication.payload.request.LoginRequest
 import havag.gifthing.authentication.payload.request.SignupRequest
 import havag.gifthing.authentication.payload.request.SignupResponse
 import havag.gifthing.authentication.payload.response.JwtResponse
 import havag.gifthing.user.UserService
-import org.junit.AfterClass
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
+import org.mockito.ArgumentCaptor
+import org.mockito.Mockito
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,13 +29,6 @@ class AuthControllerTest : AbstractTest() {
 
 	@Autowired
 	lateinit var userService: UserService
-
-	@Before
-	public override fun setUp() {
-		logger.info("before START")
-		super.setUp()
-		logger.info("before END")
-	}
 
 	@Test
 	@WithUserDetails("example")
