@@ -4,28 +4,20 @@ import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import havag.gifthing.models.ERole
-import havag.gifthing.models.Role
 import havag.gifthing.repositories.RoleRepository
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import org.springframework.test.context.transaction.BeforeTransaction
-import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.test.web.servlet.setup.MockMvcConfigurer
 import org.springframework.web.context.WebApplicationContext
 import java.io.IOException
-import javax.management.relation.RoleResult
 
 @RunWith(SpringJUnit4ClassRunner::class)
 @SpringBootTest(classes = [GifthingApplication::class])
@@ -65,11 +57,31 @@ abstract class AbstractTest {
 		return objectMapper.readValue(json, clazz)
 	}
 
-	protected fun mvcPerform(uri: String, inputJson: String): MvcResult {
+	protected fun mvcPerformGet(uri: String): MvcResult {
+		return mvc!!.perform(
+			get(uri)
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+		).andReturn()
+
+	}
+
+	protected fun mvcPerformPost(uri: String, inputJson: String): MvcResult {
 		return mvc!!.perform(
 			post(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(inputJson)
 		).andReturn()
 	}
+
+	protected fun mvcPerformDelete(uri: String): MvcResult {
+		return mvc!!.perform(delete(uri)).andReturn()
+	}
+/*
+	protected fun mvcPerformDelete(uri: String, inputJson: String?): MvcResult {
+	}
+
+	protected fun mvcPerformPut(uri: String, inputJson: String): MvcResult {
+
+	}
+ */
 }

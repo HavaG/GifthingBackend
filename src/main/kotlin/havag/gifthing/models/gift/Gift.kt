@@ -29,6 +29,10 @@ class Gift(
 		owner = user
 	}
 
+	fun getOwner(): User? {
+		return owner
+	}
+
 	fun removeOwner() {
 		setOwner(null)
 		setReserveBy(null)

@@ -51,7 +51,7 @@ class AuthControllerTest : AbstractTest() {
 		val uri = "/api/auth/signup"
 		val signupRequest = SignupRequest("example", "example@gmail.com", "example")
 		val inputJson = super.mapToJson(signupRequest)
-		val mvcResult = super.mvcPerform(uri, inputJson)
+		val mvcResult = super.mvcPerformPost(uri, inputJson)
 		assertEquals(200, mvcResult.response.status)
 		val content = mvcResult.response.contentAsString
 		val response: SignupResponse = super.mapFromJson(content, SignupResponse::class.java)
@@ -70,7 +70,7 @@ class AuthControllerTest : AbstractTest() {
 		val uri = "/api/auth/signup"
 		val signupRequest = SignupRequest("example", "valid@gmail.com", "example")
 		val inputJson = super.mapToJson(signupRequest)
-		val mvcResult = super.mvcPerform(uri, inputJson)
+		val mvcResult = super.mvcPerformPost(uri, inputJson)
 		assertEquals(400, mvcResult.response.status)
 		val expected = utils.readFileDirectlyAsText("src/test/kotlin/havag/gifthing/auth/json_files/signupWithTakenUsername.json")
 		assertEquals(expected, mvcResult.response.contentAsString)
@@ -84,7 +84,7 @@ class AuthControllerTest : AbstractTest() {
 		val uri = "/api/auth/signup"
 		val signupRequest = SignupRequest("valid", "example@gmail.com", "example")
 		val inputJson = super.mapToJson(signupRequest)
-		val mvcResult = super.mvcPerform(uri, inputJson)
+		val mvcResult = super.mvcPerformPost(uri, inputJson)
 		assertEquals(400, mvcResult.response.status)
 		val expected = utils.readFileDirectlyAsText("src/test/kotlin/havag/gifthing/auth/json_files/signupWithTakenEmail.json")
 		assertEquals(expected, mvcResult.response.contentAsString)
@@ -98,7 +98,7 @@ class AuthControllerTest : AbstractTest() {
 		val uri = "/api/auth/login"
 		val loginResponse = LoginRequest("example", "example")
 		val inputJson = super.mapToJson(loginResponse)
-		val mvcResult = super.mvcPerform(uri, inputJson)
+		val mvcResult = super.mvcPerformPost(uri, inputJson)
 		assertEquals(200, mvcResult.response.status)
 		val content = mvcResult.response.contentAsString
 		val response = super.mapFromJson(content, JwtResponse::class.java)
@@ -117,7 +117,7 @@ class AuthControllerTest : AbstractTest() {
 		val uri = "/api/auth/login"
 		val loginResponse = LoginRequest("invalid", "example")
 		val inputJson = super.mapToJson(loginResponse)
-		val mvcResult = super.mvcPerform(uri, inputJson)
+		val mvcResult = super.mvcPerformPost(uri, inputJson)
 		assertEquals(400, mvcResult.response.status)
 		val resultJson = super.mapToJson(mvcResult.response.contentAsString)
 		val expected = utils.readFileDirectlyAsText("src/test/kotlin/havag/gifthing/auth/json_files/loginWithInvalidData.json")
@@ -132,7 +132,7 @@ class AuthControllerTest : AbstractTest() {
 		val uri = "/api/auth/login"
 		val loginResponse = LoginRequest("example", "invalid")
 		val inputJson = super.mapToJson(loginResponse)
-		val mvcResult = super.mvcPerform(uri, inputJson)
+		val mvcResult = super.mvcPerformPost(uri, inputJson)
 		assertEquals(400, mvcResult.response.status)
 		val resultJson = super.mapToJson(mvcResult.response.contentAsString)
 		val expected = utils.readFileDirectlyAsText("src/test/kotlin/havag/gifthing/auth/json_files/loginWithInvalidData.json")

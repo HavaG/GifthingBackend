@@ -1,9 +1,9 @@
 {
-	"email":"example@gmail.com",
-	"id":1,
+	"email":"default@gmail.com",
+	"id":2,
 	"firstName":"",
 	"lastName":"",
-	"username":"example",
+	"username":"default",
 	"lastUpdate":0,
 	"gifts":[],
 	"reservedGifts":[],

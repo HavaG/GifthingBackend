@@ -5,7 +5,7 @@ import havag.gifthing.models.gift.dto.GiftResponse
 
 class UserResponse(
 	@JsonProperty("email")
-	var email: String,
+	var email: String? = null,
 	@JsonProperty("id")
 	var id: Long,
 	@JsonProperty("firstName")
