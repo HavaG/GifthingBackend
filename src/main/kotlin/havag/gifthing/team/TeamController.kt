@@ -12,12 +12,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/team")
 class TeamController(val iTeamService: ITeamService) {
 
-	@GetMapping("/all")
-	@PreAuthorize("hasRole('ADMIN')")
-	fun findAll(): ResponseEntity<MutableIterable<TeamResponse>> {
-		return ResponseEntity(iTeamService.findAll(), HttpStatus.OK)
-	}
-
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('USER')")
 	fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<TeamResponse> {
@@ -31,6 +25,13 @@ class TeamController(val iTeamService: ITeamService) {
 		return ResponseEntity(iTeamService.getMyTeams(), HttpStatus.OK)
 	}
 
+	@PostMapping("/create")
+	@PreAuthorize("hasRole('USER')")
+	fun create(@RequestBody newTeam: TeamRequest): ResponseEntity<TeamResponse> {
+		return ResponseEntity(iTeamService.create(newTeam), HttpStatus.OK)
+	}
+
+	/*
 	@DeleteMapping("/delete/{id}")
 	@PreAuthorize("hasRole('MODERATOR')")
 	fun deleteById(@PathVariable(value = "id") id: Long): ResponseEntity<Boolean> {
@@ -44,12 +45,6 @@ class TeamController(val iTeamService: ITeamService) {
 	fun update(@RequestBody editTeam: TeamRequest): ResponseEntity<TeamResponse> {
 		val team = iTeamService.update(editTeam)
 		return team?.let { ResponseEntity(team, HttpStatus.OK) } ?: ResponseEntity(HttpStatus.NOT_FOUND)
-	}
-
-	@PostMapping("/create")
-	@PreAuthorize("hasRole('USER')")
-	fun create(@RequestBody newTeam: TeamRequest): ResponseEntity<TeamResponse> {
-		return ResponseEntity(iTeamService.create(newTeam), HttpStatus.OK)
 	}
 
 	//TODO: invite link pls (not working btw)
@@ -73,4 +68,11 @@ class TeamController(val iTeamService: ITeamService) {
 		val team = iTeamService.removeMember(teamId, userId)
 		return team?.let { ResponseEntity(team, HttpStatus.OK) } ?: ResponseEntity(HttpStatus.NOT_FOUND)
 	}
+
+	@GetMapping("/all")
+	@PreAuthorize("hasRole('ADMIN')")
+	fun findAll(): ResponseEntity<MutableIterable<TeamResponse>> {
+		return ResponseEntity(iTeamService.findAll(), HttpStatus.OK)
+	}
+	 */
 }

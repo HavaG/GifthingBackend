@@ -77,7 +77,7 @@ class Team(var name: String) {
 			this.admin!!.id,
 			System.currentTimeMillis()
 		)
-		result.setTeamMembers(this.members)
+		result.setMembers(this.members)
 		return result
 	}
 

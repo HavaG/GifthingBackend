@@ -237,8 +237,4 @@ class User(
 			this.lastUpdate
 		)
 	}
-
-	fun delete() {
-
-	}
 }
