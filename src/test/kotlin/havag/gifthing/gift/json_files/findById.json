@@ -1,0 +1,17 @@
+{
+	"id":3,
+	"name":"Elso ajandek",
+	"owner":{
+		"email":"example@gmail.com",
+		"id":1,
+		"firstName":"",
+		"lastName":"",
+		"username":"example",
+		"lastUpdate":0
+	},
+	"link":"http://desc.com",
+	"description":null,
+	"price":null,
+	"reservedBy":null,
+	"lastUpdate":0
+}

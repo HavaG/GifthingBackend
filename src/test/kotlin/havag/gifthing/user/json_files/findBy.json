@@ -1,0 +1,12 @@
+{
+	"email":"default@gmail.com",
+	"id":2,
+	"firstName":"",
+	"lastName":"",
+	"username":"default",
+	"lastUpdate":0,
+	"gifts":[],
+	"reservedGifts":[],
+	"myOwnedTeams":[],
+	"myTeams":[]
+}

@@ -1,0 +1,17 @@
+{
+	"id":8,
+	"name":"Masodik ajandek",
+	"owner":{
+		"email":"default@gmail.com",
+		"id":2,
+		"firstName":"",
+		"lastName":"",
+		"username":"default",
+		"lastUpdate":0
+	},
+	"link":null,
+	"description":"Szulinapomra",
+	"price":null,
+	"reservedBy":null,
+	"lastUpdate":0
+}
